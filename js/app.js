@@ -2,6 +2,50 @@
    EduNova — Main JavaScript
    ============================================ */
 
+// Inject responsive stylesheet + iOS / mobile meta tags as early as possible
+(function injectResponsiveAssets() {
+    try {
+        const head = document.head || document.getElementsByTagName('head')[0];
+        if (!head) return;
+
+        // Stylesheet
+        if (!document.querySelector('link[data-edu-responsive]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'css/responsive.css';
+            link.setAttribute('data-edu-responsive', '');
+            head.appendChild(link);
+        }
+
+        // Upgrade viewport for iOS safe-area / notch
+        let viewport = document.querySelector('meta[name="viewport"]');
+        if (!viewport) {
+            viewport = document.createElement('meta');
+            viewport.name = 'viewport';
+            head.appendChild(viewport);
+        }
+        viewport.content = 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+
+        // Theme color (Android Chrome address bar)
+        const ensureMeta = (name, content, isProperty) => {
+            const sel = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+            let m = document.querySelector(sel);
+            if (!m) {
+                m = document.createElement('meta');
+                if (isProperty) m.setAttribute('property', name); else m.setAttribute('name', name);
+                head.appendChild(m);
+            }
+            m.setAttribute('content', content);
+        };
+        ensureMeta('theme-color', '#0a0b14');
+        ensureMeta('color-scheme', 'dark');
+        ensureMeta('apple-mobile-web-app-capable', 'yes');
+        ensureMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+        ensureMeta('mobile-web-app-capable', 'yes');
+        ensureMeta('format-detection', 'telephone=no');
+    } catch (e) { /* no-op */ }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
     initPreloader();
     initNavbar();
@@ -9,7 +53,65 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initCounters();
     initSessionNavbar();
+    initResponsiveHelpers();
 });
+
+/* ---- Responsive helpers: 100vh fix, sidebar backdrop, modal scroll-lock ---- */
+function initResponsiveHelpers() {
+    // True viewport height (--app-vh) for mobile browsers with dynamic toolbars
+    const setVh = () => {
+        document.documentElement.style.setProperty('--app-vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh, { passive: true });
+    window.addEventListener('orientationchange', setVh);
+
+    // Sidebar backdrop + body scroll-lock + click-outside-to-close
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        let backdrop = document.querySelector('.sidebar-backdrop');
+        if (!backdrop) {
+            backdrop = document.createElement('div');
+            backdrop.className = 'sidebar-backdrop';
+            document.body.appendChild(backdrop);
+        }
+        const close = () => {
+            sidebar.classList.remove('open');
+            backdrop.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        };
+        // React to open class changes via MutationObserver
+        const mo = new MutationObserver(() => {
+            const isOpen = sidebar.classList.contains('open');
+            backdrop.classList.toggle('active', isOpen);
+            document.body.classList.toggle('no-scroll', isOpen);
+        });
+        mo.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+
+        backdrop.addEventListener('click', close);
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+        });
+
+        // Auto-close when a nav link is tapped on mobile
+        sidebar.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) setTimeout(close, 150);
+            });
+        });
+    }
+
+    // Lock body scroll when any .modal-overlay becomes active
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        const mo = new MutationObserver(() => {
+            const anyActive = !!document.querySelector('.modal-overlay.active');
+            document.body.classList.toggle('no-scroll', anyActive || document.getElementById('sidebar')?.classList.contains('open'));
+        });
+        mo.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    });
+}
 
 /* ---- Preloader ---- */
 function initPreloader() {

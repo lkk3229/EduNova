@@ -2714,3 +2714,395 @@ h1, h2, h3, h4, h5, h6 {
         border-radius: 50%;
     }
 }
+
+/* ============================================
+   Teacher Signup — Enhanced Split Layout
+   ============================================ */
+.teacher-signup-shell {
+    width: 100%;
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+
+/* Left brand panel */
+.ts-brand {
+    position: relative;
+    padding: 48px 40px;
+    background:
+        radial-gradient(1200px 400px at -10% -10%, rgba(255, 255, 255, 0.18), transparent 60%),
+        radial-gradient(800px 400px at 110% 110%, rgba(255, 255, 255, 0.12), transparent 60%),
+        linear-gradient(160deg, #5a52d6 0%, #764ba2 55%, #f5576c 110%);
+    color: #fff;
+    overflow: hidden;
+}
+
+.ts-brand::before,
+.ts-brand::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: 0.45;
+    pointer-events: none;
+}
+.ts-brand::before {
+    width: 220px; height: 220px;
+    top: -60px; right: -60px;
+    background: radial-gradient(circle, #fff, transparent 60%);
+    opacity: 0.15;
+}
+.ts-brand::after {
+    width: 320px; height: 320px;
+    bottom: -120px; left: -80px;
+    background: radial-gradient(circle, #ffd86b, transparent 60%);
+    opacity: 0.18;
+}
+
+.ts-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 36px;
+}
+.ts-brand-logo .ts-logo-mark {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 18px;
+}
+
+.ts-brand h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+.ts-brand h1 span { color: #ffd86b; }
+.ts-brand-accent { color: #ffd86b; }
+.ts-brand .ts-tagline {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 28px;
+}
+
+/* Stat row inside brand */
+.ts-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+.ts-stat {
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    padding: 14px 12px;
+    backdrop-filter: blur(8px);
+    text-align: center;
+}
+.ts-stat strong {
+    display: block;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+.ts-stat span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+/* Benefit list */
+.ts-benefits {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+.ts-benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.ts-benefit:hover {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.14);
+}
+.ts-benefit-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.ts-benefit h4 {
+    font-size: 14px;
+    margin: 0 0 2px;
+    color: #fff;
+    font-weight: 600;
+}
+.ts-benefit p {
+    font-size: 12.5px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.4;
+}
+
+/* Testimonial */
+.ts-testimonial {
+    background: rgba(0, 0, 0, 0.18);
+    border-left: 3px solid #ffd86b;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+    position: relative;
+}
+.ts-testimonial-quote {
+    font-style: italic;
+}
+.ts-testimonial-author {
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Right form panel */
+.ts-form-panel {
+    padding: 44px 44px 36px;
+    background: var(--bg-card);
+}
+.ts-form-panel .auth-header {
+    text-align: left;
+    margin-bottom: 24px;
+}
+.ts-form-panel .auth-header h2 {
+    font-size: 24px;
+    margin: 0 0 6px;
+}
+.ts-form-panel .auth-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Stepper */
+.ts-stepper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+    position: relative;
+}
+.ts-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    transition: all 0.25s ease;
+}
+.ts-step.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    border-color: rgba(102, 126, 234, 0.45);
+    color: var(--text-primary);
+}
+.ts-step .ts-step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+.ts-step.active .ts-step-num {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+.ts-step.completed .ts-step-num {
+    background: #00b894;
+    color: #fff;
+    border-color: transparent;
+}
+.ts-step strong { font-weight: 600; }
+
+/* Form polish — scoped to this page */
+.ts-form-panel .form-section-title {
+    font-size: 16px;
+    margin-top: 24px;
+    margin-bottom: 14px;
+    padding-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ts-form-panel .form-section-title:first-of-type {
+    padding-top: 0;
+    border-top: 0;
+    margin-top: 0;
+}
+.ts-form-panel .form-section-title .ts-section-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(102, 126, 234, 0.15);
+    color: var(--primary-light);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.ts-form-panel .form-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.ts-form-panel .form-group label i {
+    color: var(--primary-light);
+    font-size: 12px;
+}
+
+/* Tag checkboxes — pill style */
+.ts-form-panel .interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.ts-form-panel .tag-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.ts-form-panel .tag-checkbox input { accent-color: var(--primary); }
+.ts-form-panel .tag-checkbox:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+.ts-form-panel .tag-checkbox:has(input:checked) {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.18), rgba(118, 75, 162, 0.18));
+    border-color: rgba(102, 126, 234, 0.6);
+    color: var(--text-primary);
+}
+
+/* Trust strip above submit */
+.ts-trust-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 18px 0 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 1px dashed var(--border-color);
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.ts-trust-strip span { display: inline-flex; align-items: center; gap: 6px; }
+.ts-trust-strip i { color: #00b894; }
+
+/* Mobile */
+@media (max-width: 960px) {
+    .teacher-signup-shell {
+        grid-template-columns: 1fr;
+        max-width: 640px;
+    }
+    .ts-brand {
+        padding: 36px 28px;
+    }
+    .ts-form-panel {
+        padding: 32px 24px;
+    }
+    .ts-stepper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Global UI Polish (added 2026-04)
+   ============================================ */
+.btn { -webkit-tap-highlight-color: transparent; }
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 2px solid var(--primary-light); outline-offset: 2px; }
+
+/* Smoother card lift */
+.course-card, .stat-card, .schedule-card, .ts-benefit, .feature-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    will-change: transform;
+}
+@media (hover: hover) {
+    .course-card:hover, .stat-card:hover, .schedule-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+}
+
+/* Inputs: subtle focus ring matching brand */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(102, 126, 234, 0.6) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* Notification toast � better mobile placement */
+@media (max-width: 640px) {
+    .notification, .toast {
+        left: 12px !important;
+        right: 12px !important;
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+        top: auto !important;
+        max-width: none !important;
+    }
+}

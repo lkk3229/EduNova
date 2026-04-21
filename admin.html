@@ -35,22 +35,22 @@
                 </a>
                 <a href="#" class="nav-item" data-tab="users">
                     <i class="fas fa-users"></i> Users
-                    <span class="nav-badge">5,240</span>
+                    <span class="nav-badge" id="sidebarUserCount">0</span>
                 </a>
                 <a href="#" class="nav-item" data-tab="courses">
                     <i class="fas fa-book-open"></i> Courses
-                    <span class="nav-badge">348</span>
+                    <span class="nav-badge" id="sidebarCourseCount">0</span>
                 </a>
                 <a href="#" class="nav-item" data-tab="teachers">
                     <i class="fas fa-chalkboard-teacher"></i> Teachers
-                    <span class="nav-badge">127</span>
+                    <span class="nav-badge" id="sidebarTeacherCount">0</span>
                 </a>
             </div>
             <div class="nav-section">
                 <span class="nav-section-title">Management</span>
                 <a href="#" class="nav-item" data-tab="enrollments">
                     <i class="fas fa-user-plus"></i> Enrollments
-                    <span class="nav-badge badge-warning">23</span>
+                    <span class="nav-badge badge-warning" id="sidebarEnrollCount">0</span>
                 </a>
                 <a href="#" class="nav-item" data-tab="meetings">
                     <i class="fas fa-video"></i> Live Classes
@@ -150,48 +150,42 @@
                         <div class="stat-card-icon gradient-bg-1"><i class="fas fa-users"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Total Students</span>
-                            <h3 class="stat-card-value">50,247</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                            <h3 class="stat-card-value" id="overviewStudents">0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-2"><i class="fas fa-chalkboard-teacher"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Active Teachers</span>
-                            <h3 class="stat-card-value">1,234</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 8.3%</span>
+                            <h3 class="stat-card-value" id="overviewTeachers">0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-3"><i class="fas fa-book-open"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Total Courses</span>
-                            <h3 class="stat-card-value">3,487</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 15.2%</span>
+                            <h3 class="stat-card-value" id="overviewCourses">0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-4"><i class="fas fa-dollar-sign"></i></div>
                         <div class="stat-card-info">
-                            <span class="stat-card-label">Revenue (Month)</span>
-                            <h3 class="stat-card-value">$284,520</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 22.1%</span>
+                            <span class="stat-card-label">Total Revenue</span>
+                            <h3 class="stat-card-value" id="overviewRevenue">$0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-5"><i class="fas fa-video"></i></div>
                         <div class="stat-card-info">
-                            <span class="stat-card-label">Live Classes Today</span>
-                            <h3 class="stat-card-value">47</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 5 more</span>
+                            <span class="stat-card-label">Live Classes Scheduled</span>
+                            <h3 class="stat-card-value" id="overviewSchedules">0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-6"><i class="fas fa-certificate"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Certificates Issued</span>
-                            <h3 class="stat-card-value">12,847</h3>
-                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 18.7%</span>
+                            <h3 class="stat-card-value" id="overviewCerts">0</h3>
                         </div>
                     </div>
                 </div>
@@ -521,7 +515,7 @@
                         </tbody>
                     </table>
                     <div class="table-pagination">
-                        <span>Showing 1-10 of 5,240 users</span>
+                        <span id="usersTableFooter">Showing 0 users</span>
                         <div class="pagination-btns">
                             <button class="btn btn-sm btn-outline" disabled>Previous</button>
                             <button class="btn btn-sm btn-primary">1</button>
@@ -697,28 +691,28 @@
                         <div class="stat-card-icon gradient-bg-3"><i class="fas fa-money-bill-wave"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Total Revenue</span>
-                            <h3 class="stat-card-value">$284,520</h3>
+                            <h3 class="stat-card-value" id="revTotalRevenue">$0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-4"><i class="fas fa-piggy-bank"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Your Share (40%)</span>
-                            <h3 class="stat-card-value" style="color: #00b894;">$113,808</h3>
+                            <h3 class="stat-card-value" id="revPlatformShare" style="color: #00b894;">$0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-2"><i class="fas fa-hand-holding-usd"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Paid to Teachers (60%)</span>
-                            <h3 class="stat-card-value">$170,712</h3>
+                            <h3 class="stat-card-value" id="revTeacherShare">$0</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-1"><i class="fas fa-file-invoice-dollar"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Pending Payouts</span>
-                            <h3 class="stat-card-value">$12,450</h3>
+                            <h3 class="stat-card-value" id="revPending">$0</h3>
                         </div>
                     </div>
                 </div>

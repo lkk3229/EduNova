@@ -220,8 +220,6 @@ function initTeacherForm() {
             expertise: getCheckedValues(form.querySelectorAll('.interest-tags input[type="checkbox"]:checked:not([name="teachingMode"])')),
             bio: document.getElementById('bio').value,
             teachingStyle: document.getElementById('teachingStyle').value,
-            feeAmount: parseFloat(document.getElementById('feeAmount').value),
-            feePeriod: document.getElementById('feePeriod').value,
             teachingMode: getCheckedValues(form.querySelectorAll('input[name="teachingMode"]:checked')),
             linkedin: document.getElementById('linkedin')?.value || '',
             portfolio: document.getElementById('portfolio')?.value || '',

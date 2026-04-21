@@ -1,0 +1,269 @@
+/* ============================================
+   EduNova — Responsive & Mobile Polish
+   Loaded globally via js/app.js. Targets Android
+   Chrome, iOS Safari, and small-screen tablets.
+   ============================================ */
+
+/* ---- Root: iOS safe-area + smoother base ---- */
+:root {
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none; /* avoid iOS pull-to-refresh on app pages */
+}
+
+/* Lock background scroll when modal/sidebar is open */
+body.no-scroll {
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+}
+
+/* ---- Touch targets: ensure 44x44 minimum on mobile ---- */
+@media (hover: none) and (pointer: coarse) {
+    .btn, .nav-item, .topbar-btn, .sidebar-toggle, .sidebar-close,
+    .modal-close, .toggle-password, .action-btn, .nav-actions a,
+    .filter-tab, .tag-checkbox, .topbar-user, .mobile-toggle {
+        min-height: 44px;
+    }
+    .btn-sm { min-height: 38px; }
+    a, button { -webkit-tap-highlight-color: rgba(102,126,234,0.18); }
+}
+
+/* iOS form-zoom prevention: input font-size must be >= 16px */
+@supports (-webkit-touch-callout: none) {
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="tel"], input[type="number"], input[type="url"],
+    input[type="search"], input[type="date"], input[type="time"],
+    select, textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Fix iOS 100vh — fall back to small viewport unit when supported */
+@supports (height: 100svh) {
+    .auth-container, .dashboard-page, .sidebar, .meeting-container,
+    .dashboard-main { min-height: 100svh; }
+    .sidebar { height: 100svh; }
+}
+
+/* ---- Sidebar backdrop overlay (injected by app.js) ---- */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 6, 14, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 999;
+}
+.sidebar-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---- Smooth scrolling containers (modern browsers handle natively) ---- */
+
+/* ---- Native momentum + safe-area for fixed bars ---- */
+.navbar { padding-top: max(16px, var(--safe-top)); }
+.navbar.scrolled { padding-top: max(10px, var(--safe-top)); }
+.dashboard-topbar {
+    padding-top: calc(16px + var(--safe-top));
+    padding-left: max(16px, var(--safe-left));
+    padding-right: max(16px, var(--safe-right));
+}
+.dashboard-content {
+    padding-bottom: calc(24px + var(--safe-bottom));
+}
+.sidebar {
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+}
+
+/* ---- Tablet (≤1024) ---- */
+@media (max-width: 1024px) {
+    .container { padding: 0 20px; }
+
+    /* Marketing hero */
+    .hero-title { font-size: clamp(32px, 6vw, 56px) !important; }
+    .section-title { font-size: clamp(28px, 5vw, 44px) !important; }
+
+    /* Two-up grids collapse */
+    .features-grid, .courses-grid, .testimonials-grid,
+    .pricing-grid, .stats-row, .partners-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+
+    /* Reduce overly-generous section padding */
+    section { padding: 60px 0; }
+}
+
+/* ---- Mobile (≤768) ---- */
+@media (max-width: 768px) {
+    html { font-size: 15px; }
+
+    .container { padding: 0 16px; }
+    section { padding: 48px 0; }
+
+    /* Headings */
+    .hero-title { font-size: clamp(28px, 8vw, 40px) !important; line-height: 1.15; }
+    .hero-subtitle { font-size: 15px !important; }
+    .section-title { font-size: clamp(24px, 6vw, 32px) !important; }
+    .section-subtitle { font-size: 14px !important; }
+
+    /* Navbar */
+    .nav-container { padding: 0 16px; }
+    .nav-actions { gap: 8px; }
+    .nav-actions .btn { padding: 8px 14px; font-size: 13px; }
+
+    /* Buttons */
+    .btn-lg { padding: 14px 22px; font-size: 14px; }
+    .btn-group { flex-direction: column; gap: 10px; }
+    .btn-group .btn { width: 100%; }
+
+    /* Forms */
+    .form-row { grid-template-columns: 1fr !important; gap: 12px; }
+    .auth-card, .auth-card-wide, .auth-card-compact {
+        padding: 24px 18px !important;
+        border-radius: 18px !important;
+    }
+    .auth-container { padding: 90px 14px 32px; }
+
+    /* Tables — horizontal scroll wrapper */
+    .table-card { overflow-x: auto; }
+    .data-table { min-width: 640px; }
+
+    /* Dashboard */
+    .dashboard-content { padding: 16px 14px calc(80px + var(--safe-bottom)); }
+    .dashboard-topbar { padding: 12px 14px; gap: 8px; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .dashboard-header h1 { font-size: 22px; }
+    .search-bar { display: none; }
+    .topbar-right .topbar-btn { padding: 8px; }
+    .topbar-user span { display: none; }
+    .topbar-user .fa-chevron-down { display: none; }
+
+    /* Stats */
+    .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 12px; }
+    .stat-card { padding: 16px; }
+    .stat-card-value { font-size: 22px; }
+    .stat-card-icon { width: 40px; height: 40px; font-size: 16px; }
+
+    /* Modals */
+    .modal-card {
+        max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 40px);
+        max-height: calc(100svh - 40px);
+        overflow-y: auto;
+        margin: 12px;
+    }
+    .modal-form .form-row { grid-template-columns: 1fr; }
+
+    /* Course cards / schedule cards */
+    .course-card, .schedule-card { padding-bottom: 14px; }
+    .courses-grid, .courses-admin-grid, .schedule-grid,
+    .certificates-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Footer */
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+
+    /* Filter tabs scroll horizontally */
+    .filter-tabs, .category-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 4px;
+    }
+    .filter-tabs::-webkit-scrollbar,
+    .category-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab { white-space: nowrap; flex-shrink: 0; }
+
+    /* Chatbot — keep floating on safe area */
+    .chatbot-bubble {
+        bottom: calc(20px + var(--safe-bottom)) !important;
+        right: calc(20px + var(--safe-right)) !important;
+    }
+    .chatbot-window {
+        width: calc(100vw - 24px) !important;
+        max-height: 70vh !important;
+        right: 12px !important;
+        bottom: calc(80px + var(--safe-bottom)) !important;
+    }
+
+    /* Teacher signup split shell */
+    .teacher-signup-shell { grid-template-columns: 1fr; }
+    .ts-brand { padding: 28px 20px; }
+    .ts-form-panel { padding: 24px 18px; }
+    .ts-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .ts-stat strong { font-size: 16px; }
+
+    /* Meeting page */
+    .meeting-sidebar { display: none; }
+    .meeting-controls { padding-bottom: calc(12px + var(--safe-bottom)); }
+}
+
+/* ---- Small mobile (≤480) ---- */
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr !important; }
+    .auth-header h1, .auth-header h2 { font-size: 22px; }
+    .nav-actions .btn-outline-light { display: none; }
+    .logo-text { font-size: 18px; }
+
+    .ts-stats { grid-template-columns: repeat(3, 1fr); }
+    .ts-stat { padding: 10px 8px; }
+}
+
+/* ---- Landscape phones — keep sidebar usable ---- */
+@media (max-width: 900px) and (orientation: landscape) {
+    .sidebar { width: 260px; }
+}
+
+/* ---- Reduce motion respects user preference ---- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ---- Focus-visible polish for accessibility ---- */
+:focus-visible {
+    outline: 2px solid var(--primary-light, #a3bffa);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ---- Scrollbar styling on desktop only ---- */
+@media (hover: hover) and (pointer: fine) {
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.18); }
+}
+
+/* ---- Print friendliness for FRD/PRD pages ---- */
+@media print {
+    .navbar, .chatbot-bubble, .chatbot-window, .sidebar,
+    .dashboard-topbar, .preloader { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
+}

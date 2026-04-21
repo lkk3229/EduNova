@@ -234,7 +234,14 @@ function loadDemoClasses() {
     }).join('');
 }
 
-/* ---- Upcoming Classes ---- */
+/* ---- Upcoming Classes ----
+   Shows ALL upcoming live classes from teachers (not only enrolled courses).
+   Rules:
+     - Enrolled student   -> Join free
+     - Demo NOT yet used  -> Join 1st class as free demo
+     - Demo already used  -> must pay (Enroll Now) before joining
+     - allowDemo=false    -> must enroll/pay from the start
+*/
 function loadUpcomingClasses() {
     const session = JSON.parse(localStorage.getItem('edunova_session') || 'null');
     if (!session) return;
@@ -242,40 +249,124 @@ function loadUpcomingClasses() {
     const grid = document.getElementById('studentScheduleGrid');
     if (!grid) return;
 
-    // Get enrolled course IDs
     const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]')
         .filter(e => e.studentEmail === session.email);
-    const enrolledCourseIds = enrollments.map(e => String(e.courseId));
+    const enrolledCourseIds = new Set(enrollments.map(e => String(e.courseId)));
 
-    // Get schedules for enrolled courses
-    const allSchedules = JSON.parse(localStorage.getItem('edunova_schedules') || '[]');
-    const mySchedules = allSchedules.filter(s => enrolledCourseIds.includes(String(s.courseId)));
+    const demos = JSON.parse(localStorage.getItem('edunova_demos') || '[]')
+        .filter(d => d.studentEmail === session.email);
+    const demoUsedCourseIds = new Set(demos.map(d => String(d.courseId)));
 
-    if (mySchedules.length === 0) {
+    // Show only classes that are today or in the future
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const allSchedules = JSON.parse(localStorage.getItem('edunova_schedules') || '[]')
+        .filter(s => {
+            if (!s.date) return true;
+            const d = new Date(s.date); d.setHours(0, 0, 0, 0);
+            return d >= today;
+        })
+        .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+    if (allSchedules.length === 0) {
         grid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                 <i class="fas fa-calendar-alt" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
                 <h3>No upcoming classes</h3>
-                <p style="color: var(--text-secondary);">Your teacher will schedule live classes soon!</p>
+                <p style="color: var(--text-secondary);">Teachers will schedule live classes soon!</p>
             </div>
         `;
         return;
     }
 
-    grid.innerHTML = mySchedules.map(s => `
+    grid.innerHTML = allSchedules.map(s => {
+        const sid = String(s.id);
+        const cid = String(s.courseId);
+        const isEnrolled = enrolledCourseIds.has(cid);
+        const demoUsed = demoUsedCourseIds.has(cid);
+        const fee = (s.approvedFee != null) ? s.approvedFee : (s.fee || 0);
+        const allowDemo = s.allowDemo !== false; // default true if missing
+
+        let actionHtml, statusBadge;
+        if (isEnrolled) {
+            statusBadge = '<span class="status-badge status-active">Enrolled</span>';
+            actionHtml = `<a href="meeting.html" class="btn btn-primary btn-sm btn-full" onclick="recordClassJoin('${sid}')"><i class="fas fa-video"></i> Join Class</a>`;
+        } else if (allowDemo && !demoUsed) {
+            statusBadge = '<span class="status-badge status-pending"><i class="fas fa-gift"></i> Free Demo Available</span>';
+            actionHtml = `<button class="btn btn-success btn-sm btn-full" onclick="joinAsDemo('${sid}')"><i class="fas fa-play-circle"></i> Join Free Demo</button>`;
+        } else {
+            const reason = demoUsed ? 'Demo already used' : 'Paid class';
+            statusBadge = `<span class="status-badge status-inactive"><i class="fas fa-lock"></i> ${reason}</span>`;
+            actionHtml = `<button class="btn btn-primary btn-sm btn-full" onclick="payAndJoin('${sid}')"><i class="fas fa-credit-card"></i> Pay ${EduCurrency.format(fee)} &amp; Join</button>`;
+        }
+
+        return `
         <div class="schedule-card">
             <div class="schedule-card-header">
-                <h4>${escapeHtml(s.courseTitle)}</h4>
-                <span class="status-badge status-active">${s.type === 'group' ? 'Group' : '1-on-1'}</span>
+                <h4>${escapeHtml(s.topic || s.courseTitle || 'Live Class')}</h4>
+                ${statusBadge}
             </div>
+            <p style="font-size:13px; color:var(--text-muted); margin:4px 0;">${escapeHtml(s.courseTitle || '')}</p>
             <div class="schedule-card-meta">
-                <span><i class="fas fa-chalkboard-teacher"></i> ${escapeHtml(s.teacherName)}</span>
+                <span><i class="fas fa-chalkboard-teacher"></i> ${escapeHtml(s.teacherName || 'Teacher')}</span>
                 <span><i class="fas fa-calendar"></i> ${s.date}</span>
                 <span><i class="fas fa-clock"></i> ${s.time} (${s.duration} min)</span>
+                <span><i class="fas fa-tag"></i> ${fee > 0 ? EduCurrency.format(fee) + '/class' : 'Free'}</span>
             </div>
-            <a href="meeting.html" class="btn btn-primary btn-sm btn-full" style="margin-top: 12px;"><i class="fas fa-video"></i> Join Class</a>
+            ${actionHtml}
         </div>
-    `).join('');
+        `;
+    }).join('');
+}
+
+/* ---- Live-class join handlers ---- */
+function _findSchedule(scheduleId) {
+    const list = JSON.parse(localStorage.getItem('edunova_schedules') || '[]');
+    return list.find(s => String(s.id) === String(scheduleId));
+}
+
+function recordClassJoin(scheduleId) {
+    // Just navigate; placeholder for future attendance tracking
+    return true;
+}
+
+function joinAsDemo(scheduleId) {
+    const session = JSON.parse(localStorage.getItem('edunova_session') || 'null');
+    if (!session) return;
+    const s = _findSchedule(scheduleId);
+    if (!s) return;
+
+    const demos = JSON.parse(localStorage.getItem('edunova_demos') || '[]');
+    const already = demos.some(d => d.studentEmail === session.email && String(d.courseId) === String(s.courseId));
+    if (already) {
+        showNotification('You have already used your free demo for this course. Please enroll to continue.', 'warning');
+        return;
+    }
+
+    demos.push({
+        id: Date.now(),
+        scheduleId: s.id,
+        courseId: s.courseId,
+        courseTitle: s.courseTitle,
+        teacher: s.teacherName,
+        teacherEmail: s.teacherEmail,
+        studentEmail: session.email,
+        studentName: session.name,
+        date: new Date().toISOString(),
+        status: 'completed'
+    });
+    localStorage.setItem('edunova_demos', JSON.stringify(demos));
+    showNotification('Free demo unlocked! Redirecting to your live class… 🎉', 'success');
+    setTimeout(() => { window.location.href = 'meeting.html'; }, 800);
+}
+
+function payAndJoin(scheduleId) {
+    const s = _findSchedule(scheduleId);
+    if (!s) return;
+    const fee = (s.approvedFee != null) ? s.approvedFee : (s.fee || 0);
+    const ok = confirm(`This live class costs ${EduCurrency.format(fee)}.\n\nYour free demo for "${s.courseTitle}" has already been used.\nProceed to enroll & pay?`);
+    if (!ok) return;
+    // Hand off to courses page where the existing enrollment/payment flow lives
+    window.location.href = 'courses.html';
 }
 
 /* ---- Payments ---- */

@@ -31,224 +31,219 @@
             <div class="shape shape-2"></div>
             <div class="shape shape-3"></div>
         </div>
-        <div class="auth-card auth-card-wide animate-fade-in-up">
-            <div class="auth-header">
-                <div class="auth-icon gradient-bg-2">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <h1>Become an EduNova Teacher</h1>
-                <p>Share your expertise with thousands of eager learners worldwide.</p>
-            </div>
 
-            <!-- Teacher Benefits -->
-            <div class="teacher-benefits">
-                <div class="benefit-item">
-                    <div class="benefit-icon"><i class="fas fa-dollar-sign"></i></div>
-                    <div>
-                        <h4>Earn Revenue</h4>
-                        <p>Earn 60% revenue share on every course &amp; session</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon"><i class="fas fa-globe"></i></div>
-                    <div>
-                        <h4>Global Reach</h4>
-                        <p>Teach students from 150+ countries</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon"><i class="fas fa-tools"></i></div>
-                    <div>
-                        <h4>Pro Tools</h4>
-                        <p>HD video, analytics, and content management</p>
-                    </div>
-                </div>
-            </div>
+        <div class="teacher-signup-shell animate-fade-in-up">
+            <!-- Left: Brand panel -->
+            <aside class="ts-brand">
+                <a href="index.html" class="ts-brand-logo">
+                    <span class="ts-logo-mark"><i class="fas fa-graduation-cap"></i></span>
+                    Edu<span class="ts-brand-accent">Nova</span>
+                </a>
 
-            <form class="auth-form" id="teacherRegForm">
-                <h3 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" id="tFirstName" placeholder="Jane" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" id="tLastName" placeholder="Smith" required>
-                    </div>
+                <h1>Teach. Inspire. <span>Earn.</span></h1>
+                <p class="ts-tagline">Join a community of expert educators reaching learners across 150+ countries — with the tools, audience and support you need to thrive.</p>
+
+                <div class="ts-stats">
+                    <div class="ts-stat"><strong>5K+</strong><span>Active Teachers</span></div>
+                    <div class="ts-stat"><strong>150+</strong><span>Countries</span></div>
+                    <div class="ts-stat"><strong>4.8★</strong><span>Avg Rating</span></div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="tEmail" placeholder="jane@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" id="tPhone" placeholder="+1 (555) 123-4567" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Password</label>
-                        <div class="password-input">
-                            <input type="password" id="tPassword" placeholder="Min 8 characters" required minlength="8">
-                            <button type="button" class="toggle-password" onclick="togglePassword('tPassword')">
-                                <i class="fas fa-eye"></i>
-                            </button>
+
+                <div class="ts-benefits">
+                    <div class="ts-benefit">
+                        <div class="ts-benefit-icon"><i class="fas fa-globe"></i></div>
+                        <div>
+                            <h4>Global Reach</h4>
+                            <p>Teach learners from over 150 countries — anywhere, any time zone.</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <div class="password-input">
-                            <input type="password" id="tConfirmPassword" placeholder="Re-enter password" required minlength="8">
-                            <button type="button" class="toggle-password" onclick="togglePassword('tConfirmPassword')">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                    <div class="ts-benefit">
+                        <div class="ts-benefit-icon"><i class="fas fa-tools"></i></div>
+                        <div>
+                            <h4>Pro Teaching Tools</h4>
+                            <p>HD live classes, screen share, whiteboard, analytics & content management.</p>
+                        </div>
+                    </div>
+                    <div class="ts-benefit">
+                        <div class="ts-benefit-icon"><i class="fas fa-headset"></i></div>
+                        <div>
+                            <h4>Dedicated Support</h4>
+                            <p>Onboarding, course-quality reviews and 24/7 instructor success help.</p>
+                        </div>
+                    </div>
+                    <div class="ts-benefit">
+                        <div class="ts-benefit-icon"><i class="fas fa-certificate"></i></div>
+                        <div>
+                            <h4>Certified Programs</h4>
+                            <p>Issue verifiable completion certificates that boost student outcomes.</p>
                         </div>
                     </div>
                 </div>
 
-                <h3 class="form-section-title"><i class="fas fa-briefcase"></i> Professional Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Highest Qualification</label>
-                        <select id="qualification" required>
-                            <option value="">Select qualification</option>
-                            <option value="bachelors">Bachelor's Degree</option>
-                            <option value="masters">Master's Degree</option>
-                            <option value="phd">Ph.D / Doctorate</option>
-                            <option value="professional">Professional Certification</option>
-                            <option value="industry">Industry Expert (10+ years)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Years of Experience</label>
-                        <select id="experience" required>
-                            <option value="">Select experience</option>
-                            <option value="1-3">1-3 years</option>
-                            <option value="3-5">3-5 years</option>
-                            <option value="5-10">5-10 years</option>
-                            <option value="10+">10+ years</option>
-                        </select>
-                    </div>
+                <div class="ts-testimonial">
+                    <div class="ts-testimonial-quote">"EduNova gave me the platform &amp; tools to turn my evening classes into a full-time career. The dashboard does the heavy lifting."</div>
+                    <div class="ts-testimonial-author">— Priya R., Senior Data Science Mentor</div>
                 </div>
-                <div class="form-group">
-                    <label>Area of Expertise</label>
-                    <div class="interest-tags">
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="programming"> Programming
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="web-dev"> Web Development
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="data-science"> Data Science
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="ai-ml"> AI & Machine Learning
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="design"> Design
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="business"> Business
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="mathematics"> Mathematics
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="science"> Science
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="language"> Languages
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" value="cloud"> Cloud & DevOps
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Brief Bio / Teaching Philosophy</label>
-                    <textarea id="bio" rows="4" placeholder="Tell us about your teaching experience and what drives your passion for education..." required></textarea>
+            </aside>
+
+            <!-- Right: Form panel -->
+            <section class="ts-form-panel">
+                <div class="auth-header">
+                    <h2>Become an EduNova Teacher</h2>
+                    <p>Tell us about yourself — it takes about 3 minutes.</p>
                 </div>
 
-                <h3 class="form-section-title"><i class="fas fa-chalkboard"></i> Teaching Style & Fees</h3>
-                <div class="form-group">
-                    <label>Describe Your Teaching Style</label>
-                    <textarea id="teachingStyle" rows="3" placeholder="e.g., Interactive sessions with live coding, project-based learning, hands-on assignments, whiteboard explanations..." required></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Fee Amount (USD)</label>
-                        <input type="number" id="feeAmount" placeholder="e.g., 25" min="1" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Fee Period</label>
-                        <select id="feePeriod" required>
-                            <option value="">Select period</option>
-                            <option value="per-hour">Per Hour</option>
-                            <option value="per-week">Per Week</option>
-                            <option value="per-month">Per Month</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Teaching Mode</label>
-                    <div class="interest-tags">
-                        <label class="tag-checkbox">
-                            <input type="checkbox" name="teachingMode" value="individual"> Individual (1-on-1)
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" name="teachingMode" value="group"> Group Classes
-                        </label>
-                        <label class="tag-checkbox">
-                            <input type="checkbox" name="teachingMode" value="recorded"> Recorded Courses
-                        </label>
-                    </div>
-                </div>
-                <div class="revenue-info-box">
-                    <div class="revenue-info-icon"><i class="fas fa-info-circle"></i></div>
-                    <div>
-                        <h4>Revenue Split: 60% You / 40% Platform</h4>
-                        <p>For every enrollment or session fee, you receive 60% and EduNova retains 40%. Final course prices are subject to admin approval.</p>
-                    </div>
+                <!-- Stepper -->
+                <div class="ts-stepper" id="tsStepper">
+                    <div class="ts-step active" data-step="1"><span class="ts-step-num">1</span><strong>Personal</strong></div>
+                    <div class="ts-step" data-step="2"><span class="ts-step-num">2</span><strong>Professional</strong></div>
+                    <div class="ts-step" data-step="3"><span class="ts-step-num">3</span><strong>Teaching</strong></div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>LinkedIn Profile (optional)</label>
-                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
-                    </div>
-                    <div class="form-group">
-                        <label>Portfolio / Website (optional)</label>
-                        <input type="url" id="portfolio" placeholder="https://yourwebsite.com">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-upload"></i> Upload Resume / CV</label>
-                    <div class="file-upload">
-                        <input type="file" id="resume" accept=".pdf,.doc,.docx">
-                        <div class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Drop your file here or click to browse</span>
-                            <small>PDF, DOC up to 10MB</small>
+                <form class="auth-form" id="teacherRegForm">
+                    <h3 class="form-section-title" data-section="1"><i class="fas fa-user"></i> Personal Information <span class="ts-section-badge">Step 1</span></h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-id-badge"></i> First Name</label>
+                            <input type="text" id="tFirstName" placeholder="Jane" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-id-badge"></i> Last Name</label>
+                            <input type="text" id="tLastName" placeholder="Smith" required>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" required>
-                        <span>I agree to the <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Teacher Agreement</a></span>
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-secondary btn-lg btn-full">
-                    <i class="fas fa-paper-plane"></i> Submit Application
-                </button>
-                <p class="auth-footer-text">
-                    Already have an account? <a href="login.html">Log In</a> · 
-                    Want to learn instead? <a href="register-student.html">Join as Student</a>
-                </p>
-            </form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="tEmail" placeholder="jane@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number</label>
+                            <input type="tel" id="tPhone" placeholder="+1 (555) 123-4567" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Password</label>
+                            <div class="password-input">
+                                <input type="password" id="tPassword" placeholder="Min 8 characters" required minlength="8">
+                                <button type="button" class="toggle-password" onclick="togglePassword('tPassword')" title="Show or hide password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Confirm Password</label>
+                            <div class="password-input">
+                                <input type="password" id="tConfirmPassword" placeholder="Re-enter password" required minlength="8">
+                                <button type="button" class="toggle-password" onclick="togglePassword('tConfirmPassword')" title="Show or hide password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title" data-section="2"><i class="fas fa-briefcase"></i> Professional Details <span class="ts-section-badge">Step 2</span></h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-graduation-cap"></i> Highest Qualification</label>
+                            <select id="qualification" required title="Highest Qualification">
+                                <option value="">Select qualification</option>
+                                <option value="bachelors">Bachelor's Degree</option>
+                                <option value="masters">Master's Degree</option>
+                                <option value="phd">Ph.D / Doctorate</option>
+                                <option value="professional">Professional Certification</option>
+                                <option value="industry">Industry Expert (10+ years)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-business-time"></i> Years of Experience</label>
+                            <select id="experience" required title="Years of Experience">
+                                <option value="">Select experience</option>
+                                <option value="1-3">1-3 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="5-10">5-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-tags"></i> Area of Expertise</label>
+                        <div class="interest-tags">
+                            <label class="tag-checkbox"><input type="checkbox" value="programming"> Programming</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="web-dev"> Web Development</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="data-science"> Data Science</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="ai-ml"> AI &amp; Machine Learning</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="design"> Design</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="business"> Business</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="mathematics"> Mathematics</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="science"> Science</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="language"> Languages</label>
+                            <label class="tag-checkbox"><input type="checkbox" value="cloud"> Cloud &amp; DevOps</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-quote-left"></i> Brief Bio / Teaching Philosophy</label>
+                        <textarea id="bio" rows="4" placeholder="Tell us about your teaching experience and what drives your passion for education..." required></textarea>
+                    </div>
+
+                    <h3 class="form-section-title" data-section="3"><i class="fas fa-chalkboard"></i> Teaching Style <span class="ts-section-badge">Step 3</span></h3>
+                    <div class="form-group">
+                        <label><i class="fas fa-comment-dots"></i> Describe Your Teaching Style</label>
+                        <textarea id="teachingStyle" rows="3" placeholder="e.g., Interactive sessions with live coding, project-based learning, hands-on assignments, whiteboard explanations..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-users"></i> Teaching Mode</label>
+                        <div class="interest-tags">
+                            <label class="tag-checkbox"><input type="checkbox" name="teachingMode" value="individual"> Individual (1-on-1)</label>
+                            <label class="tag-checkbox"><input type="checkbox" name="teachingMode" value="group"> Group Classes</label>
+                            <label class="tag-checkbox"><input type="checkbox" name="teachingMode" value="recorded"> Recorded Courses</label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fab fa-linkedin"></i> LinkedIn Profile (optional)</label>
+                            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-link"></i> Portfolio / Website (optional)</label>
+                            <input type="url" id="portfolio" placeholder="https://yourwebsite.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-upload"></i> Upload Resume / CV</label>
+                        <div class="file-upload">
+                            <input type="file" id="resume" accept=".pdf,.doc,.docx" title="Upload Resume or CV">
+                            <div class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Drop your file here or click to browse</span>
+                                <small>PDF, DOC up to 10MB</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ts-trust-strip">
+                        <span><i class="fas fa-shield-alt"></i> Secure &amp; encrypted</span>
+                        <span><i class="fas fa-bolt"></i> Approval in 24-48h</span>
+                        <span><i class="fas fa-coins"></i> No signup fees</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" required>
+                            <span>I agree to the <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Teacher Agreement</a></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-full">
+                        <i class="fas fa-paper-plane"></i> Submit Application
+                    </button>
+                    <p class="auth-footer-text">
+                        Already have an account? <a href="login.html">Log In</a> ·
+                        Want to learn instead? <a href="register-student.html">Join as Student</a>
+                    </p>
+                </form>
+            </section>
         </div>
     </div>
 
@@ -256,5 +251,42 @@
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/chatbot.js"></script>
+    <script>
+        // Auto-advance the stepper as the user fills sections
+        (function () {
+            const form = document.getElementById('teacherRegForm');
+            if (!form) return;
+            const steps = document.querySelectorAll('#tsStepper .ts-step');
+            const sectionRequired = {
+                1: ['tFirstName', 'tLastName', 'tEmail', 'tPhone', 'tPassword', 'tConfirmPassword'],
+                2: ['qualification', 'experience', 'bio'],
+                3: ['teachingStyle']
+            };
+            function evaluate() {
+                let active = 1;
+                for (const s of [1, 2, 3]) {
+                    const allFilled = sectionRequired[s].every(id => {
+                        const el = document.getElementById(id);
+                        return el && String(el.value || '').trim().length > 0;
+                    });
+                    steps.forEach(st => {
+                        const n = parseInt(st.dataset.step, 10);
+                        if (n === s) st.classList.toggle('completed', allFilled);
+                    });
+                    if (allFilled) active = Math.min(s + 1, 3);
+                }
+                steps.forEach(st => {
+                    const n = parseInt(st.dataset.step, 10);
+                    st.classList.toggle('active', n === active && !st.classList.contains('completed'));
+                });
+                // Always keep at least one step highlighted
+                if (![...steps].some(s => s.classList.contains('active') || s.classList.contains('completed'))) {
+                    steps[0].classList.add('active');
+                }
+            }
+            form.addEventListener('input', evaluate);
+            form.addEventListener('change', evaluate);
+        })();
+    </script>
 </body>
 </html>

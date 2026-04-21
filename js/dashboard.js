@@ -15,16 +15,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initSidebar();
     initTabs();
+    populateOverviewStats();
     populateUsersTable();
     populateTeachersTable();
     populateCoursesAdmin();
     populateRevenueByTeacher();
+    populateRevenueOverviewCards();
     populateCourseApprovals();
     populateAdminEnrollments();
     populateAdminMeetings();
     populateAdminContent();
     populateReportsSummary();
 });
+
+/* ---- Overview / Sidebar live counts ---- */
+function populateOverviewStats() {
+    const users = JSON.parse(localStorage.getItem('edunova_users') || '[]');
+    const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]');
+    const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');
+    const schedules = JSON.parse(localStorage.getItem('edunova_schedules') || '[]');
+    const certs = JSON.parse(localStorage.getItem('edunova_certificates') || '[]');
+
+    const students = users.filter(u => u.role === 'student').length;
+    const teachers = users.filter(u => u.role === 'teacher').length;
+    const totalRev = enrollments.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('overviewStudents', students.toLocaleString());
+    set('overviewTeachers', teachers.toLocaleString());
+    set('overviewCourses', courses.length.toLocaleString());
+    set('overviewRevenue', (window.EduCurrency ? EduCurrency.format(totalRev) : '$' + totalRev.toFixed(2)));
+    set('overviewSchedules', schedules.length.toLocaleString());
+    set('overviewCerts', certs.length.toLocaleString());
+
+    set('sidebarUserCount', users.length);
+    set('sidebarCourseCount', courses.length);
+    set('sidebarTeacherCount', teachers);
+    set('sidebarEnrollCount', enrollments.length);
+
+    const footer = document.getElementById('usersTableFooter');
+    if (footer) footer.textContent = `Showing ${users.length} user${users.length === 1 ? '' : 's'}`;
+}
+
+function populateRevenueOverviewCards() {
+    const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');
+    const total = enrollments.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const fmt = v => window.EduCurrency ? EduCurrency.format(v) : '$' + v.toFixed(2);
+    set('revTotalRevenue', fmt(total));
+    set('revPlatformShare', fmt(total * PLATFORM_SHARE));
+    set('revTeacherShare', fmt(total * TEACHER_SHARE));
+    set('revPending', fmt(0));
+}
 
 /* ---- Sidebar Toggle ---- */
 function initSidebar() {
@@ -67,18 +109,8 @@ function populateUsersTable() {
     const tbody = document.getElementById('usersTableBody');
     if (!tbody) return;
 
-    const users = [
-        { name: 'Amit Kumar', email: 'amit@email.com', role: 'student', joined: 'Apr 17, 2026', courses: 3, status: 'active', initials: 'AK', color: 'bg-blue' },
-        { name: 'Sarah Robinson', email: 'sarah@email.com', role: 'student', joined: 'Apr 16, 2026', courses: 5, status: 'active', initials: 'SR', color: 'bg-pink' },
-        { name: 'Dr. Emily Johnson', email: 'emily@email.com', role: 'teacher', joined: 'Mar 10, 2026', courses: 8, status: 'active', initials: 'EJ', color: 'bg-purple' },
-        { name: 'Mike Patel', email: 'mike@email.com', role: 'student', joined: 'Apr 15, 2026', courses: 2, status: 'active', initials: 'MP', color: 'bg-green' },
-        { name: 'Lisa Wang', email: 'lisa@email.com', role: 'student', joined: 'Apr 14, 2026', courses: 1, status: 'inactive', initials: 'LW', color: 'bg-orange' },
-        { name: 'Alex Parker', email: 'alex@email.com', role: 'teacher', joined: 'Feb 20, 2026', courses: 12, status: 'active', initials: 'AP', color: 'bg-cyan' },
-        { name: 'Priya Sharma', email: 'priya@email.com', role: 'student', joined: 'Apr 12, 2026', courses: 4, status: 'active', initials: 'PS', color: 'bg-green' },
-        { name: 'Robert James', email: 'robert@email.com', role: 'teacher', joined: 'Apr 16, 2026', courses: 0, status: 'pending', initials: 'RJ', color: 'bg-purple' },
-        { name: 'Nina Chen', email: 'nina@email.com', role: 'student', joined: 'Apr 10, 2026', courses: 6, status: 'active', initials: 'NC', color: 'bg-pink' },
-        { name: 'Tom Wilson', email: 'tom@email.com', role: 'student', joined: 'Apr 8, 2026', courses: 2, status: 'active', initials: 'TW', color: 'bg-blue' },
-    ];
+    // Sample seed users removed — only registered users from localStorage will appear
+    const users = [];
 
     // Add any localStorage users
     const localUsers = JSON.parse(localStorage.getItem('edunova_users') || '[]');
@@ -94,6 +126,11 @@ function populateUsersTable() {
             color: 'bg-gradient'
         });
     });
+
+    if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:40px; color:var(--text-muted);">No registered users yet. Sign up a student or teacher to see them here.</td></tr>';
+        return;
+    }
 
     tbody.innerHTML = users.map(user => {
         const isLocalUser = localUsers.some(u => u.email === user.email);
@@ -139,13 +176,8 @@ function populateTeachersTable() {
     const tbody = document.getElementById('teachersTableBody');
     if (!tbody) return;
 
-    const demoTeachers = [
-        { name: 'Dr. Emily Johnson', email: 'emily@email.com', expertise: 'Web Development, React', courses: 8, students: 3420, rating: 4.9, revenue: '$42,500', initials: 'EJ', color: 'bg-purple', isDemo: true },
-        { name: 'Alex Parker', email: 'alex@email.com', expertise: 'Full-Stack, Node.js', courses: 12, students: 5670, rating: 4.8, revenue: '$78,200', initials: 'AP', color: 'bg-blue', isDemo: true },
-        { name: 'Dr. Sarah Chen', email: 'sarah@email.com', expertise: 'AI, Machine Learning', courses: 6, students: 2890, rating: 5.0, revenue: '$56,800', initials: 'SC', color: 'bg-pink', isDemo: true },
-        { name: 'Mike Ross', email: 'mike@email.com', expertise: 'Flutter, Mobile Dev', courses: 4, students: 1567, rating: 4.7, revenue: '$28,400', initials: 'MR', color: 'bg-cyan', isDemo: true },
-        { name: 'Prof. Raj Patel', email: 'raj@email.com', expertise: 'Cloud, AWS, DevOps', courses: 9, students: 4230, rating: 4.8, revenue: '$62,100', initials: 'RP', color: 'bg-green', isDemo: true },
-    ];
+    // Sample demo teachers removed — only registered teachers from localStorage will appear
+    const demoTeachers = [];
 
     // Add registered teachers from localStorage
     const localUsers = JSON.parse(localStorage.getItem('edunova_users') || '[]');
@@ -164,6 +196,11 @@ function populateTeachersTable() {
     }));
 
     const allTeachers = [...demoTeachers, ...localTeachers];
+
+    if (allTeachers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:40px; color:var(--text-muted);">No teachers registered yet.</td></tr>';
+        return;
+    }
 
     tbody.innerHTML = allTeachers.map(t => {
         let actionBtns = '';
@@ -206,14 +243,24 @@ function populateCoursesAdmin() {
     const grid = document.getElementById('coursesAdminGrid');
     if (!grid) return;
 
-    const courses = [
-        { title: 'Full-Stack Web Development Bootcamp', teacher: 'Alex Parker', students: 2341, rating: 4.8, price: '$49.99', status: 'active', gradient: 'linear-gradient(135deg, #667eea, #764ba2)', category: 'Web Development' },
-        { title: 'AI & Machine Learning Masterclass', teacher: 'Dr. Sarah Chen', students: 1890, rating: 5.0, price: '$59.99', status: 'active', gradient: 'linear-gradient(135deg, #f093fb, #f5576c)', category: 'Data Science' },
-        { title: 'Flutter & Dart — Build 15 Apps', teacher: 'Mike Ross', students: 1567, rating: 4.7, price: '$39.99', status: 'active', gradient: 'linear-gradient(135deg, #4facfe, #00f2fe)', category: 'Mobile Dev' },
-        { title: 'React Advanced Patterns', teacher: 'Dr. Emily Johnson', students: 982, rating: 4.9, price: '$44.99', status: 'active', gradient: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', category: 'Web Development' },
-        { title: 'AWS Cloud Architect Certification', teacher: 'Prof. Raj Patel', students: 1243, rating: 4.8, price: '$69.99', status: 'active', gradient: 'linear-gradient(135deg, #ffecd2, #fcb69f)', category: 'Cloud' },
-        { title: 'Python for Data Science', teacher: 'Dr. Sarah Chen', students: 2156, rating: 4.9, price: '$34.99', status: 'active', gradient: 'linear-gradient(135deg, #00b894, #00cec9)', category: 'Data Science' },
-    ];
+    // Sample admin courses removed — load only real teacher uploads from localStorage
+    const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]')
+        .filter(c => c.status === 'approved')
+        .map(c => ({
+            title: c.title,
+            teacher: c.teacher || 'Unknown',
+            students: c.students || 0,
+            rating: c.rating || 0,
+            price: EduCurrency.format(c.approvedPrice || c.price || 0),
+            status: 'active',
+            gradient: c.gradient || 'linear-gradient(135deg, #667eea, #764ba2)',
+            category: c.category || 'General'
+        }));
+
+    if (courses.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-muted);"><i class="fas fa-book-open" style="font-size:48px; margin-bottom:16px;"></i><h3>No courses yet</h3><p>Approved teacher uploads will appear here.</p></div>';
+        return;
+    }
 
     grid.innerHTML = courses.map(course => `
         <div class="course-card">
@@ -264,30 +311,39 @@ function populateRevenueByTeacher() {
     const tbody = document.getElementById('revenueByTeacherBody');
     if (!tbody) return;
 
-    const teachers = [
-        { name: 'Dr. Emily Johnson', email: 'emily@email.com', initials: 'EJ', color: 'bg-purple', revenue: 42500, courses: 8, students: 3420 },
-        { name: 'Alex Parker', email: 'alex@email.com', initials: 'AP', color: 'bg-blue', revenue: 78200, courses: 12, students: 5670 },
-        { name: 'Dr. Sarah Chen', email: 'sarah@email.com', initials: 'SC', color: 'bg-pink', revenue: 56800, courses: 6, students: 2890 },
-        { name: 'Mike Ross', email: 'mike@email.com', initials: 'MR', color: 'bg-cyan', revenue: 28400, courses: 4, students: 1567 },
-        { name: 'Prof. Raj Patel', email: 'raj@email.com', initials: 'RP', color: 'bg-green', revenue: 62100, courses: 9, students: 4230 },
-    ];
-
-    // Add real enrollments from localStorage
+    // Build entirely from registered teachers + real enrollments
+    const localUsers = JSON.parse(localStorage.getItem('edunova_users') || '[]');
     const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');
+    const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]');
+
     const revenueByEmail = {};
+    const studentsByEmail = {};
     enrollments.forEach(e => {
-        if (!revenueByEmail[e.teacherEmail]) {
-            revenueByEmail[e.teacherEmail] = 0;
-        }
-        revenueByEmail[e.teacherEmail] += parseFloat(e.amount || 0);
+        revenueByEmail[e.teacherEmail] = (revenueByEmail[e.teacherEmail] || 0) + parseFloat(e.amount || 0);
+        if (!studentsByEmail[e.teacherEmail]) studentsByEmail[e.teacherEmail] = new Set();
+        studentsByEmail[e.teacherEmail].add(e.studentEmail);
     });
 
-    // Merge with hardcoded data
-    teachers.forEach(t => {
-        if (revenueByEmail[t.email]) {
-            t.revenue += revenueByEmail[t.email];
-        }
-    });
+    const teachers = localUsers
+        .filter(u => u.role === 'teacher')
+        .map(u => {
+            const email = u.email;
+            const courseCount = courses.filter(c => c.teacherEmail === email).length;
+            return {
+                name: `${u.firstName} ${u.lastName}`,
+                email,
+                initials: `${u.firstName[0] || ''}${u.lastName[0] || ''}`.toUpperCase(),
+                color: 'bg-gradient',
+                revenue: revenueByEmail[email] || 0,
+                courses: courseCount,
+                students: studentsByEmail[email] ? studentsByEmail[email].size : 0
+            };
+        });
+
+    if (teachers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">No registered teachers yet.</td></tr>';
+        return;
+    }
 
     tbody.innerHTML = teachers.map(t => `
         <tr>
@@ -302,7 +358,7 @@ function populateRevenueByTeacher() {
             <td><strong style="color: #667eea;">${EduCurrency.format(t.revenue * PLATFORM_SHARE)}</strong></td>
             <td>${t.courses}</td>
             <td>${t.students.toLocaleString()}</td>
-            <td><span class="status-badge status-active">Paid</span></td>
+            <td><span class="status-badge status-active">${t.revenue > 0 ? 'Paid' : 'No earnings'}</span></td>
         </tr>
     `).join('');
 }

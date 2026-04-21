@@ -371,28 +371,28 @@
                         <div class="stat-card-icon gradient-bg-3"><i class="fas fa-money-bill-wave"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Total Earned (60%)</span>
-                            <h3 class="stat-card-value" id="totalEarned">$4,230.00</h3>
+                            <h3 class="stat-card-value" id="totalEarned">$0.00</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-1"><i class="fas fa-hand-holding-usd"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Pending Payout</span>
-                            <h3 class="stat-card-value">$1,280.00</h3>
+                            <h3 class="stat-card-value" id="pendingPayout">$0.00</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-2"><i class="fas fa-file-invoice-dollar"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">Total Revenue</span>
-                            <h3 class="stat-card-value">$7,050.00</h3>
+                            <h3 class="stat-card-value" id="totalRevenue">$0.00</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon gradient-bg-4"><i class="fas fa-chart-line"></i></div>
                         <div class="stat-card-info">
                             <span class="stat-card-label">This Month</span>
-                            <h3 class="stat-card-value">$890.00</h3>
+                            <h3 class="stat-card-value" id="thisMonthEarnings">$0.00</h3>
                         </div>
                     </div>
                 </div>
@@ -448,6 +448,10 @@
                         <option value="">Select course</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Class Topic / Title</label>
+                    <input type="text" id="schedTopic" placeholder="e.g., Introduction to Hooks" required>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Date</label>
@@ -468,6 +472,20 @@
                         <select id="schedType" required>
                             <option value="group">Group Class</option>
                             <option value="individual">Individual (1-on-1)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Live Class Fee per Student (<span id="schedFeeCurrency">INR</span>)</label>
+                        <input type="number" id="schedFee" placeholder="e.g., 499" min="0" step="0.01" required>
+                        <small style="color: var(--text-muted);" id="schedFeeHint">First class is free demo for new students. Admin may adjust this fee.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Allow Free Demo?</label>
+                        <select id="schedAllowDemo">
+                            <option value="true" selected>Yes — first class free</option>
+                            <option value="false">No — paid from start</option>
                         </select>
                     </div>
                 </div>

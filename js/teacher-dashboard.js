@@ -406,25 +406,54 @@ function loadSchedule() {
         return;
     }
 
-    grid.innerHTML = schedules.map(s => `
+    grid.innerHTML = schedules.map(s => {
+        const effectiveFee = (s.approvedFee != null) ? s.approvedFee : (s.fee || 0);
+        return `
         <div class="schedule-card">
             <div class="schedule-card-header">
-                <h4>${escapeHtml(s.courseTitle || 'Class')}</h4>
+                <h4>${escapeHtml(s.topic || s.courseTitle || 'Class')}</h4>
                 <span class="status-badge status-active">${s.type === 'group' ? 'Group' : '1-on-1'}</span>
             </div>
+            <p style="font-size:13px; color:var(--text-muted); margin:4px 0;">${escapeHtml(s.courseTitle || '')}</p>
             <div class="schedule-card-meta">
                 <span><i class="fas fa-calendar"></i> ${s.date}</span>
                 <span><i class="fas fa-clock"></i> ${s.time} (${s.duration} min)</span>
                 <span><i class="fas fa-users"></i> ${s.type === 'group' ? 'Group Class' : 'Individual'}</span>
+                <span><i class="fas fa-tag"></i> ${effectiveFee > 0 ? EduCurrency.format(effectiveFee) + '/student' : 'Free'}</span>
+                ${s.allowDemo ? '<span class="status-badge status-pending">First class free demo</span>' : ''}
+                ${s.approvedFee != null ? '<span class="status-badge status-active">Admin-approved fee</span>' : ''}
             </div>
             <a href="meeting.html" class="btn btn-primary btn-sm btn-full" style="margin-top: 12px;"><i class="fas fa-video"></i> Start Class</a>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function initScheduleForm() {
     const form = document.getElementById('scheduleForm');
     if (!form) return;
+
+    // Localize the fee field to the teacher's currency
+    const feeInput = document.getElementById('schedFee');
+    const feeCurEl = document.getElementById('schedFeeCurrency');
+    const feeHintEl = document.getElementById('schedFeeHint');
+    const userCur = (window.EduCurrency && EduCurrency.get()) || { code: 'INR', symbol: '₹', rate: 1 };
+    if (feeCurEl) feeCurEl.textContent = userCur.code;
+
+    // Live preview of INR-equivalent so teacher knows what gets stored as the platform base
+    if (feeInput && feeHintEl) {
+        const baseHint = 'First class is free demo for new students. Admin may adjust this fee.';
+        const updateHint = () => {
+            const v = parseFloat(feeInput.value);
+            if (!isNaN(v) && v > 0 && userCur.code !== 'INR') {
+                const inr = (v / userCur.rate).toFixed(2);
+                feeHintEl.textContent = `${baseHint} (≈ ₹${inr} INR — base currency)`;
+            } else {
+                feeHintEl.textContent = baseHint;
+            }
+        };
+        feeInput.addEventListener('input', updateHint);
+    }
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -436,16 +465,27 @@ function initScheduleForm() {
         const courses = getTeacherCourses(session.email);
         const course = courses.find(c => String(c.id) === courseId);
 
+        // Teacher entered fee in their local currency → convert to INR for storage,
+        // because EduCurrency.format() expects base-INR amounts.
+        const enteredFee = parseFloat(document.getElementById('schedFee').value) || 0;
+        const feeInINR = userCur.rate ? (enteredFee / userCur.rate) : enteredFee;
+
         const schedule = {
             id: Date.now(),
             courseId: courseId,
             courseTitle: course ? course.title : 'Live Class',
+            topic: document.getElementById('schedTopic').value.trim(),
             teacherEmail: session.email,
             teacherName: session.name,
             date: document.getElementById('schedDate').value,
             time: document.getElementById('schedTime').value,
             duration: parseInt(document.getElementById('schedDuration').value),
             type: document.getElementById('schedType').value,
+            fee: feeInINR,            // stored in INR (platform base)
+            feeCurrency: userCur.code, // currency the teacher entered in (for reference)
+            feeOriginal: enteredFee,   // original entered amount
+            approvedFee: null,        // admin can override later (also in INR)
+            allowDemo: document.getElementById('schedAllowDemo').value === 'true',
             createdAt: new Date().toISOString()
         };
 
