@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Courses — EduNova</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="courses.html" class="active">Courses</a></li>
+                <li><a href="meeting.html">Live Classes</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline-light btn-sm">Log In</a>
+                <a href="register-student.html" class="btn btn-primary btn-sm">Get Started Free</a>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Courses Hero -->
+    <section class="page-hero">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="container">
+            <h1 class="page-title">Explore <span class="gradient-text">Courses</span></h1>
+            <p class="page-subtitle">Choose from 120+ courses — Playway to PhD, every board, every field. Learn at your own pace.</p>
+            <div class="search-hero">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="courseSearch" placeholder="Search for courses, topics, or teachers..." oninput="filterCourses()">
+                </div>
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Content -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="courses-layout">
+                <!-- Sidebar Filters -->
+                <aside class="courses-filters">
+                    <div class="filter-card">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        
+                        <div class="filter-group-section lvl-filter">
+                            <h4>Education Level</h4>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="playway" onchange="filterCourses()"> Playway / Pre-K
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="nursery" onchange="filterCourses()"> Nursery
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="kindergarten" onchange="filterCourses()"> Kindergarten
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="primary" onchange="filterCourses()"> Primary (Class 1-5)
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="middle" onchange="filterCourses()"> Middle (Class 6-8)
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="secondary" onchange="filterCourses()"> Secondary (Class 9-10)
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="senior-secondary" onchange="filterCourses()"> Senior Sec (11-12)
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="competitive" onchange="filterCourses()"> Competitive Exams
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="undergraduate" onchange="filterCourses()"> Undergraduate
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="postgraduate" onchange="filterCourses()"> Postgraduate
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="phd" onchange="filterCourses()"> PhD & Research
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="professional" onchange="filterCourses()"> Professional / Skills
+                            </label>
+                        </div>
+
+                        <div class="filter-group-section cat-filter">
+                            <h4>Board / Category</h4>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="all" checked onchange="filterCourses()"> All Categories
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="early-childhood" onchange="filterCourses()"> Early Childhood
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="cbse" onchange="filterCourses()"> CBSE
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="icse" onchange="filterCourses()"> ICSE / ISC
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="state-board" onchange="filterCourses()"> State Board
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="ib" onchange="filterCourses()"> IB Curriculum
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="cambridge" onchange="filterCourses()"> Cambridge
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="competitive" onchange="filterCourses()"> Competitive Exams
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="web-dev" onchange="filterCourses()"> Web Development
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="data-science" onchange="filterCourses()"> Data Science
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="ai-ml" onchange="filterCourses()"> AI & ML
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="mobile" onchange="filterCourses()"> Mobile Dev
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="cloud" onchange="filterCourses()"> Cloud & DevOps
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="cybersecurity" onchange="filterCourses()"> Cybersecurity
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="design" onchange="filterCourses()"> Design
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="business" onchange="filterCourses()"> Business
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="finance" onchange="filterCourses()"> Finance
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="healthcare" onchange="filterCourses()"> Healthcare
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="law" onchange="filterCourses()"> Law
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="language" onchange="filterCourses()"> Languages
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="music-arts" onchange="filterCourses()"> Music & Arts
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="govt-exam" onchange="filterCourses()"> Govt Exams
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="engineering" onchange="filterCourses()"> Engineering
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="fitness" onchange="filterCourses()"> Fitness & Wellness
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="personal-dev" onchange="filterCourses()"> Personal Dev
+                            </label>
+                        </div>
+
+                        <div class="filter-group-section diff-filter">
+                            <h4>Difficulty</h4>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="beginner" onchange="filterCourses()"> Beginner
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="intermediate" onchange="filterCourses()"> Intermediate
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="advanced" onchange="filterCourses()"> Advanced
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="all levels" onchange="filterCourses()"> All Levels
+                            </label>
+                        </div>
+
+                        <div class="filter-group-section price-filter">
+                            <h4>Price</h4>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="free" onchange="filterCourses()"> Free
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="paid" onchange="filterCourses()"> Paid
+                            </label>
+                        </div>
+
+                        <div class="filter-group-section rating-filter">
+                            <h4>Rating</h4>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="4.5" onchange="filterCourses()"> 4.5 & above ⭐
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="4" onchange="filterCourses()"> 4.0 & above ⭐
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="3" onchange="filterCourses()"> 3.0 & above ⭐
+                            </label>
+                        </div>
+
+                        <div class="filter-group-section">
+                            <h4><i class="fas fa-coins"></i> Currency</h4>
+                            <select class="currency-select" id="currencySelect" onchange="EduCurrency.set(this.value)" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-primary); font-size:13px;">
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline btn-full" onclick="clearFilters()">Clear All Filters</button>
+                    </div>
+                </aside>
+
+                <!-- Course Grid -->
+                <div class="courses-main">
+                    <div class="courses-toolbar">
+                        <span class="results-count"><strong id="courseCount">120</strong> courses found</span>
+                        <div class="sort-options">
+                            <label>Sort by:</label>
+                            <select id="sortSelect" onchange="sortCourses()">
+                                <option value="popular">Most Popular</option>
+                                <option value="newest">Newest</option>
+                                <option value="rating">Highest Rated</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                            <div class="view-toggle">
+                                <button class="view-btn active" onclick="setView('grid')"><i class="fas fa-th-large"></i></button>
+                                <button class="view-btn" onclick="setView('list')"><i class="fas fa-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="courses-grid" id="coursesGrid">
+                        <!-- Courses will be rendered by JS -->
+                    </div>
+                    <div class="courses-pagination">
+                        <button class="btn btn-outline" disabled>Previous</button>
+                        <button class="btn btn-primary">1</button>
+                        <button class="btn btn-outline">2</button>
+                        <button class="btn btn-outline">3</button>
+                        <button class="btn btn-outline">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                        <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+                    </a>
+                    <p>Empowering millions of learners worldwide.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="courses.html">Courses</a></li>
+                        <li><a href="meeting.html">Live Classes</a></li>
+                        <li><a href="register-teacher.html">Teach</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EduNova. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/courses.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNova — Functional Requirement Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0b14;
+            --bg-secondary: #12131e;
+            --bg-card: #181928;
+            --border: rgba(102,126,234,0.15);
+            --text-primary: #e8e8f0;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --gradient-primary: linear-gradient(135deg, #667eea, #764ba2);
+            --accent: #667eea;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .frd-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .frd-header {
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frd-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .frd-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .frd-header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .frd-meta {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .frd-meta-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .frd-meta-item strong {
+            color: var(--accent);
+        }
+
+        .frd-nav {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 40px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .frd-nav h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .frd-nav ol {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .frd-nav ol li a {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(102,126,234,0.1);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+
+        .frd-nav ol li a:hover {
+            background: rgba(102,126,234,0.25);
+            color: var(--text-primary);
+        }
+
+        .frd-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .frd-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .frd-section h2 i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .frd-section h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin: 20px 0 10px;
+        }
+
+        .frd-section h4 {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 16px 0 8px;
+        }
+
+        .frd-section p, .frd-section li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .frd-section ul, .frd-section ol {
+            padding-left: 24px;
+        }
+
+        .frd-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .frd-section table th,
+        .frd-section table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        .frd-section table th {
+            background: rgba(102,126,234,0.1);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .frd-section table td {
+            color: var(--text-secondary);
+        }
+
+        .frd-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .frd-badge-done { background: rgba(0,184,148,0.15); color: #00b894; }
+        .frd-badge-live { background: rgba(253,203,110,0.15); color: #fdcb6e; }
+
+        .auto-update-banner {
+            text-align: center;
+            padding: 16px;
+            background: rgba(102,126,234,0.08);
+            border-radius: 12px;
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .auto-update-banner i { color: var(--accent); margin-right: 6px; }
+
+        #liveStats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .live-stat {
+            background: rgba(102,126,234,0.08);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .live-stat .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .live-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            z-index: 200;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover { background: rgba(102,126,234,0.15); }
+
+        .prd-link {
+            position: fixed;
+            top: 20px;
+            right: 140px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            z-index: 200;
+            transition: all 0.2s;
+        }
+        .prd-link:hover { background: rgba(102,126,234,0.15); }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            z-index: 200;
+        }
+
+        @media print {
+            body { background: #fff; color: #111; }
+            .frd-header, .frd-section, .frd-nav { background: #fff; border-color: #ddd; }
+            .frd-header h1 { -webkit-text-fill-color: #667eea; }
+            .frd-section h2, .frd-section h3, .frd-section table th { color: #333; }
+            .frd-section p, .frd-section li, .frd-section table td { color: #555; }
+            .back-link, .print-btn { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .frd-header h1 { font-size: 1.8rem; }
+            .frd-container { padding: 20px 12px; }
+            .frd-section { padding: 20px; }
+            .frd-nav { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="admin.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Admin</a>
+<a href="prd.html" class="prd-link"><i class="fas fa-file-alt"></i> View PRD</a>
+<button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print / Export PDF</button>
+
+<div class="frd-container">
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="frd-header">
+        <h1>EduNova — Functional Requirement Document</h1>
+        <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
+        <div class="frd-meta">
+            <div class="frd-meta-item">Version: <strong>3.0</strong></div>
+            <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
+            <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
+            <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript</strong></div>
+        </div>
+        <div class="auto-update-banner">
+            <i class="fas fa-sync-alt"></i> This document auto-updates from live platform data on every page load. Statistics reflect real-time localStorage state.
+        </div>
+    </div>
+
+    <!-- ==================== TABLE OF CONTENTS ==================== -->
+    <div class="frd-nav">
+        <h3><i class="fas fa-list"></i> Table of Contents</h3>
+        <ol>
+            <li><a href="#sec-overview">Overview</a></li>
+            <li><a href="#sec-architecture">Architecture</a></li>
+            <li><a href="#sec-auth">Authentication & Authorization</a></li>
+            <li><a href="#sec-roles">User Roles & Permissions</a></li>
+            <li><a href="#sec-courses">Course Catalog</a></li>
+            <li><a href="#sec-enrollment">Enrollment & Payment</a></li>
+            <li><a href="#sec-live">Live Classes</a></li>
+            <li><a href="#sec-certificates">Certificates</a></li>
+            <li><a href="#sec-currency">Currency Localization</a></li>
+            <li><a href="#sec-chatbot">AI Chatbot</a></li>
+            <li><a href="#sec-admin">Super Admin Controls</a></li>
+            <li><a href="#sec-reports">Reports & Analytics</a></li>
+            <li><a href="#sec-security">Security</a></li>
+            <li><a href="#sec-pages">Pages Inventory</a></li>
+            <li><a href="#sec-data">Data Model</a></li>
+            <li><a href="#sec-live-stats">Live Platform Statistics</a></li>
+        </ol>
+    </div>
+
+    <!-- ==================== 1. OVERVIEW ==================== -->
+    <div class="frd-section" id="sec-overview">
+        <h2><i class="fas fa-info-circle"></i> 1. Platform Overview</h2>
+        <p><strong>EduNova</strong> is a full-featured online education platform built entirely with HTML5, CSS3, and vanilla JavaScript (no frameworks). It supports students from playway to PhD level and covers all major education boards and professional fields.</p>
+        <h3>1.1 Core Value Proposition</h3>
+        <ul>
+            <li><strong>120+ courses</strong> spanning 8 education levels (Playway to PhD) and 12+ categories</li>
+            <li>Support for <strong>all major education boards</strong> — CBSE, ICSE, State Boards, IB, Cambridge, IGCSE</li>
+            <li><strong>Multiple teaching modes</strong> — Self-paced (recorded), 1-on-1 live, group live, hybrid</li>
+            <li><strong>18-currency</strong> localization with auto-detection by timezone</li>
+            <li><strong>Certificate generation</strong> on course completion with unique IDs and verification URLs</li>
+            <li><strong>AI chatbot</strong> with confidentiality-first design (40+ KB knowledge base)</li>
+            <li><strong>Revenue sharing</strong> — 60% teacher / 40% platform</li>
+        </ul>
+        <h3>1.2 Target Users</h3>
+        <table>
+            <thead><tr><th>User Type</th><th>Description</th><th>Access Level</th></tr></thead>
+            <tbody>
+                <tr><td>Super Admin</td><td>Platform owner with full control</td><td>All features, all data, all management</td></tr>
+                <tr><td>Teacher</td><td>Instructor who creates and delivers courses</td><td>Dashboard, courses, students, earnings</td></tr>
+                <tr><td>Student</td><td>Learner who enrolls in and completes courses</td><td>Dashboard, enrollment, certificates</td></tr>
+                <tr><td>Guest</td><td>Unauthenticated visitor browsing the catalog</td><td>Home page, course catalog, registration</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 2. ARCHITECTURE ==================== -->
+    <div class="frd-section" id="sec-architecture">
+        <h2><i class="fas fa-sitemap"></i> 2. Technical Architecture</h2>
+        <h3>2.1 Technology Stack</h3>
+        <table>
+            <thead><tr><th>Layer</th><th>Technology</th><th>Details</th></tr></thead>
+            <tbody>
+                <tr><td>Frontend</td><td>HTML5 / CSS3 / Vanilla JS</td><td>No frameworks, no build tools</td></tr>
+                <tr><td>Styling</td><td>Custom CSS + CSS Variables</td><td>Dark theme, gradient accents, responsive</td></tr>
+                <tr><td>Fonts</td><td>Google Fonts CDN</td><td>Space Grotesk (headings) + Inter (body)</td></tr>
+                <tr><td>Icons</td><td>Font Awesome 6.5.1 CDN</td><td>Full icon library</td></tr>
+                <tr><td>Data Storage</td><td>localStorage</td><td>Client-side persistence</td></tr>
+                <tr><td>Certificate Rendering</td><td>HTML5 Canvas</td><td>PNG generation and download</td></tr>
+            </tbody>
+        </table>
+        <h3>2.2 Design System</h3>
+        <ul>
+            <li><strong>Background:</strong> #0a0b14 (primary), #12131e (secondary), #181928 (cards)</li>
+            <li><strong>Primary Gradient:</strong> #667eea → #764ba2</li>
+            <li><strong>Success:</strong> #00b894 &nbsp; <strong>Warning:</strong> #fdcb6e &nbsp; <strong>Error:</strong> #d63031</li>
+            <li><strong>Border Radius:</strong> 16px (cards), 12px (buttons), 50% (avatars)</li>
+        </ul>
+        <h3>2.3 File Structure</h3>
+        <table>
+            <thead><tr><th>File</th><th>Type</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>index.html</td><td>Page</td><td>Landing page — hero, features, testimonials</td></tr>
+                <tr><td>courses.html</td><td>Page</td><td>Course catalog with 5-dimension filtering</td></tr>
+                <tr><td>login.html</td><td>Page</td><td>User login with role selection</td></tr>
+                <tr><td>register-student.html</td><td>Page</td><td>Student registration form</td></tr>
+                <tr><td>register-teacher.html</td><td>Page</td><td>Teacher application form</td></tr>
+                <tr><td>student-dashboard.html</td><td>Page</td><td>Student dashboard — courses, certificates, payments</td></tr>
+                <tr><td>teacher-dashboard.html</td><td>Page</td><td>Teacher dashboard — courses, students, earnings</td></tr>
+                <tr><td>admin.html</td><td>Page</td><td>Super admin dashboard — full platform management</td></tr>
+                <tr><td>meeting.html</td><td>Page</td><td>Live class meeting room with timer</td></tr>
+                <tr><td>frd.html</td><td>Page</td><td>This document — auto-updating FRD</td></tr>
+                <tr><td>js/app.js</td><td>JS</td><td>Global utilities — preloader, navbar, scroll, notifications</td></tr>
+                <tr><td>js/auth.js</td><td>JS</td><td>Login, registration, session management</td></tr>
+                <tr><td>js/courses.js</td><td>JS</td><td>120-course catalog data + filtering + payment modal</td></tr>
+                <tr><td>js/dashboard.js</td><td>JS</td><td>Admin dashboard — all tab populations and super admin actions</td></tr>
+                <tr><td>js/student-dashboard.js</td><td>JS</td><td>Student dashboard logic</td></tr>
+                <tr><td>js/teacher-dashboard.js</td><td>JS</td><td>Teacher dashboard logic</td></tr>
+                <tr><td>js/meeting.js</td><td>JS</td><td>Live class timer and controls (3-hour max)</td></tr>
+                <tr><td>js/certificate.js</td><td>JS</td><td>EduCert API — issue, render, download certificates</td></tr>
+                <tr><td>js/currency.js</td><td>JS</td><td>EduCurrency API — 18 currencies, auto-detect, format</td></tr>
+                <tr><td>js/chatbot.js</td><td>JS</td><td>AI chatbot with confidentiality controls</td></tr>
+                <tr><td>css/style.css</td><td>CSS</td><td>Global styles, components, responsive</td></tr>
+                <tr><td>css/dashboard.css</td><td>CSS</td><td>Dashboard-specific styles</td></tr>
+                <tr><td>css/meeting.css</td><td>CSS</td><td>Meeting room styles</td></tr>
+                <tr><td>css/chatbot.css</td><td>CSS</td><td>Chatbot widget styles</td></tr>
+                <tr><td>css/animations.css</td><td>CSS</td><td>Animation utilities</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 3. AUTHENTICATION ==================== -->
+    <div class="frd-section" id="sec-auth">
+        <h2><i class="fas fa-lock"></i> 3. Authentication & Authorization</h2>
+
+        <h3>3.1 Login System</h3>
+        <ul>
+            <li>Login via email + password on <code>login.html</code></li>
+            <li>Role selection via radio buttons (Student / Teacher / Admin)</li>
+            <li>Session stored in <code>edunova_session</code> localStorage key</li>
+            <li>Session object: <code>{ email, name, role, loggedIn: true, loginTime }</code></li>
+        </ul>
+
+        <h3>3.2 Demo Credentials</h3>
+        <table>
+            <thead><tr><th>Role</th><th>Email</th><th>Password</th></tr></thead>
+            <tbody>
+                <tr><td>Super Admin</td><td>admin@edunova.com</td><td>admin123</td></tr>
+                <tr><td>Teacher</td><td>teacher@edunova.com</td><td>teacher123</td></tr>
+                <tr><td>Student</td><td>student@edunova.com</td><td>student123</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.3 Registration</h3>
+        <ul>
+            <li><strong>Students:</strong> Register via <code>register-student.html</code> — immediate access after login</li>
+            <li><strong>Teachers:</strong> Register via <code>register-teacher.html</code> — status set to "pending", must be approved by admin</li>
+            <li>Passwords stored in localStorage user objects and verified on login</li>
+            <li>Password strength meter with 5 levels (Very Weak → Very Strong)</li>
+            <li>Minimum 8 characters required</li>
+        </ul>
+
+        <h3>3.4 Access Control</h3>
+        <ul>
+            <li><strong>admin.html:</strong> Redirects to login if session role ≠ 'admin'</li>
+            <li><strong>student-dashboard.html:</strong> Redirects to login if session role ≠ 'student'</li>
+            <li><strong>teacher-dashboard.html:</strong> Redirects to login if session role ≠ 'teacher'</li>
+            <li>Suspended users see error message and cannot log in</li>
+            <li>Pending teachers see notification that application is under review</li>
+            <li>Rejected teachers see rejection message</li>
+        </ul>
+
+        <h3>3.5 Logout</h3>
+        <ul>
+            <li>Clears <code>edunova_session</code> from localStorage</li>
+            <li>Redirects to login.html</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 4. ROLES & PERMISSIONS ==================== -->
+    <div class="frd-section" id="sec-roles">
+        <h2><i class="fas fa-user-shield"></i> 4. User Roles & Permissions</h2>
+
+        <h3>4.1 Super Admin</h3>
+        <p>The Super Admin has unrestricted access to all platform features and data.</p>
+        <table>
+            <thead><tr><th>Capability</th><th>Description</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>User Management</td><td>Add, suspend, reactivate, delete users of any role</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Teacher Approvals</td><td>Approve/reject teacher applications (persisted to localStorage)</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Course Approvals</td><td>Approve/reject/set pricing for teacher-submitted courses</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Enrollment Management</td><td>View all enrollments, mark live courses as completed</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Revenue Dashboard</td><td>View all teacher revenues with 60/40 split breakdown</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Certificate Management</td><td>View all issued certificates, revoke certificates</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Live Classes</td><td>Monitor all live class schedules and durations</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Reports</td><td>Export CSV reports for users, enrollments, revenue, certificates</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Platform Reset</td><td>Clear specific data categories (users, courses, etc.)</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Content Overview</td><td>View certificate count, chatbot KB size, active currency</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.2 Teacher</h3>
+        <table>
+            <thead><tr><th>Capability</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Upload Courses</td><td>Submit courses for admin approval with proposed pricing</td></tr>
+                <tr><td>View Students</td><td>See enrolled students and their progress</td></tr>
+                <tr><td>Mark Completion</td><td>Mark live course students as completed (generates certificate eligibility)</td></tr>
+                <tr><td>View Earnings</td><td>See revenue breakdown with 60% teacher share</td></tr>
+                <tr><td>Schedule Classes</td><td>Set up live class schedules</td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.3 Student</h3>
+        <table>
+            <thead><tr><th>Capability</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Browse Courses</td><td>View and filter 120+ courses by level, category, difficulty, price, rating</td></tr>
+                <tr><td>Enroll & Pay</td><td>Enroll in courses with currency-localized pricing</td></tr>
+                <tr><td>Self-Complete</td><td>Mark self-paced courses as done (NOT live courses)</td></tr>
+                <tr><td>Claim Certificates</td><td>Generate and download completion certificates</td></tr>
+                <tr><td>View Progress</td><td>Track progress per course with percentage indicator</td></tr>
+                <tr><td>Request Demos</td><td>Schedule demo classes with teachers</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 5. COURSE CATALOG ==================== -->
+    <div class="frd-section" id="sec-courses">
+        <h2><i class="fas fa-book-open"></i> 5. Course Catalog</h2>
+
+        <h3>5.1 Course Data</h3>
+        <ul>
+            <li><strong>120 courses</strong> hardcoded in <code>js/courses.js</code> as <code>coursesData</code> array</li>
+            <li>All prices stored in INR (base currency, multiplied by 83 from original USD values)</li>
+            <li>Displayed prices converted via <code>EduCurrency.format()</code></li>
+        </ul>
+
+        <h3>5.2 Education Levels</h3>
+        <table>
+            <thead><tr><th>Level</th><th>Boards/Focus</th></tr></thead>
+            <tbody>
+                <tr><td>Playway / Nursery</td><td>Fun learning, phonics, early development</td></tr>
+                <tr><td>Primary (1-5)</td><td>CBSE, ICSE, State, IB, Cambridge</td></tr>
+                <tr><td>Middle School (6-8)</td><td>CBSE, ICSE, State, IB, Cambridge</td></tr>
+                <tr><td>Secondary (9-10)</td><td>CBSE, ICSE, State, IB, Cambridge, IGCSE</td></tr>
+                <tr><td>Senior Secondary (11-12)</td><td>Science (PCM/PCB), Commerce, Arts, JEE/NEET</td></tr>
+                <tr><td>Undergraduate</td><td>Engineering, Medical, Business, Arts, Science</td></tr>
+                <tr><td>Postgraduate</td><td>MBA, M.Tech, M.Sc, MCA, specialized programs</td></tr>
+                <tr><td>PhD / Doctoral</td><td>Research methodologies, thesis writing, publications</td></tr>
+                <tr><td>Professional</td><td>Web Dev, AI/ML, Cloud, Cybersecurity, Data Science, DevOps</td></tr>
+            </tbody>
+        </table>
+
+        <h3>5.3 Filter Dimensions</h3>
+        <ol>
+            <li><strong>Education Level</strong> — playway, primary, middle, secondary, senior-secondary, undergraduate, postgraduate, phd, professional</li>
+            <li><strong>Category</strong> — web-development, data-science, mobile-development, cloud-computing, etc.</li>
+            <li><strong>Difficulty</strong> — beginner, intermediate, advanced</li>
+            <li><strong>Price Range</strong> — free, under-1000, 1000-5000, over-5000</li>
+            <li><strong>Rating</strong> — 4-plus, 4.5-plus</li>
+        </ol>
+
+        <h3>5.4 Course Object Schema</h3>
+        <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>id</td><td>Number</td><td>Unique course identifier</td></tr>
+                <tr><td>title</td><td>String</td><td>Course name</td></tr>
+                <tr><td>instructor</td><td>String</td><td>Teacher name</td></tr>
+                <tr><td>price</td><td>Number</td><td>Price in INR</td></tr>
+                <tr><td>originalPrice</td><td>Number</td><td>Original price before discount (INR)</td></tr>
+                <tr><td>rating</td><td>Number</td><td>Average rating (1-5)</td></tr>
+                <tr><td>students</td><td>Number</td><td>Number of enrolled students</td></tr>
+                <tr><td>category</td><td>String</td><td>Course category slug</td></tr>
+                <tr><td>level</td><td>String</td><td>Education level slug</td></tr>
+                <tr><td>difficulty</td><td>String</td><td>beginner / intermediate / advanced</td></tr>
+                <tr><td>duration</td><td>String</td><td>Display text (e.g., "42 hours")</td></tr>
+                <tr><td>lectures</td><td>Number</td><td>Number of lectures</td></tr>
+                <tr><td>image</td><td>String</td><td>CSS gradient string for visual</td></tr>
+                <tr><td>badge</td><td>String</td><td>Bestseller / Hot / New / etc.</td></tr>
+                <tr><td>description</td><td>String</td><td>Brief course description</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 6. ENROLLMENT ==================== -->
+    <div class="frd-section" id="sec-enrollment">
+        <h2><i class="fas fa-shopping-cart"></i> 6. Enrollment & Payment</h2>
+
+        <h3>6.1 Enrollment Flow</h3>
+        <ol>
+            <li>Student clicks "Enroll Now" on course card (courses.html)</li>
+            <li>Payment modal opens showing price in user's detected currency</li>
+            <li>Student selects teaching mode (Recorded / Live 1-on-1 / Group / Hybrid)</li>
+            <li>On confirm, enrollment record saved to <code>edunova_enrollments</code></li>
+            <li>Payment record saved to <code>edunova_payments</code></li>
+            <li>Student redirected to dashboard</li>
+        </ol>
+
+        <h3>6.2 Enrollment Record Schema</h3>
+        <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>courseId</td><td>Number</td><td>Course identifier</td></tr>
+                <tr><td>courseTitle</td><td>String</td><td>Course name</td></tr>
+                <tr><td>studentEmail</td><td>String</td><td>Student's email</td></tr>
+                <tr><td>studentName</td><td>String</td><td>Student's display name</td></tr>
+                <tr><td>teacher</td><td>String</td><td>Teacher name</td></tr>
+                <tr><td>teacherEmail</td><td>String</td><td>Teacher's email</td></tr>
+                <tr><td>teachingMode</td><td>String</td><td>recorded / individual / group / hybrid</td></tr>
+                <tr><td>amount</td><td>Number</td><td>Payment amount in base currency (INR)</td></tr>
+                <tr><td>date</td><td>String</td><td>Enrollment date (ISO 8601)</td></tr>
+                <tr><td>status</td><td>String</td><td>active / completed</td></tr>
+                <tr><td>completionDate</td><td>String</td><td>Date completed (ISO 8601), if applicable</td></tr>
+                <tr><td>completedBy</td><td>String</td><td>teacher / admin / self — who marked completion</td></tr>
+            </tbody>
+        </table>
+
+        <h3>6.3 Revenue Model</h3>
+        <ul>
+            <li><strong>Teacher Share:</strong> 60% of course price</li>
+            <li><strong>Platform Share:</strong> 40% of course price</li>
+            <li>Revenue breakdown visible in admin dashboard (Revenue tab) and teacher dashboard</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 7. LIVE CLASSES ==================== -->
+    <div class="frd-section" id="sec-live">
+        <h2><i class="fas fa-video"></i> 7. Live Classes</h2>
+
+        <h3>7.1 Teaching Modes</h3>
+        <table>
+            <thead><tr><th>Mode</th><th>Key</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Self-paced</td><td>recorded</td><td>Pre-recorded videos, student completes at own pace</td></tr>
+                <tr><td>1-on-1 Live</td><td>individual</td><td>Private live session between student and teacher</td></tr>
+                <tr><td>Group Live</td><td>group</td><td>Live class with multiple students</td></tr>
+                <tr><td>Hybrid</td><td>hybrid</td><td>Mix of live and recorded content</td></tr>
+            </tbody>
+        </table>
+
+        <h3>7.2 Live Class Constraints</h3>
+        <ul>
+            <li><strong>Maximum Duration:</strong> 3 hours (10,800 seconds) per session</li>
+            <li><strong>Timer Warning:</strong> Alert at 2 hours 50 minutes (10 minutes before end)</li>
+            <li><strong>Auto-End:</strong> Class automatically ends at 3-hour mark</li>
+            <li>Timer managed by <code>js/meeting.js</code> with <code>MAX_LIVE_SECONDS = 10800</code></li>
+        </ul>
+
+        <h3>7.3 Live Course Completion Rules</h3>
+        <ul>
+            <li><strong>Live courses (individual/group/hybrid):</strong> Only teacher OR admin can mark completion</li>
+            <li><strong>Self-paced courses (recorded):</strong> Students can self-complete via "Mark Done" button</li>
+            <li>Student dashboard hides "Mark Done" for live courses, shows: "Completion is marked by your teacher or admin"</li>
+            <li>Completion generates certificate eligibility</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 8. CERTIFICATES ==================== -->
+    <div class="frd-section" id="sec-certificates">
+        <h2><i class="fas fa-certificate"></i> 8. Certificate System</h2>
+
+        <h3>8.1 Certificate Generation</h3>
+        <ul>
+            <li>Managed by <code>js/certificate.js</code> via global <code>window.EduCert</code> API</li>
+            <li>Rendered using HTML5 Canvas as PNG image</li>
+            <li>Generated when student clicks "Claim Certificate" after course completion</li>
+        </ul>
+
+        <h3>8.2 Certificate Contents</h3>
+        <table>
+            <thead><tr><th>Field</th><th>Example</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Certificate Name</td><td>"Certificate of Completion"</td><td>Standard title for all certificates</td></tr>
+                <tr><td>Provider Name</td><td>"EduNova — Learn Without Limits"</td><td>Platform branding</td></tr>
+                <tr><td>Student Name</td><td>"Rahul Kumar"</td><td>From session data</td></tr>
+                <tr><td>Course Title</td><td>"Full-Stack Web Development"</td><td>Course name</td></tr>
+                <tr><td>Teacher Name</td><td>"Dr. Emily Johnson"</td><td>Instructor who taught the course</td></tr>
+                <tr><td>Completion ID</td><td>ENOVA-A3F-8K2</td><td>Unique alphanumeric ID (ENOVA-XXX-XXX format)</td></tr>
+                <tr><td>Certificate URL</td><td>https://edunova.edu/verify/ENOVA-A3F-8K2</td><td>Verification link</td></tr>
+                <tr><td>Issue Date</td><td>January 15, 2026</td><td>Date of certificate generation</td></tr>
+            </tbody>
+        </table>
+
+        <h3>8.3 Certificate API</h3>
+        <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>EduCert.issue(data)</code></td><td>Create and store a new certificate</td></tr>
+                <tr><td><code>EduCert.getForStudent(email)</code></td><td>Retrieve all certificates for a student</td></tr>
+                <tr><td><code>EduCert.download(cert)</code></td><td>Generate Canvas PNG and trigger download</td></tr>
+                <tr><td><code>EduCert.show(cert)</code></td><td>Display certificate in a preview modal</td></tr>
+            </tbody>
+        </table>
+
+        <h3>8.4 Storage</h3>
+        <p>Certificates stored in <code>edunova_certificates</code> localStorage key as JSON array.</p>
+        <p>Admin can view all certificates in Content Management tab and revoke them if needed.</p>
+    </div>
+
+    <!-- ==================== 9. CURRENCY ==================== -->
+    <div class="frd-section" id="sec-currency">
+        <h2><i class="fas fa-coins"></i> 9. Currency Localization</h2>
+
+        <h3>9.1 Overview</h3>
+        <ul>
+            <li>Managed by <code>js/currency.js</code> via global <code>window.EduCurrency</code> API</li>
+            <li><strong>Default currency:</strong> INR (Indian Rupees)</li>
+            <li>Auto-detected from user's timezone on first visit</li>
+            <li>User can manually change currency via selector on courses page</li>
+            <li>Preference persisted in <code>edunova_currency</code> localStorage key</li>
+        </ul>
+
+        <h3>9.2 Supported Currencies (18)</h3>
+        <p>INR, USD, EUR, GBP, AUD, CAD, JPY, SGD, AED, SAR, BDT, PKR, LKR, NPR, MYR, THB, KRW, BRL</p>
+
+        <h3>9.3 Currency API</h3>
+        <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>EduCurrency.format(amountINR)</code></td><td>Convert INR to active currency and format with symbol</td></tr>
+                <tr><td><code>EduCurrency.convert(amountINR)</code></td><td>Convert INR amount to active currency (number)</td></tr>
+                <tr><td><code>EduCurrency.symbol()</code></td><td>Get current currency symbol</td></tr>
+                <tr><td><code>EduCurrency.get()</code></td><td>Get current currency code</td></tr>
+                <tr><td><code>EduCurrency.set(code)</code></td><td>Set active currency and persist</td></tr>
+                <tr><td><code>EduCurrency.all()</code></td><td>Get array of all supported currencies</td></tr>
+                <tr><td><code>EduCurrency.code</code></td><td>Current currency code property</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 10. CHATBOT ==================== -->
+    <div class="frd-section" id="sec-chatbot">
+        <h2><i class="fas fa-robot"></i> 10. AI Chatbot</h2>
+
+        <h3>10.1 Overview</h3>
+        <ul>
+            <li>Floating chatbot widget available on 8 of 9 pages (excluded from meeting.html)</li>
+            <li>Pattern-matching chatbot with 40+ KB knowledge base</li>
+            <li>Implemented as IIFE in <code>js/chatbot.js</code></li>
+            <li>Styled via <code>css/chatbot.css</code></li>
+        </ul>
+
+        <h3>10.2 Confidentiality Controls</h3>
+        <p>The chatbot maintains strict confidentiality rules:</p>
+        <ul>
+            <li><strong>BLOCKED_KEYWORDS</strong> list prevents sharing of: passwords, account numbers, SSN, credit card, bank details, salary, admin credentials, private keys, etc.</li>
+            <li>User input is scanned for blocked keywords before processing</li>
+            <li>If blocked content detected: "I can't share confidential information like [topic]. Please contact support for account-specific queries."</li>
+            <li>All user inputs are HTML-escaped (XSS prevention)</li>
+        </ul>
+
+        <h3>10.3 Knowledge Domains</h3>
+        <ul>
+            <li>Course information (catalog, categories, levels)</li>
+            <li>Enrollment process and payment</li>
+            <li>Certificate system</li>
+            <li>Currency localization</li>
+            <li>Teaching modes and live classes</li>
+            <li>Teacher registration and application process</li>
+            <li>Platform features and support</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 11. SUPER ADMIN ==================== -->
+    <div class="frd-section" id="sec-admin">
+        <h2><i class="fas fa-crown"></i> 11. Super Admin Dashboard</h2>
+
+        <h3>11.1 Admin Credentials</h3>
+        <table>
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody>
+                <tr><td>Email</td><td><strong>admin@edunova.com</strong></td></tr>
+                <tr><td>Password</td><td><strong>admin123</strong></td></tr>
+                <tr><td>Role</td><td>admin</td></tr>
+                <tr><td>Display Name</td><td>Super Admin</td></tr>
+            </tbody>
+        </table>
+
+        <h3>11.2 Dashboard Tabs</h3>
+        <table>
+            <thead><tr><th>Tab</th><th>Sidebar ID</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Overview</td><td>overview</td><td>Platform stats at a glance</td></tr>
+                <tr><td>Users</td><td>users</td><td>All users — add, suspend, reactivate, delete</td></tr>
+                <tr><td>Courses</td><td>courses</td><td>Course catalog management</td></tr>
+                <tr><td>Teachers</td><td>teachers</td><td>Teacher management — approve/reject/suspend</td></tr>
+                <tr><td>Enrollments</td><td>enrollments</td><td>All enrollments — mark live courses complete</td></tr>
+                <tr><td>Live Classes</td><td>meetings</td><td>Monitor live class schedules and durations</td></tr>
+                <tr><td>Content</td><td>content</td><td>Certificates, chatbot KB, active currency</td></tr>
+                <tr><td>Revenue</td><td>revenue</td><td>Teacher revenue with 60/40 split</td></tr>
+                <tr><td>Course Approvals</td><td>course-approvals</td><td>Approve/reject/price teacher courses</td></tr>
+                <tr><td>Settings</td><td>settings</td><td>Platform settings</td></tr>
+                <tr><td>Reports</td><td>reports</td><td>Export CSV reports, platform summary</td></tr>
+            </tbody>
+        </table>
+
+        <h3>11.3 Admin Actions (All Functional)</h3>
+        <ul>
+            <li><strong>handleAddUser(e)</strong> — Create new user (any role) via modal form</li>
+            <li><strong>adminDeleteUser(email)</strong> — Delete user (cannot delete super admin)</li>
+            <li><strong>adminToggleUserStatus(email)</strong> — Suspend ↔ Reactivate user</li>
+            <li><strong>adminApproveTeacher(email)</strong> — Approve pending teacher (persisted)</li>
+            <li><strong>adminRejectTeacher(email)</strong> — Reject teacher application (persisted)</li>
+            <li><strong>adminMarkComplete(courseId, email)</strong> — Mark enrollment as completed</li>
+            <li><strong>adminDeleteEnrollment(courseId, email)</strong> — Remove enrollment</li>
+            <li><strong>adminDeleteCourse(courseId)</strong> — Delete uploaded course</li>
+            <li><strong>adminRevokeCertificate(certId)</strong> — Revoke issued certificate</li>
+            <li><strong>exportReport(type)</strong> — Export CSV for users/enrollments/revenue/certificates</li>
+            <li><strong>adminResetPlatform(key)</strong> — Clear specific data categories</li>
+            <li><strong>approveCourse(courseId)</strong> — Approve teacher-submitted course</li>
+            <li><strong>rejectCourse(courseId)</strong> — Reject teacher-submitted course</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 12. REPORTS ==================== -->
+    <div class="frd-section" id="sec-reports">
+        <h2><i class="fas fa-chart-bar"></i> 12. Reports & Analytics</h2>
+
+        <h3>12.1 CSV Exports</h3>
+        <table>
+            <thead><tr><th>Report Type</th><th>Columns</th></tr></thead>
+            <tbody>
+                <tr><td>Users</td><td>First Name, Last Name, Email, Role, Status, Created At</td></tr>
+                <tr><td>Enrollments</td><td>Student, Email, Course, Teacher, Mode, Amount, Date, Status</td></tr>
+                <tr><td>Revenue</td><td>Student, Course, Teacher, Amount, Teacher Share (60%), Platform Share (40%), Date</td></tr>
+                <tr><td>Certificates</td><td>Certificate ID, Student, Email, Course, Teacher, Provider, Issue Date, URL</td></tr>
+            </tbody>
+        </table>
+
+        <h3>12.2 Platform Summary Metrics</h3>
+        <p>The Reports tab shows a live summary table with these metrics: Registered Users, Students, Teachers, Uploaded Courses, Approved Courses, Total Enrollments, Completed Courses, Certificates Issued, Total Revenue, Payments Processed.</p>
+    </div>
+
+    <!-- ==================== 13. SECURITY ==================== -->
+    <div class="frd-section" id="sec-security">
+        <h2><i class="fas fa-shield-alt"></i> 13. Security Measures</h2>
+
+        <h3>13.1 Authentication Security</h3>
+        <ul>
+            <li>Password verification for all registered users (email + password match)</li>
+            <li>Session-based access control on all dashboards</li>
+            <li>Automatic redirect to login if session invalid or wrong role</li>
+            <li>Super admin account protected from deletion</li>
+        </ul>
+
+        <h3>13.2 Input Security</h3>
+        <ul>
+            <li>HTML escaping via <code>escapeHtml()</code> function (creates text node, reads innerHTML)</li>
+            <li>Chatbot input sanitized before processing</li>
+            <li>Form validation on all registration and login forms</li>
+        </ul>
+
+        <h3>13.3 Data Confidentiality</h3>
+        <ul>
+            <li>Chatbot BLOCKED_KEYWORDS prevents exposure of: passwords, account numbers, SSN, credit cards, bank details, salary, admin credentials, API keys, private keys</li>
+            <li>No sensitive data displayed in chatbot responses</li>
+            <li>Session cleared on logout</li>
+        </ul>
+
+        <h3>13.4 Known Limitations</h3>
+        <ul>
+            <li>Data stored in localStorage (client-side only, no server encryption)</li>
+            <li>Passwords stored in plaintext in localStorage (acceptable for demo; production would use bcrypt + server-side storage)</li>
+            <li>No CSRF protection (no server-side state)</li>
+            <li>Demo credentials are hardcoded in auth.js</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 14. PAGES INVENTORY ==================== -->
+    <div class="frd-section" id="sec-pages">
+        <h2><i class="fas fa-file-code"></i> 14. Pages Inventory</h2>
+        <table>
+            <thead><tr><th>Page</th><th>URL</th><th>Auth Required</th><th>Scripts</th><th>Has Chatbot</th></tr></thead>
+            <tbody>
+                <tr><td>Landing Page</td><td>index.html</td><td>No</td><td>app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Course Catalog</td><td>courses.html</td><td>No</td><td>currency.js, courses.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Login</td><td>login.html</td><td>No</td><td>auth.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Student Registration</td><td>register-student.html</td><td>No</td><td>auth.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Teacher Registration</td><td>register-teacher.html</td><td>No</td><td>auth.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Student Dashboard</td><td>student-dashboard.html</td><td>Student</td><td>currency.js, certificate.js, student-dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Teacher Dashboard</td><td>teacher-dashboard.html</td><td>Teacher</td><td>currency.js, teacher-dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Admin Dashboard</td><td>admin.html</td><td>Admin</td><td>currency.js, dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Meeting Room</td><td>meeting.html</td><td>Teacher</td><td>meeting.js, app.js</td><td>No</td></tr>
+                <tr><td>FRD Document</td><td>frd.html</td><td>No</td><td>(self-contained)</td><td>No</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 15. DATA MODEL ==================== -->
+    <div class="frd-section" id="sec-data">
+        <h2><i class="fas fa-database"></i> 15. Data Model (localStorage)</h2>
+        <table>
+            <thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>edunova_session</td><td>Object</td><td>Current user session { email, name, role, loggedIn, loginTime }</td></tr>
+                <tr><td>edunova_users</td><td>Array</td><td>Registered users (firstName, lastName, email, password, role, status, createdAt)</td></tr>
+                <tr><td>edunova_courses</td><td>Array</td><td>Teacher-uploaded courses pending/approved</td></tr>
+                <tr><td>edunova_enrollments</td><td>Array</td><td>Student enrollments with course, teacher, mode, amount, status</td></tr>
+                <tr><td>edunova_payments</td><td>Array</td><td>Payment records</td></tr>
+                <tr><td>edunova_certificates</td><td>Array</td><td>Issued certificates with certId, student, course, teacher, dates, URLs</td></tr>
+                <tr><td>edunova_progress</td><td>Object</td><td>Progress tracking { "courseId_email": percentage }</td></tr>
+                <tr><td>edunova_demos</td><td>Array</td><td>Demo class requests</td></tr>
+                <tr><td>edunova_currency</td><td>String</td><td>User's selected currency code</td></tr>
+                <tr><td>edunova_schedules</td><td>Array</td><td>Class schedules</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 16. LIVE STATS ==================== -->
+    <div class="frd-section" id="sec-live-stats">
+        <h2><i class="fas fa-chart-line"></i> 16. Live Platform Statistics</h2>
+        <p>These numbers are auto-updated from your browser's localStorage on every page load.</p>
+        <div id="liveStats">
+            <!-- Populated by JS below -->
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
+        <p>EduNova Functional Requirement Document v3.0</p>
+        <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
+    </div>
+
+</div>
+
+<!-- ==================== AUTO-UPDATE SCRIPT ==================== -->
+<script>
+(function() {
+    'use strict';
+
+    // Update timestamp
+    document.getElementById('frdLastUpdated').textContent = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    // Live stats from localStorage
+    const users = JSON.parse(localStorage.getItem('edunova_users') || '[]');
+    const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');
+    const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]');
+    const certificates = JSON.parse(localStorage.getItem('edunova_certificates') || '[]');
+    const payments = JSON.parse(localStorage.getItem('edunova_payments') || '[]');
+    const progress = JSON.parse(localStorage.getItem('edunova_progress') || '{}');
+    const currency = localStorage.getItem('edunova_currency') || 'INR';
+
+    const totalRevenue = enrollments.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
+    const completedEnrollments = enrollments.filter(e => e.status === 'completed').length;
+
+    const stats = [
+        { label: 'Registered Users', value: users.length, icon: 'fa-users', color: '#667eea' },
+        { label: 'Students', value: users.filter(u => u.role === 'student').length, icon: 'fa-user-graduate', color: '#4facfe' },
+        { label: 'Teachers', value: users.filter(u => u.role === 'teacher').length, icon: 'fa-chalkboard-teacher', color: '#f093fb' },
+        { label: 'Pending Teachers', value: users.filter(u => u.role === 'teacher' && u.status === 'pending').length, icon: 'fa-hourglass-half', color: '#fdcb6e' },
+        { label: 'Uploaded Courses', value: courses.length, icon: 'fa-book-open', color: '#00b894' },
+        { label: 'Total Enrollments', value: enrollments.length, icon: 'fa-user-plus', color: '#e17055' },
+        { label: 'Completed', value: completedEnrollments, icon: 'fa-flag-checkered', color: '#00cec9' },
+        { label: 'Certificates', value: certificates.length, icon: 'fa-certificate', color: '#a78bfa' },
+        { label: 'Total Revenue', value: '₹' + totalRevenue.toLocaleString('en-IN'), icon: 'fa-rupee-sign', color: '#6c5ce7' },
+        { label: 'Payments', value: payments.length, icon: 'fa-credit-card', color: '#fd79a8' },
+        { label: 'Progress Entries', value: Object.keys(progress).length, icon: 'fa-tasks', color: '#00b894' },
+        { label: 'Active Currency', value: currency, icon: 'fa-coins', color: '#fdcb6e' },
+    ];
+
+    const container = document.getElementById('liveStats');
+    container.innerHTML = stats.map(s => `
+        <div class="live-stat">
+            <div class="value" style="color: ${s.color};">
+                <i class="fas ${s.icon}" style="font-size: 0.9em; margin-right: 4px;"></i>
+                ${s.value}
+            </div>
+            <div class="label">${s.label}</div>
+        </div>
+    `).join('');
+
+})();
+</script>
+
+</body>
+</html>

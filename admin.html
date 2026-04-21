@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard — EduNova</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-user">
+            <div class="avatar avatar-lg bg-gradient">SA</div>
+            <div class="user-info">
+                <h4>Super Admin</h4>
+                <span class="user-role"><i class="fas fa-shield-alt"></i> Super Admin</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main</span>
+                <a href="#" class="nav-item active" data-tab="overview">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-tab="users">
+                    <i class="fas fa-users"></i> Users
+                    <span class="nav-badge">5,240</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="courses">
+                    <i class="fas fa-book-open"></i> Courses
+                    <span class="nav-badge">348</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i> Teachers
+                    <span class="nav-badge">127</span>
+                </a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Management</span>
+                <a href="#" class="nav-item" data-tab="enrollments">
+                    <i class="fas fa-user-plus"></i> Enrollments
+                    <span class="nav-badge badge-warning">23</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="meetings">
+                    <i class="fas fa-video"></i> Live Classes
+                </a>
+                <a href="#" class="nav-item" data-tab="content">
+                    <i class="fas fa-file-alt"></i> Content
+                </a>
+                <a href="#" class="nav-item" data-tab="revenue">
+                    <i class="fas fa-chart-bar"></i> Revenue Split
+                </a>
+                <a href="#" class="nav-item" data-tab="course-approvals">
+                    <i class="fas fa-check-double"></i> Course Approvals
+                    <span class="nav-badge badge-warning" id="approvalCount">0</span>
+                </a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">System</span>
+                <a href="#" class="nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" class="nav-item" data-tab="reports">
+                    <i class="fas fa-file-export"></i> Reports
+                </a>
+                <a href="frd.html" class="nav-item">
+                    <i class="fas fa-book"></i> FRD Document
+                </a>
+                <a href="prd.html" class="nav-item">
+                    <i class="fas fa-file-alt"></i> PRD Document
+                </a>
+                <a href="login.html" class="nav-item nav-item-danger" onclick="localStorage.removeItem('edunova_session')">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Top Bar -->
+        <header class="dashboard-topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search users, courses, reports...">
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="topbar-btn" id="notifBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot"></span>
+                </button>
+                <button class="topbar-btn">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <div class="topbar-user-menu">
+                    <button class="topbar-user" id="topbarUserBtn">
+                        <div class="avatar avatar-sm bg-gradient">SA</div>
+                        <span>Super Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="topbar-dropdown" id="topbarDropdown">
+                        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                        <a href="courses.html"><i class="fas fa-book-open"></i> Browse Courses</a>
+                        <a href="meeting.html"><i class="fas fa-video"></i> Live Classes</a>
+                        <div class="topbar-dropdown-divider"></div>
+                        <a href="login.html" onclick="localStorage.removeItem('edunova_session')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="tab-overview">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Welcome back, Admin! 👋</h1>
+                        <p>Here's what's happening with EduNova today.</p>
+                    </div>
+                    <div class="header-actions">
+                        <select class="period-select">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>This year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-users"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Students</span>
+                            <h3 class="stat-card-value">50,247</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Active Teachers</span>
+                            <h3 class="stat-card-value">1,234</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 8.3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-book-open"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Courses</span>
+                            <h3 class="stat-card-value">3,487</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 15.2%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-4"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Revenue (Month)</span>
+                            <h3 class="stat-card-value">$284,520</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 22.1%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-5"><i class="fas fa-video"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Live Classes Today</span>
+                            <h3 class="stat-card-value">47</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 5 more</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-6"><i class="fas fa-certificate"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Certificates Issued</span>
+                            <h3 class="stat-card-value">12,847</h3>
+                            <span class="stat-card-change positive"><i class="fas fa-arrow-up"></i> 18.7%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-card chart-card-large">
+                        <div class="chart-header">
+                            <h3>Revenue Overview</h3>
+                            <div class="chart-legend">
+                                <span class="legend-item"><span class="legend-dot bg-primary"></span> Revenue</span>
+                                <span class="legend-item"><span class="legend-dot bg-secondary"></span> Expenses</span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <div class="bar-chart">
+                                <div class="bar-group" data-label="Jan">
+                                    <div class="bar bar-primary" style="height: 60%"></div>
+                                    <div class="bar bar-secondary" style="height: 30%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Feb">
+                                    <div class="bar bar-primary" style="height: 45%"></div>
+                                    <div class="bar bar-secondary" style="height: 25%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Mar">
+                                    <div class="bar bar-primary" style="height: 75%"></div>
+                                    <div class="bar bar-secondary" style="height: 35%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Apr">
+                                    <div class="bar bar-primary" style="height: 55%"></div>
+                                    <div class="bar bar-secondary" style="height: 28%"></div>
+                                </div>
+                                <div class="bar-group" data-label="May">
+                                    <div class="bar bar-primary" style="height: 85%"></div>
+                                    <div class="bar bar-secondary" style="height: 40%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Jun">
+                                    <div class="bar bar-primary" style="height: 70%"></div>
+                                    <div class="bar bar-secondary" style="height: 32%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Jul">
+                                    <div class="bar bar-primary" style="height: 90%"></div>
+                                    <div class="bar bar-secondary" style="height: 38%"></div>
+                                </div>
+                                <div class="bar-group" data-label="Aug">
+                                    <div class="bar bar-primary" style="height: 65%"></div>
+                                    <div class="bar bar-secondary" style="height: 30%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>User Distribution</h3>
+                        </div>
+                        <div class="chart-body">
+                            <div class="donut-chart">
+                                <svg viewBox="0 0 36 36">
+                                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#667eea" stroke-width="3.8" stroke-dasharray="65 35" stroke-dashoffset="25"/>
+                                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f5576c" stroke-width="3.8" stroke-dasharray="20 80" stroke-dashoffset="60"/>
+                                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4facfe" stroke-width="3.8" stroke-dasharray="15 85" stroke-dashoffset="40"/>
+                                </svg>
+                                <div class="donut-center">
+                                    <h4>51.5K</h4>
+                                    <small>Total Users</small>
+                                </div>
+                            </div>
+                            <div class="donut-legend">
+                                <div class="donut-legend-item">
+                                    <span class="legend-dot" style="background:#667eea"></span>
+                                    <span>Students (65%)</span>
+                                </div>
+                                <div class="donut-legend-item">
+                                    <span class="legend-dot" style="background:#f5576c"></span>
+                                    <span>Teachers (20%)</span>
+                                </div>
+                                <div class="donut-legend-item">
+                                    <span class="legend-dot" style="background:#4facfe"></span>
+                                    <span>Others (15%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-row">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Recent Enrollments</h3>
+                            <a href="#" class="btn btn-sm btn-outline">View All</a>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Course</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="table-user">
+                                            <div class="avatar avatar-sm bg-blue">AK</div>
+                                            <div><strong>Amit Kumar</strong><br><small>amit@email.com</small></div>
+                                        </div>
+                                    </td>
+                                    <td>Full-Stack Bootcamp</td>
+                                    <td>Apr 17, 2026</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn action-btn-danger" title="Remove"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="table-user">
+                                            <div class="avatar avatar-sm bg-pink">SR</div>
+                                            <div><strong>Sarah Robinson</strong><br><small>sarah@email.com</small></div>
+                                        </div>
+                                    </td>
+                                    <td>AI & ML Masterclass</td>
+                                    <td>Apr 16, 2026</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="action-btn" title="Approve"><i class="fas fa-check"></i></button>
+                                        <button class="action-btn action-btn-danger" title="Reject"><i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="table-user">
+                                            <div class="avatar avatar-sm bg-green">MP</div>
+                                            <div><strong>Mike Patel</strong><br><small>mike@email.com</small></div>
+                                        </div>
+                                    </td>
+                                    <td>Flutter Development</td>
+                                    <td>Apr 15, 2026</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn action-btn-danger" title="Remove"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="table-user">
+                                            <div class="avatar avatar-sm bg-orange">LW</div>
+                                            <div><strong>Lisa Wang</strong><br><small>lisa@email.com</small></div>
+                                        </div>
+                                    </td>
+                                    <td>UI/UX Design Pro</td>
+                                    <td>Apr 14, 2026</td>
+                                    <td><span class="status-badge status-inactive">Suspended</span></td>
+                                    <td>
+                                        <button class="action-btn" title="Reactivate"><i class="fas fa-redo"></i></button>
+                                        <button class="action-btn action-btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="activity-card">
+                        <div class="table-header">
+                            <h3>Live Classes Now</h3>
+                            <span class="live-indicator"><span class="live-dot"></span> 5 Active</span>
+                        </div>
+                        <div class="live-classes-list">
+                            <div class="live-class-item">
+                                <div class="live-class-icon gradient-bg-1"><i class="fas fa-code"></i></div>
+                                <div class="live-class-info">
+                                    <h4>React Advanced Patterns</h4>
+                                    <p>Dr. Emily Johnson · 127 students</p>
+                                </div>
+                                <a href="meeting.html" class="btn btn-sm btn-primary">Join</a>
+                            </div>
+                            <div class="live-class-item">
+                                <div class="live-class-icon gradient-bg-2"><i class="fas fa-brain"></i></div>
+                                <div class="live-class-info">
+                                    <h4>Neural Networks 101</h4>
+                                    <p>Prof. Alex Chen · 89 students</p>
+                                </div>
+                                <a href="meeting.html" class="btn btn-sm btn-primary">Join</a>
+                            </div>
+                            <div class="live-class-item">
+                                <div class="live-class-icon gradient-bg-3"><i class="fas fa-paint-brush"></i></div>
+                                <div class="live-class-info">
+                                    <h4>Figma Masterclass</h4>
+                                    <p>Sarah Miller · 64 students</p>
+                                </div>
+                                <a href="meeting.html" class="btn btn-sm btn-primary">Join</a>
+                            </div>
+                            <div class="live-class-item">
+                                <div class="live-class-icon gradient-bg-4"><i class="fas fa-database"></i></div>
+                                <div class="live-class-info">
+                                    <h4>SQL for Data Engineers</h4>
+                                    <p>Mike Thompson · 156 students</p>
+                                </div>
+                                <a href="meeting.html" class="btn btn-sm btn-primary">Join</a>
+                            </div>
+                            <div class="live-class-item">
+                                <div class="live-class-icon gradient-bg-5"><i class="fas fa-cloud"></i></div>
+                                <div class="live-class-info">
+                                    <h4>AWS Cloud Architect</h4>
+                                    <p>Dr. Raj Patel · 203 students</p>
+                                </div>
+                                <a href="meeting.html" class="btn btn-sm btn-primary">Join</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Teacher Applications -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-user-clock"></i> Pending Teacher Applications</h3>
+                        <span class="nav-badge badge-warning">5 pending</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Expertise</th>
+                                <th>Experience</th>
+                                <th>Applied</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="table-user">
+                                        <div class="avatar avatar-sm bg-purple">DR</div>
+                                        <div><strong>Dr. Robert James</strong><br><small>PhD Computer Science · MIT</small></div>
+                                    </div>
+                                </td>
+                                <td>AI, Machine Learning</td>
+                                <td>15 years</td>
+                                <td>Apr 16, 2026</td>
+                                <td>
+                                    <button class="btn btn-sm btn-success" onclick="approveTeacher(this)"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn btn-sm btn-danger" onclick="rejectTeacher(this)"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="table-user">
+                                        <div class="avatar avatar-sm bg-cyan">AW</div>
+                                        <div><strong>Alice Wong</strong><br><small>Senior Designer · 8 yrs at Google</small></div>
+                                    </div>
+                                </td>
+                                <td>UI/UX Design, Figma</td>
+                                <td>8 years</td>
+                                <td>Apr 15, 2026</td>
+                                <td>
+                                    <button class="btn btn-sm btn-success" onclick="approveTeacher(this)"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn btn-sm btn-danger" onclick="rejectTeacher(this)"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="table-user">
+                                        <div class="avatar avatar-sm bg-orange">NK</div>
+                                        <div><strong>Neha Kapoor</strong><br><small>Full-Stack Dev · Amazon</small></div>
+                                    </div>
+                                </td>
+                                <td>Web Development, React</td>
+                                <td>6 years</td>
+                                <td>Apr 14, 2026</td>
+                                <td>
+                                    <button class="btn btn-sm btn-success" onclick="approveTeacher(this)"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn btn-sm btn-danger" onclick="rejectTeacher(this)"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div class="tab-content" id="tab-users">
+                <div class="dashboard-header">
+                    <h1>User Management</h1>
+                    <button class="btn btn-primary" onclick="showModal('addUserModal')"><i class="fas fa-plus"></i> Add User</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <select>
+                            <option>All Roles</option>
+                            <option>Students</option>
+                            <option>Teachers</option>
+                            <option>Admins</option>
+                        </select>
+                        <select>
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Suspended</option>
+                            <option>Pending</option>
+                        </select>
+                        <input type="text" placeholder="Search users..." class="filter-search">
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th>Courses</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                    <div class="table-pagination">
+                        <span>Showing 1-10 of 5,240 users</span>
+                        <div class="pagination-btns">
+                            <button class="btn btn-sm btn-outline" disabled>Previous</button>
+                            <button class="btn btn-sm btn-primary">1</button>
+                            <button class="btn btn-sm btn-outline">2</button>
+                            <button class="btn btn-sm btn-outline">3</button>
+                            <button class="btn btn-sm btn-outline">...</button>
+                            <button class="btn btn-sm btn-outline">524</button>
+                            <button class="btn btn-sm btn-outline">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Tab -->
+            <div class="tab-content" id="tab-courses">
+                <div class="dashboard-header">
+                    <h1>Course Management</h1>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Course</button>
+                </div>
+                <div class="courses-admin-grid" id="coursesAdminGrid">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Teachers Tab -->
+            <div class="tab-content" id="tab-teachers">
+                <div class="dashboard-header">
+                    <h1>Teacher Management</h1>
+                </div>
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Teacher</th>
+                                <th>Expertise</th>
+                                <th>Courses</th>
+                                <th>Students</th>
+                                <th>Rating</th>
+                                <th>Revenue</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachersTableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="tab-settings">
+                <div class="dashboard-header">
+                    <h1>Platform Settings</h1>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-globe"></i> General Settings</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>Platform Name</label>
+                                <input type="text" value="EduNova">
+                            </div>
+                            <div class="form-group">
+                                <label>Tagline</label>
+                                <input type="text" value="Learn Without Limits">
+                            </div>
+                            <div class="form-group">
+                                <label>Support Email</label>
+                                <input type="email" value="support@edunova.com">
+                            </div>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-paint-roller"></i> Appearance</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>Primary Color</label>
+                                <div class="color-picker-group">
+                                    <input type="color" value="#667eea">
+                                    <input type="text" value="#667eea">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Accent Color</label>
+                                <div class="color-picker-group">
+                                    <input type="color" value="#764ba2">
+                                    <input type="text" value="#764ba2">
+                                </div>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label>Dark Mode</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-lock"></i> Security</h3>
+                        <div class="settings-form">
+                            <div class="form-group toggle-group">
+                                <label>Two-Factor Authentication</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label>Auto-approve Teachers</label>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label>Email Verification Required</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-dollar-sign"></i> Payment Settings</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select>
+                                    <option>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                    <option>GBP (£)</option>
+                                    <option>INR (₹)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Teacher Revenue Share (%)</label>
+                                <input type="number" value="60" min="0" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label>Admin Revenue Share (%)</label>
+                                <input type="number" value="40" min="0" max="100" disabled>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label>Free Trial Period</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Revenue Split Tab -->
+            <div class="tab-content" id="tab-revenue">
+                <div class="dashboard-header">
+                    <h1>Revenue & Earnings Split</h1>
+                    <select class="period-select">
+                        <option>Last 7 days</option>
+                        <option>Last 30 days</option>
+                        <option selected>All Time</option>
+                    </select>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Revenue</span>
+                            <h3 class="stat-card-value">$284,520</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-4"><i class="fas fa-piggy-bank"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Your Share (40%)</span>
+                            <h3 class="stat-card-value" style="color: #00b894;">$113,808</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Paid to Teachers (60%)</span>
+                            <h3 class="stat-card-value">$170,712</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Pending Payouts</span>
+                            <h3 class="stat-card-value">$12,450</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Split Visual -->
+                <div class="revenue-split-banner">
+                    <div class="split-visual">
+                        <div class="split-bar">
+                            <div class="split-teacher" style="width: 60%;">
+                                <span>Teachers — 60%</span>
+                            </div>
+                            <div class="split-platform" style="width: 40%;">
+                                <span>Your Share — 40%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: var(--text-secondary); margin-top: 12px;">Every course enrollment and live session fee is split: 60% to the teacher, 40% to you (admin).</p>
+                </div>
+
+                <!-- Per-Teacher Revenue Table -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-receipt"></i> Revenue by Teacher</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Teacher</th>
+                                <th>Total Revenue</th>
+                                <th>Teacher Share (60%)</th>
+                                <th>Your Share (40%)</th>
+                                <th>Courses</th>
+                                <th>Students</th>
+                                <th>Payout Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="revenueByTeacherBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Course Approvals Tab -->
+            <div class="tab-content" id="tab-course-approvals">
+
+            <!-- Enrollments Management Tab -->
+            <div class="tab-content" id="tab-enrollments">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-user-plus"></i> Enrollment Management</h1>
+                    <p style="color: var(--text-secondary);">View all student enrollments. Mark live course completions.</p>
+                </div>
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Teacher</th>
+                                <th>Mode</th>
+                                <th>Amount</th>
+                                <th>Enrolled</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminEnrollmentsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Course Approvals Tab -->
+            <div class="tab-content" id="tab-course-approvals">
+                <div class="dashboard-header">
+                    <h1>Course Price Approvals</h1>
+                    <p style="color: var(--text-secondary);">Review teacher-submitted courses. Approve or adjust prices before publishing.</p>
+                </div>
+
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Teacher</th>
+                                <th>Category</th>
+                                <th>Mode</th>
+                                <th>Proposed Price</th>
+                                <th>Your Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courseApprovalsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Live Classes Management Tab -->
+            <div class="tab-content" id="tab-meetings">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-video"></i> Live Classes Management</h1>
+                    <p style="color: var(--text-secondary);">Monitor and manage all live classes. Max duration: 3 hours per session.</p>
+                </div>
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Teacher</th>
+                                <th>Students</th>
+                                <th>Mode</th>
+                                <th>Scheduled</th>
+                                <th>Duration Limit</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminMeetingsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Content Management Tab -->
+            <div class="tab-content" id="tab-content">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-file-alt"></i> Content Management</h1>
+                    <p style="color: var(--text-secondary);">Manage platform content, certificates, and chatbot knowledge base.</p>
+                </div>
+                <div class="stats-grid" style="margin-bottom: 24px;">
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-certificate"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Certificates Issued</span>
+                            <h3 class="stat-card-value" id="totalCertsCount">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-robot"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Chatbot KB Entries</span>
+                            <h3 class="stat-card-value">40+</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-coins"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Active Currency</span>
+                            <h3 class="stat-card-value" id="activeCurrencyDisplay">INR</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-certificate"></i> All Issued Certificates</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Certificate ID</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Teacher</th>
+                                <th>Issued Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminCertsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-content" id="tab-reports">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-file-export"></i> Platform Reports</h1>
+                    <p style="color: var(--text-secondary);">Export and view platform analytics.</p>
+                </div>
+                <div class="stats-grid" style="margin-bottom: 24px;">
+                    <div class="stat-card" style="cursor:pointer;" onclick="exportReport('users')">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-users"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Users Report</span>
+                            <h3 class="stat-card-value" style="font-size: 16px;">Export CSV</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="exportReport('enrollments')">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-user-plus"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Enrollments Report</span>
+                            <h3 class="stat-card-value" style="font-size: 16px;">Export CSV</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="exportReport('revenue')">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-chart-bar"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Revenue Report</span>
+                            <h3 class="stat-card-value" style="font-size: 16px;">Export CSV</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="exportReport('certificates')">
+                        <div class="stat-card-icon gradient-bg-4"><i class="fas fa-certificate"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Certificates Report</span>
+                            <h3 class="stat-card-value" style="font-size: 16px;">Export CSV</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-history"></i> Platform Summary</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Count</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsSummaryBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <button class="modal-close" onclick="hideModal('addUserModal')" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="modal-form" id="addUserForm" onsubmit="handleAddUser(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newUserFirstName">First Name</label>
+                        <input type="text" id="newUserFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newUserLastName">Last Name</label>
+                        <input type="text" id="newUserLastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newUserEmail">Email</label>
+                    <input type="email" id="newUserEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="newUserRole">Role</label>
+                    <select id="newUserRole" required>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newUserPassword">Temporary Password</label>
+                    <input type="password" id="newUserPassword" required minlength="8">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="hideModal('addUserModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard — EduNova</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-user">
+            <div class="avatar avatar-lg bg-purple" id="teacherAvatar">EJ</div>
+            <div class="user-info">
+                <h4 id="teacherName">Dr. Emily Johnson</h4>
+                <span class="user-role"><i class="fas fa-chalkboard-teacher"></i> Teacher</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main</span>
+                <a href="#" class="nav-item active" data-tab="overview">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-tab="my-courses">
+                    <i class="fas fa-book-open"></i> My Courses
+                    <span class="nav-badge" id="courseCountBadge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="upload-course">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Course
+                </a>
+                <a href="#" class="nav-item" data-tab="my-students">
+                    <i class="fas fa-users"></i> My Students
+                </a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Finance</span>
+                <a href="#" class="nav-item" data-tab="earnings">
+                    <i class="fas fa-wallet"></i> Earnings
+                </a>
+                <a href="#" class="nav-item" data-tab="schedule">
+                    <i class="fas fa-calendar-alt"></i> Schedule
+                </a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Account</span>
+                <a href="meeting.html" class="nav-item">
+                    <i class="fas fa-video"></i> Start Live Class
+                </a>
+                <a href="login.html" class="nav-item nav-item-danger" onclick="localStorage.removeItem('edunova_session')">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Top Bar -->
+        <header class="dashboard-topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search courses, students...">
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="topbar-btn"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+                <div class="topbar-user-menu">
+                    <button class="topbar-user" id="topbarUserBtn">
+                        <div class="avatar avatar-sm bg-purple">EJ</div>
+                        <span id="topbarTeacherName">Dr. Emily</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="topbar-dropdown" id="topbarDropdown">
+                        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                        <a href="courses.html"><i class="fas fa-book-open"></i> Browse Courses</a>
+                        <a href="meeting.html"><i class="fas fa-video"></i> Live Classes</a>
+                        <div class="topbar-dropdown-divider"></div>
+                        <a href="login.html" onclick="localStorage.removeItem('edunova_session')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="tab-overview">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Welcome back, Teacher! 👋</h1>
+                        <p>Here's your teaching performance overview.</p>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-book-open"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">My Courses</span>
+                            <h3 class="stat-card-value" id="statCourses">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-users"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Students</span>
+                            <h3 class="stat-card-value" id="statStudents">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-wallet"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">My Earnings (60%)</span>
+                            <h3 class="stat-card-value" id="statEarnings">$0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-4"><i class="fas fa-star"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Avg Rating</span>
+                            <h3 class="stat-card-value" id="statRating">0.0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Split Info -->
+                <div class="revenue-split-banner">
+                    <div class="split-visual">
+                        <div class="split-bar">
+                            <div class="split-teacher" style="width: 60%;">
+                                <span>Your Share — 60%</span>
+                            </div>
+                            <div class="split-platform" style="width: 40%;">
+                                <span>Platform — 40%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="split-details">
+                        <div class="split-detail-item">
+                            <h4>Your Earnings</h4>
+                            <p class="split-amount" id="splitTeacherAmount">$0.00</p>
+                        </div>
+                        <div class="split-detail-item">
+                            <h4>Platform Fee</h4>
+                            <p class="split-amount split-platform-amount" id="splitPlatformAmount">$0.00</p>
+                        </div>
+                        <div class="split-detail-item">
+                            <h4>Total Revenue</h4>
+                            <p class="split-amount" id="splitTotalAmount">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Enrollments -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-user-plus"></i> Recent Student Enrollments</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Your Share (60%)</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherEnrollmentsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- My Courses Tab -->
+            <div class="tab-content" id="tab-my-courses">
+                <div class="dashboard-header">
+                    <h1>My Courses</h1>
+                    <a href="#" class="btn btn-primary" onclick="event.preventDefault(); switchTab('upload-course')"><i class="fas fa-plus"></i> Upload New Course</a>
+                </div>
+                <div class="courses-admin-grid" id="teacherCoursesGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Upload Course Tab -->
+            <div class="tab-content" id="tab-upload-course">
+                <div class="dashboard-header">
+                    <h1>Upload New Course</h1>
+                </div>
+                <div class="upload-course-form-wrapper">
+                    <form class="upload-course-form" id="uploadCourseForm">
+                        <div class="settings-grid">
+                            <div class="settings-card" style="grid-column: 1 / -1;">
+                                <h3><i class="fas fa-info-circle"></i> Course Information</h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Course Title</label>
+                                        <input type="text" id="courseTitle" placeholder="e.g., Advanced React Patterns & Performance" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Category</label>
+                                            <select id="courseCategory" required>
+                                                <option value="">Select category</option>
+                                                <option value="web-dev">Web Development</option>
+                                                <option value="data-science">Data Science</option>
+                                                <option value="mobile">Mobile Development</option>
+                                                <option value="ai-ml">AI & Machine Learning</option>
+                                                <option value="design">Design</option>
+                                                <option value="business">Business</option>
+                                                <option value="cloud">Cloud Computing</option>
+                                                <option value="cybersecurity">Cybersecurity</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Level</label>
+                                            <select id="courseLevel" required>
+                                                <option value="">Select level</option>
+                                                <option value="Beginner">Beginner</option>
+                                                <option value="Intermediate">Intermediate</option>
+                                                <option value="Advanced">Advanced</option>
+                                                <option value="All Levels">All Levels</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Course Description</label>
+                                        <textarea id="courseDescription" rows="4" placeholder="Describe what students will learn, prerequisites, and outcomes..." required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Total Hours of Content</label>
+                                        <input type="number" id="courseHours" placeholder="e.g., 24" min="1" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3><i class="fas fa-video"></i> Course Video</h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Upload Course Video / Intro</label>
+                                        <div class="file-upload video-upload">
+                                            <input type="file" id="courseVideo" accept="video/*">
+                                            <div class="file-upload-label">
+                                                <i class="fas fa-film" style="font-size: 32px; color: var(--primary);"></i>
+                                                <span>Drop video file here or click to browse</span>
+                                                <small>MP4, WebM up to 2GB</small>
+                                            </div>
+                                        </div>
+                                        <div class="video-preview" id="videoPreviewBox" style="display: none;">
+                                            <video id="courseVideoPreview" controls style="width: 100%; border-radius: 12px;"></video>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Upload Additional Materials (optional)</label>
+                                        <div class="file-upload">
+                                            <input type="file" id="courseMaterials" accept=".pdf,.zip,.doc,.docx" multiple>
+                                            <div class="file-upload-label">
+                                                <i class="fas fa-file-alt"></i>
+                                                <span>Slides, PDFs, resources</span>
+                                                <small>PDF, ZIP, DOC up to 50MB each</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3><i class="fas fa-dollar-sign"></i> Pricing</h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Your Proposed Price (USD)</label>
+                                        <input type="number" id="coursePrice" placeholder="e.g., 49.99" min="0" step="0.01" required>
+                                        <small style="color: var(--text-muted);">Admin may approve or adjust the final price.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Teaching Mode for this Course</label>
+                                        <select id="courseTeachingMode" required>
+                                            <option value="recorded">Recorded Course (Self-paced)</option>
+                                            <option value="individual">Individual Live Sessions</option>
+                                            <option value="group">Group Live Sessions</option>
+                                            <option value="hybrid">Recorded + Live Sessions</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="groupSizeGroup" style="display: none;">
+                                        <label>Max Group Size</label>
+                                        <input type="number" id="maxGroupSize" placeholder="e.g., 30" min="2" max="500">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Allow Free Demo?</label>
+                                        <div class="interest-tags">
+                                            <label class="tag-checkbox">
+                                                <input type="checkbox" id="allowDemo" checked> Yes — 1 free demo class for students
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="revenue-info-box">
+                                        <div class="revenue-info-icon"><i class="fas fa-calculator"></i></div>
+                                        <div>
+                                            <h4>Revenue Estimate</h4>
+                                            <p>At <strong>$<span id="previewPrice">0</span></strong> per enrollment:</p>
+                                            <p>You earn: <strong style="color: #00b894;">$<span id="previewTeacherShare">0.00</span></strong> (60%) · Platform: <strong>$<span id="previewPlatformShare">0.00</span></strong> (40%)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end;">
+                            <button type="button" class="btn btn-outline" onclick="switchTab('my-courses')">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-cloud-upload-alt"></i> Submit for Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Students Tab -->
+            <div class="tab-content" id="tab-my-students">
+                <div class="dashboard-header">
+                    <h1>My Students</h1>
+                </div>
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Mode</th>
+                                <th>Enrolled</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myStudentsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Earnings Tab -->
+            <div class="tab-content" id="tab-earnings">
+                <div class="dashboard-header">
+                    <h1>Earnings & Revenue</h1>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-3"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Earned (60%)</span>
+                            <h3 class="stat-card-value" id="totalEarned">$4,230.00</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-1"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Pending Payout</span>
+                            <h3 class="stat-card-value">$1,280.00</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-2"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">Total Revenue</span>
+                            <h3 class="stat-card-value">$7,050.00</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gradient-bg-4"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-card-info">
+                            <span class="stat-card-label">This Month</span>
+                            <h3 class="stat-card-value">$890.00</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings Table -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-receipt"></i> Transaction History</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Total Paid</th>
+                                <th>Your Share (60%)</th>
+                                <th>Platform (40%)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="earningsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Schedule Tab -->
+            <div class="tab-content" id="tab-schedule">
+                <div class="dashboard-header">
+                    <h1>Teaching Schedule</h1>
+                    <button class="btn btn-primary" onclick="showModal('scheduleModal')"><i class="fas fa-plus"></i> Schedule Class</button>
+                </div>
+                <div class="schedule-grid" id="scheduleGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Schedule Class Modal -->
+    <div class="modal-overlay" id="scheduleModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Schedule a Live Class</h3>
+                <button class="modal-close" onclick="hideModal('scheduleModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="modal-form" id="scheduleForm">
+                <div class="form-group">
+                    <label>Course</label>
+                    <select id="schedCourse" required>
+                        <option value="">Select course</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="schedDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" id="schedTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" id="schedDuration" value="60" min="15" max="240" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="schedType" required>
+                            <option value="group">Group Class</option>
+                            <option value="individual">Individual (1-on-1)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="hideModal('scheduleModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Schedule Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/teacher-dashboard.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

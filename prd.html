@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNova — Product Requirement Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0b14;
+            --bg-secondary: #12131e;
+            --bg-card: #181928;
+            --border: rgba(102,126,234,0.15);
+            --text-primary: #e8e8f0;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --gradient-primary: linear-gradient(135deg, #667eea, #764ba2);
+            --accent: #667eea;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; }
+
+        .prd-container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+        /* ---- Header ---- */
+        .prd-header {
+            text-align: center; padding: 60px 40px; background: var(--bg-card);
+            border-radius: 20px; border: 1px solid var(--border); margin-bottom: 40px;
+            position: relative; overflow: hidden;
+        }
+        .prd-header::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background: linear-gradient(135deg, #00b894, #00cec9, #667eea, #764ba2); }
+        .prd-header h1 { font-family:'Space Grotesk',sans-serif; font-size:2.8rem; background:var(--gradient-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:10px; }
+        .prd-header .subtitle { font-size:1.1rem; color:var(--text-secondary); }
+        .prd-meta { display:flex; justify-content:center; gap:32px; margin-top:24px; flex-wrap:wrap; }
+        .prd-meta-item { font-size:0.85rem; color:var(--text-muted); }
+        .prd-meta-item strong { color:var(--accent); }
+
+        /* ---- Table of Contents ---- */
+        .prd-nav {
+            background:var(--bg-card); border-radius:16px; border:1px solid var(--border);
+            padding:24px; margin-bottom:40px; position:sticky; top:10px; z-index:100;
+        }
+        .prd-nav h3 { font-family:'Space Grotesk',sans-serif; color:var(--accent); margin-bottom:12px; font-size:1rem; }
+        .prd-nav ol { list-style:none; display:flex; flex-wrap:wrap; gap:8px; }
+        .prd-nav ol li a {
+            display:inline-block; padding:6px 14px; background:rgba(102,126,234,0.1);
+            color:var(--text-secondary); border-radius:20px; text-decoration:none;
+            font-size:0.82rem; transition:all 0.2s;
+        }
+        .prd-nav ol li a:hover { background:rgba(102,126,234,0.25); color:var(--text-primary); }
+
+        /* ---- Sections ---- */
+        .prd-section {
+            background:var(--bg-card); border-radius:16px; border:1px solid var(--border);
+            padding:32px; margin-bottom:24px;
+        }
+        .prd-section h2 {
+            font-family:'Space Grotesk',sans-serif; font-size:1.5rem; color:var(--text-primary);
+            margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--border);
+            display:flex; align-items:center; gap:12px;
+        }
+        .prd-section h2 i { color:var(--accent); font-size:1.2rem; }
+        .prd-section h3 { font-size:1.1rem; color:var(--accent); margin:20px 0 10px; }
+        .prd-section h4 { font-size:0.95rem; color:var(--text-secondary); margin:16px 0 8px; }
+        .prd-section p, .prd-section li { color:var(--text-secondary); margin-bottom:8px; }
+        .prd-section ul, .prd-section ol { padding-left:24px; }
+
+        .prd-section table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .prd-section table th, .prd-section table td { padding:10px 14px; border:1px solid var(--border); text-align:left; font-size:0.88rem; }
+        .prd-section table th { background:rgba(102,126,234,0.1); color:var(--accent); font-weight:600; }
+        .prd-section table td { color:var(--text-secondary); }
+
+        .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+        .badge-done { background:rgba(0,184,148,0.15); color:#00b894; }
+        .badge-progress { background:rgba(253,203,110,0.15); color:#fdcb6e; }
+        .badge-planned { background:rgba(108,92,231,0.15); color:#a78bfa; }
+        .badge-high { background:rgba(214,48,49,0.15); color:#ff7675; }
+        .badge-med { background:rgba(253,203,110,0.15); color:#fdcb6e; }
+        .badge-low { background:rgba(0,206,201,0.15); color:#00cec9; }
+
+        /* ---- User stories ---- */
+        .story-card {
+            background:rgba(102,126,234,0.06); border:1px solid var(--border);
+            border-radius:12px; padding:16px 20px; margin-bottom:12px;
+        }
+        .story-card .story-id { font-size:0.7rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+        .story-card .story-text { color:var(--text-secondary); margin:6px 0 0; font-size:0.9rem; }
+        .story-card .story-text em { color:var(--text-primary); font-style:normal; font-weight:600; }
+
+        /* ---- KPI cards ---- */
+        #kpiGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-top:16px; }
+        .kpi-card { background:rgba(102,126,234,0.08); border-radius:12px; padding:20px; text-align:center; }
+        .kpi-card .kpi-value { font-size:2rem; font-weight:700; font-family:'Space Grotesk',sans-serif; }
+        .kpi-card .kpi-label { font-size:0.8rem; color:var(--text-muted); margin-top:4px; }
+        .kpi-card .kpi-target { font-size:0.72rem; color:var(--accent); margin-top:6px; }
+
+        /* ---- Auto-update banner ---- */
+        .auto-update-banner {
+            text-align:center; padding:16px; background:rgba(0,184,148,0.08);
+            border-radius:12px; margin-top:8px; font-size:0.82rem; color:var(--text-muted);
+        }
+        .auto-update-banner i { color:#00b894; margin-right:6px; }
+
+        /* ---- Navigation links ---- */
+        .back-link {
+            position:fixed; top:20px; left:20px; background:var(--bg-card);
+            border:1px solid var(--border); color:var(--accent); padding:10px 18px;
+            border-radius:10px; text-decoration:none; font-size:0.85rem; z-index:200; transition:all 0.2s;
+        }
+        .back-link:hover { background:rgba(102,126,234,0.15); }
+        .frd-link {
+            position:fixed; top:20px; right:140px; background:var(--bg-card);
+            border:1px solid var(--border); color:var(--accent); padding:10px 18px;
+            border-radius:10px; text-decoration:none; font-size:0.85rem; z-index:200; transition:all 0.2s;
+        }
+        .frd-link:hover { background:rgba(102,126,234,0.15); }
+        .print-btn {
+            position:fixed; top:20px; right:20px; background:var(--gradient-primary);
+            color:#fff; padding:10px 18px; border-radius:10px; border:none;
+            font-size:0.85rem; cursor:pointer; z-index:200;
+        }
+
+        /* ---- Roadmap ---- */
+        .roadmap-phase { border-left:3px solid var(--accent); padding-left:20px; margin-bottom:24px; position:relative; }
+        .roadmap-phase::before { content:''; position:absolute; left:-7px; top:4px; width:11px; height:11px; border-radius:50%; background:var(--accent); }
+        .roadmap-phase .phase-title { font-family:'Space Grotesk',sans-serif; font-size:1.05rem; color:var(--text-primary); margin-bottom:8px; }
+        .roadmap-phase .phase-title .badge { margin-left:8px; }
+
+        /* ---- Competitive ---- */
+        .comp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:16px; }
+        .comp-card { background:rgba(102,126,234,0.06); border:1px solid var(--border); border-radius:12px; padding:20px; }
+        .comp-card h4 { color:var(--text-primary); margin-bottom:8px; font-size:0.95rem; }
+        .comp-card p { font-size:0.82rem; color:var(--text-muted); }
+        .comp-card .diff-badge { font-size:0.7rem; background:rgba(0,184,148,0.15); color:#00b894; padding:2px 8px; border-radius:8px; margin-top:8px; display:inline-block; }
+
+        @media print {
+            body { background:#fff; color:#111; }
+            .prd-header,.prd-section,.prd-nav { background:#fff; border-color:#ddd; }
+            .prd-header h1 { -webkit-text-fill-color:#667eea; }
+            .prd-section h2,.prd-section h3,.prd-section table th { color:#333; }
+            .prd-section p,.prd-section li,.prd-section table td { color:#555; }
+            .back-link,.print-btn,.frd-link { display:none; }
+        }
+        @media (max-width:768px) {
+            .prd-header h1 { font-size:1.8rem; }
+            .prd-container { padding:20px 12px; }
+            .prd-section { padding:20px; }
+            .prd-nav { position:static; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="admin.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Admin</a>
+<a href="frd.html" class="frd-link"><i class="fas fa-book"></i> View FRD</a>
+<button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print / Export PDF</button>
+
+<div class="prd-container">
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="prd-header">
+        <h1>EduNova — Product Requirement Document</h1>
+        <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
+        <div class="prd-meta">
+            <div class="prd-meta-item">Version: <strong>3.0</strong></div>
+            <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
+            <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
+            <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
+        </div>
+        <div class="auto-update-banner">
+            <i class="fas fa-sync-alt"></i> This document auto-updates from live platform data and codebase state on every page load. KPIs and feature statuses reflect real-time state.
+        </div>
+    </div>
+
+    <!-- ==================== TABLE OF CONTENTS ==================== -->
+    <div class="prd-nav">
+        <h3><i class="fas fa-list"></i> Table of Contents</h3>
+        <ol>
+            <li><a href="#sec-vision">Product Vision</a></li>
+            <li><a href="#sec-objectives">Objectives & Goals</a></li>
+            <li><a href="#sec-audience">Target Audience</a></li>
+            <li><a href="#sec-personas">User Personas</a></li>
+            <li><a href="#sec-stories">User Stories</a></li>
+            <li><a href="#sec-features">Feature Requirements</a></li>
+            <li><a href="#sec-nonfunc">Non-Functional Requirements</a></li>
+            <li><a href="#sec-ux">UX/UI Requirements</a></li>
+            <li><a href="#sec-competitive">Competitive Differentiators</a></li>
+            <li><a href="#sec-revenue">Revenue & Monetization</a></li>
+            <li><a href="#sec-roadmap">Product Roadmap</a></li>
+            <li><a href="#sec-risks">Risks & Mitigations</a></li>
+            <li><a href="#sec-success">Success Metrics</a></li>
+            <li><a href="#sec-dependencies">Dependencies & Constraints</a></li>
+            <li><a href="#sec-glossary">Glossary</a></li>
+            <li><a href="#sec-kpi">Live KPI Dashboard</a></li>
+        </ol>
+    </div>
+
+    <!-- ==================== 1. PRODUCT VISION ==================== -->
+    <div class="prd-section" id="sec-vision">
+        <h2><i class="fas fa-eye"></i> 1. Product Vision</h2>
+
+        <h3>1.1 Vision Statement</h3>
+        <p><strong>"Learn Without Limits"</strong> — EduNova is an inclusive, all-in-one online education platform that makes quality education accessible to every learner, from playway toddlers to PhD researchers, across all major education boards and professional disciplines, in their local currency and language of instruction.</p>
+
+        <h3>1.2 Mission</h3>
+        <p>To bridge educational gaps by providing a single platform where students of any age, any board, and any career stage can find expert-led courses — self-paced or live — earn verifiable certificates, and where teachers can build a sustainable income by sharing their knowledge with a global audience.</p>
+
+        <h3>1.3 Problem Statement</h3>
+        <ul>
+            <li><strong>Fragmentation:</strong> Students must navigate multiple platforms for different education levels (K-12 vs college vs professional) and different boards (CBSE, ICSE, IB, State boards).</li>
+            <li><strong>Pricing Barriers:</strong> Most global ed-tech platforms price in USD, creating affordability barriers for students in developing countries.</li>
+            <li><strong>Completion Accountability:</strong> Self-paced courses have low completion rates; live courses lack structured completion workflows.</li>
+            <li><strong>Certificate Credibility:</strong> Many platforms offer generic certificates without unique verification IDs or URLs.</li>
+            <li><strong>Teacher Monetization:</strong> Teachers often lack transparent revenue-sharing models.</li>
+        </ul>
+
+        <h3>1.4 Solution</h3>
+        <p>EduNova solves these problems through:</p>
+        <ul>
+            <li>A unified <strong>120+ course catalog</strong> spanning playway to PhD and 12+ professional categories</li>
+            <li><strong>18-currency localization</strong> with timezone-based auto-detection (default INR)</li>
+            <li><strong>Dual completion model</strong> — self-completion for recorded courses, teacher/admin-gated completion for live courses</li>
+            <li><strong>Verifiable certificates</strong> with unique ENOVA-XXX-XXX IDs and verification URLs</li>
+            <li><strong>Transparent 60/40 revenue split</strong> favoring teachers</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 2. OBJECTIVES ==================== -->
+    <div class="prd-section" id="sec-objectives">
+        <h2><i class="fas fa-bullseye"></i> 2. Objectives & Goals</h2>
+
+        <h3>2.1 Business Objectives</h3>
+        <table>
+            <thead><tr><th>Objective</th><th>Target</th><th>Timeframe</th><th>Priority</th></tr></thead>
+            <tbody>
+                <tr><td>Onboard quality teachers across all education levels</td><td>500+ teachers</td><td>Year 1</td><td><span class="badge badge-high">High</span></td></tr>
+                <tr><td>Build comprehensive course catalog for Indian education boards</td><td>500+ courses</td><td>Year 1</td><td><span class="badge badge-high">High</span></td></tr>
+                <tr><td>Achieve student enrollment milestone</td><td>50,000 enrollments</td><td>Year 1</td><td><span class="badge badge-high">High</span></td></tr>
+                <tr><td>Generate platform revenue through 40% share</td><td>₹1 Crore</td><td>Year 1</td><td><span class="badge badge-med">Medium</span></td></tr>
+                <tr><td>Maintain high course completion rate</td><td>>60%</td><td>Ongoing</td><td><span class="badge badge-med">Medium</span></td></tr>
+                <tr><td>Expand to international markets</td><td>18 currencies</td><td>Launch</td><td><span class="badge badge-done">Done</span></td></tr>
+            </tbody>
+        </table>
+
+        <h3>2.2 Product Objectives</h3>
+        <ul>
+            <li>Provide an intuitive, mobile-responsive platform that works without app installation</li>
+            <li>Enable teachers to upload, price, and deliver courses with minimal friction</li>
+            <li>Ensure every completed course produces a verifiable, downloadable certificate</li>
+            <li>Maintain data confidentiality through AI chatbot guardrails</li>
+            <li>Give the Super Admin complete operational control without developer dependency</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 3. TARGET AUDIENCE ==================== -->
+    <div class="prd-section" id="sec-audience">
+        <h2><i class="fas fa-users"></i> 3. Target Audience</h2>
+
+        <h3>3.1 Primary Segments</h3>
+        <table>
+            <thead><tr><th>Segment</th><th>Age Range</th><th>Education Level</th><th>Key Need</th></tr></thead>
+            <tbody>
+                <tr><td>Early Learners</td><td>3-6 years</td><td>Playway / Nursery</td><td>Fun, interactive foundational learning</td></tr>
+                <tr><td>School Students (Primary)</td><td>6-11 years</td><td>Class 1-5</td><td>Board-aligned academics (CBSE, ICSE, IB, State)</td></tr>
+                <tr><td>School Students (Middle)</td><td>11-14 years</td><td>Class 6-8</td><td>Subject mastery, exam preparation</td></tr>
+                <tr><td>School Students (Secondary)</td><td>14-16 years</td><td>Class 9-10</td><td>Board exams, foundation courses</td></tr>
+                <tr><td>Senior Secondary Students</td><td>16-18 years</td><td>Class 11-12</td><td>JEE/NEET prep, stream-specific courses</td></tr>
+                <tr><td>Undergraduate Students</td><td>18-22 years</td><td>B.Tech, BBA, B.Sc, etc.</td><td>Subject depth, skill building</td></tr>
+                <tr><td>Postgraduate Students</td><td>22-28 years</td><td>MBA, M.Tech, MCA</td><td>Specialization, research skills</td></tr>
+                <tr><td>Doctoral Researchers</td><td>25+ years</td><td>PhD</td><td>Research methodologies, thesis support</td></tr>
+                <tr><td>Working Professionals</td><td>22-45 years</td><td>Professional</td><td>Upskilling, career switching, certifications</td></tr>
+                <tr><td>Teachers / Educators</td><td>25-60 years</td><td>Any</td><td>Monetize expertise, reach students globally</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.2 Geographic Focus</h3>
+        <ul>
+            <li><strong>Primary Market:</strong> India (INR default, CBSE/ICSE/State board courses)</li>
+            <li><strong>Secondary Markets:</strong> South Asia (Bangladesh, Pakistan, Sri Lanka, Nepal)</li>
+            <li><strong>Tertiary Markets:</strong> Middle East (UAE, Saudi Arabia), Southeast Asia, Global English-speaking</li>
+            <li><strong>Currency coverage:</strong> 18 currencies across all target regions</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 4. USER PERSONAS ==================== -->
+    <div class="prd-section" id="sec-personas">
+        <h2><i class="fas fa-user-circle"></i> 4. User Personas</h2>
+
+        <h3>4.1 Persona: Rahul (Student)</h3>
+        <table>
+            <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+            <tbody>
+                <tr><td>Age</td><td>20, Undergraduate (B.Tech CSE, 2nd Year)</td></tr>
+                <tr><td>Location</td><td>Jaipur, India</td></tr>
+                <tr><td>Goal</td><td>Learn full-stack web development to get an internship</td></tr>
+                <tr><td>Pain Point</td><td>Can't afford USD-priced courses; needs certificate for resume</td></tr>
+                <tr><td>EduNova Solution</td><td>INR pricing, 120+ tech courses, verifiable certificates</td></tr>
+                <tr><td>Preferred Mode</td><td>Self-paced (recorded) with weekend live doubt sessions</td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.2 Persona: Dr. Priya (Teacher)</h3>
+        <table>
+            <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+            <tbody>
+                <tr><td>Age</td><td>35, PhD in Data Science</td></tr>
+                <tr><td>Location</td><td>Bangalore, India</td></tr>
+                <tr><td>Goal</td><td>Build passive income by teaching AI/ML courses online</td></tr>
+                <tr><td>Pain Point</td><td>Existing platforms take 50-70% cut; no pricing control</td></tr>
+                <tr><td>EduNova Solution</td><td>60% teacher share, propose own pricing, live + recorded modes</td></tr>
+                <tr><td>Preferred Mode</td><td>Hybrid (recorded lectures + weekly live Q&A)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.3 Persona: Parent (K-12 Decision Maker)</h3>
+        <table>
+            <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+            <tbody>
+                <tr><td>Age</td><td>38, Parent of Class 6 student (CBSE board)</td></tr>
+                <tr><td>Location</td><td>Delhi, India</td></tr>
+                <tr><td>Goal</td><td>Find quality supplementary education for child</td></tr>
+                <tr><td>Pain Point</td><td>Most platforms focus on competitive exams, not board-aligned curriculum</td></tr>
+                <tr><td>EduNova Solution</td><td>Board-specific courses (CBSE, ICSE, State, IB), demo classes</td></tr>
+                <tr><td>Preferred Mode</td><td>1-on-1 Live for personalized attention</td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.4 Persona: Super Admin (Platform Owner)</h3>
+        <table>
+            <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+            <tbody>
+                <tr><td>Role</td><td>Platform owner and operator</td></tr>
+                <tr><td>Goal</td><td>Full operational control without developer dependency</td></tr>
+                <tr><td>Key Needs</td><td>User management, course approvals, revenue visibility, reports, teacher vetting</td></tr>
+                <tr><td>EduNova Solution</td><td>11-tab admin dashboard with all CRUD operations, CSV exports, real-time stats</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 5. USER STORIES ==================== -->
+    <div class="prd-section" id="sec-stories">
+        <h2><i class="fas fa-book-reader"></i> 5. User Stories</h2>
+
+        <h3>5.1 Student Stories</h3>
+        <div class="story-card">
+            <div class="story-id">US-S01 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>browse and filter 120+ courses</em> by education level, category, difficulty, price, and rating so that I can find the right course quickly.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S02 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>see course prices in my local currency</em> so that I can understand the cost without manual conversion.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S03 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>enroll in a course and choose my learning mode</em> (self-paced, 1-on-1 live, group, hybrid) so that I can learn in my preferred style.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S04 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>mark self-paced courses as complete</em> and claim a downloadable certificate with a unique verification ID.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S05 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student in a live course</em>, I want <em>my teacher or admin to mark my completion</em> so that certificate integrity is maintained.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S06 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>ask the chatbot general questions</em> about courses and the platform while being confident that my personal information stays private.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S07 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>track my progress</em> across enrolled courses and view all my certificates in one place.</p>
+        </div>
+
+        <h3>5.2 Teacher Stories</h3>
+        <div class="story-card">
+            <div class="story-id">US-T01 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want to <em>register and submit my application</em> with qualifications and expertise so the admin can review and approve me.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-T02 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want to <em>upload courses with proposed pricing</em> and have the admin approve or adjust the price before publishing.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-T03 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want to <em>mark live course students as complete</em> so they can receive their certificates when genuinely finished.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-T04 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want to <em>view my earnings</em> with a clear 60% teacher / 40% platform revenue breakdown.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-T05 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want <em>live classes limited to 3 hours</em> with a timer warning at 2h50m so sessions don't run indefinitely.</p>
+        </div>
+
+        <h3>5.3 Admin Stories</h3>
+        <div class="story-card">
+            <div class="story-id">US-A01 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want to <em>add, suspend, reactivate, and delete users</em> of any role so I have full control over platform membership.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A02 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want to <em>approve or reject teacher applications</em> with changes persisted permanently.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A03 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want to <em>approve or reject courses and set final pricing</em> before they appear in the catalog.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A04 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want to <em>export CSV reports</em> for users, enrollments, revenue, and certificates for offline analysis.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A05 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want to <em>revoke certificates</em> if they were issued in error.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A06 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want <em>access control</em> so that only I can access the admin dashboard, and students/teachers are redirected if they try.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A07 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want an <em>auto-updating PRD and FRD</em> so documentation stays current with every platform change.</p>
+        </div>
+    </div>
+
+    <!-- ==================== 6. FEATURE REQUIREMENTS ==================== -->
+    <div class="prd-section" id="sec-features">
+        <h2><i class="fas fa-puzzle-piece"></i> 6. Feature Requirements</h2>
+
+        <h3>6.1 Feature Matrix</h3>
+        <table>
+            <thead><tr><th>Feature ID</th><th>Feature Name</th><th>Priority</th><th>Status</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>F-01</td><td>User Registration & Login</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Student & teacher registration with password strength, login with verification, session management</td></tr>
+                <tr><td>F-02</td><td>Course Catalog (120+ courses)</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Playway to PhD, all boards, 5-dimension filtering, real-time search</td></tr>
+                <tr><td>F-03</td><td>Currency Localization (18 currencies)</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Auto-detect via timezone, manual selector, INR base, EduCurrency API</td></tr>
+                <tr><td>F-04</td><td>Enrollment & Payment Flow</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Teaching mode selection, payment recording, enrollment tracking</td></tr>
+                <tr><td>F-05</td><td>Student Dashboard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Enrolled courses, progress tracking, certificates, payments, demos</td></tr>
+                <tr><td>F-06</td><td>Teacher Dashboard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Courses, students, earnings, live class management</td></tr>
+                <tr><td>F-07</td><td>Certificate System</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Canvas PNG render, unique ENOVA-XXX-XXX IDs, verification URLs, download</td></tr>
+                <tr><td>F-08</td><td>Live Class Meeting Room</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>3-hour max timer, 10-min warning, auto-end, meeting controls</td></tr>
+                <tr><td>F-09</td><td>AI Chatbot</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>40+ KB knowledge base, confidentiality-first, XSS protection, BLOCKED_KEYWORDS</td></tr>
+                <tr><td>F-10</td><td>Super Admin Dashboard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>11 tabs, full CRUD, user/teacher/course management, revenue, reports</td></tr>
+                <tr><td>F-11</td><td>Access Control & Security</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Session validation, role-based redirects, password verification, suspend/block</td></tr>
+                <tr><td>F-12</td><td>CSV Report Export</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Users, enrollments, revenue (with 60/40 split), certificates</td></tr>
+                <tr><td>F-13</td><td>Teacher Approval Workflow</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Pending → Approved/Rejected, persisted, blocks login if not approved</td></tr>
+                <tr><td>F-14</td><td>Course Price Approval</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Teachers propose, admin sets final price before publish</td></tr>
+                <tr><td>F-15</td><td>Live Completion Gating</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Live courses: only teacher/admin marks complete. Self-paced: student self-marks</td></tr>
+                <tr><td>F-16</td><td>Auto-Updating FRD</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Self-generating FRD with live stats from localStorage</td></tr>
+                <tr><td>F-17</td><td>Auto-Updating PRD</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>This document — product vision, stories, KPIs, roadmap with live data</td></tr>
+                <tr><td>F-18</td><td>Demo Class Booking</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Students can request trial/demo sessions</td></tr>
+                <tr><td>F-19</td><td>Platform Data Reset</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Admin can clear specific data categories (users, enrollments, etc.)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>6.2 Feature Details by Module</h3>
+
+        <h4>6.2.1 Course Catalog Engine</h4>
+        <ul>
+            <li>120 courses across 9 education levels and 12+ categories</li>
+            <li>5-axis filtering: education level, category, difficulty, price range, rating</li>
+            <li>All boards covered: CBSE, ICSE, State Boards, IB, Cambridge, IGCSE</li>
+            <li>Professional categories: Web Dev, AI/ML, Cloud, Cybersecurity, Data Science, DevOps, Mobile Dev, Blockchain, UI/UX</li>
+            <li>Each course displays: title, instructor, price (localized), original price, rating, student count, duration, lectures, badge</li>
+        </ul>
+
+        <h4>6.2.2 Certificate Generation Engine</h4>
+        <ul>
+            <li>HTML5 Canvas rendering to PNG</li>
+            <li>Fields: Certificate Name, Provider (EduNova), Student Name, Course, Teacher, Completion ID (ENOVA-XXX-XXX), Verification URL, Issue Date</li>
+            <li>Download as PNG file</li>
+            <li>Preview modal with all details</li>
+            <li>Admin can view all certificates and revoke</li>
+        </ul>
+
+        <h4>6.2.3 Revenue Engine</h4>
+        <ul>
+            <li>60% teacher share / 40% platform share</li>
+            <li>Revenue tracked per enrollment amount</li>
+            <li>Teacher dashboard shows earnings breakdown</li>
+            <li>Admin dashboard shows all teacher revenues</li>
+            <li>CSV export with split amounts</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 7. NON-FUNCTIONAL ==================== -->
+    <div class="prd-section" id="sec-nonfunc">
+        <h2><i class="fas fa-cogs"></i> 7. Non-Functional Requirements</h2>
+        <table>
+            <thead><tr><th>Requirement</th><th>Specification</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Performance</td><td>Pages load in < 2 seconds on 3G (no framework overhead, pure HTML/CSS/JS)</td><td><span class="badge badge-done">Met</span></td></tr>
+                <tr><td>Responsiveness</td><td>Mobile-first design, works on screens from 320px to 4K</td><td><span class="badge badge-done">Met</span></td></tr>
+                <tr><td>Browser Support</td><td>Chrome 80+, Firefox 78+, Safari 14+, Edge 80+</td><td><span class="badge badge-done">Met</span></td></tr>
+                <tr><td>Accessibility</td><td>Semantic HTML, ARIA labels, keyboard navigation for core flows</td><td><span class="badge badge-progress">Partial</span></td></tr>
+                <tr><td>Security</td><td>XSS prevention, input sanitization, session-based access control, chatbot confidentiality</td><td><span class="badge badge-done">Met</span></td></tr>
+                <tr><td>Offline Capability</td><td>localStorage persistence — data survives page reloads and browser restarts</td><td><span class="badge badge-done">Met</span></td></tr>
+                <tr><td>Scalability</td><td>Current: client-side only. Future: migration to server-side with database</td><td><span class="badge badge-planned">Planned</span></td></tr>
+                <tr><td>Internationalization</td><td>18 currencies supported; English-only UI (multi-language planned)</td><td><span class="badge badge-progress">Partial</span></td></tr>
+                <tr><td>Print Support</td><td>FRD and PRD pages optimized for print/PDF export</td><td><span class="badge badge-done">Met</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 8. UX/UI ==================== -->
+    <div class="prd-section" id="sec-ux">
+        <h2><i class="fas fa-palette"></i> 8. UX/UI Requirements</h2>
+
+        <h3>8.1 Design Language</h3>
+        <ul>
+            <li><strong>Theme:</strong> Dark mode with gradient accents (professional, modern, easy on eyes)</li>
+            <li><strong>Typography:</strong> Space Grotesk for headings, Inter for body text</li>
+            <li><strong>Color Palette:</strong> #0a0b14 background, #667eea → #764ba2 gradient, #00b894 success, #fdcb6e warning, #d63031 error</li>
+            <li><strong>Components:</strong> Rounded cards (16px radius), glass-morphism effects, smooth transitions</li>
+            <li><strong>Icons:</strong> Font Awesome 6.5.1 — consistent iconography across all pages</li>
+        </ul>
+
+        <h3>8.2 Navigation Patterns</h3>
+        <table>
+            <thead><tr><th>Page Type</th><th>Navigation</th></tr></thead>
+            <tbody>
+                <tr><td>Public pages (home, courses, login, register)</td><td>Top navbar with hamburger menu on mobile</td></tr>
+                <tr><td>Dashboards (student, teacher, admin)</td><td>Left sidebar with collapsible sections</td></tr>
+                <tr><td>Meeting room</td><td>Minimal header with controls</td></tr>
+                <tr><td>Documentation (FRD, PRD)</td><td>Sticky table of contents + back-to-admin link</td></tr>
+            </tbody>
+        </table>
+
+        <h3>8.3 Key Interaction Patterns</h3>
+        <ul>
+            <li><strong>Notifications:</strong> Top-right toast notifications with auto-dismiss (success/error/warning/info)</li>
+            <li><strong>Modals:</strong> Overlay modals for payments, add-user, certificate preview</li>
+            <li><strong>Tab switching:</strong> Sidebar nav items toggle content panels without page reload</li>
+            <li><strong>Chatbot:</strong> Floating widget (bottom-right), expandable chat panel</li>
+            <li><strong>Tables:</strong> Zebra-striped, action buttons in last column, status badges</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 9. COMPETITIVE ==================== -->
+    <div class="prd-section" id="sec-competitive">
+        <h2><i class="fas fa-trophy"></i> 9. Competitive Differentiators</h2>
+
+        <div class="comp-grid">
+            <div class="comp-card">
+                <h4><i class="fas fa-graduation-cap" style="color:#667eea;"></i> Playway to PhD</h4>
+                <p>No other single platform covers playway nursery all the way to doctoral research with board-specific courses.</p>
+                <span class="diff-badge">Unique to EduNova</span>
+            </div>
+            <div class="comp-card">
+                <h4><i class="fas fa-coins" style="color:#fdcb6e;"></i> 18-Currency Localization</h4>
+                <p>Auto-detects user's currency from timezone. Most competitors only support USD/EUR.</p>
+                <span class="diff-badge">Auto-detection</span>
+            </div>
+            <div class="comp-card">
+                <h4><i class="fas fa-hand-holding-usd" style="color:#00b894;"></i> 60/40 Teacher-Favoring Split</h4>
+                <p>Teachers keep 60% vs industry standard of 30-50%. Transparent, visible in dashboard.</p>
+                <span class="diff-badge">Best-in-class</span>
+            </div>
+            <div class="comp-card">
+                <h4><i class="fas fa-certificate" style="color:#a78bfa;"></i> Verifiable Certificates</h4>
+                <p>Unique ENOVA-XXX-XXX IDs with verification URLs. Canvas-rendered PNG download. Admin can revoke.</p>
+                <span class="diff-badge">Verification URL</span>
+            </div>
+            <div class="comp-card">
+                <h4><i class="fas fa-shield-alt" style="color:#ff7675;"></i> Confidentiality-First Chatbot</h4>
+                <p>AI chatbot with BLOCKED_KEYWORDS that prevents exposure of account info, passwords, financial data.</p>
+                <span class="diff-badge">Privacy guardrails</span>
+            </div>
+            <div class="comp-card">
+                <h4><i class="fas fa-book" style="color:#4facfe;"></i> All Indian Boards</h4>
+                <p>CBSE, ICSE, State Boards, IB, Cambridge, IGCSE — all covered with board-specific courses.</p>
+                <span class="diff-badge">Complete coverage</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 10. REVENUE ==================== -->
+    <div class="prd-section" id="sec-revenue">
+        <h2><i class="fas fa-rupee-sign"></i> 10. Revenue & Monetization</h2>
+
+        <h3>10.1 Revenue Model</h3>
+        <table>
+            <thead><tr><th>Stream</th><th>Model</th><th>Share</th></tr></thead>
+            <tbody>
+                <tr><td>Course Sales</td><td>Per-enrollment fee</td><td>40% platform / 60% teacher</td></tr>
+                <tr><td>Live Classes</td><td>Premium pricing for 1-on-1 and group modes</td><td>40% platform / 60% teacher</td></tr>
+                <tr><td>Certification</td><td>Included in course fee (no separate charge)</td><td>—</td></tr>
+            </tbody>
+        </table>
+
+        <h3>10.2 Pricing Strategy</h3>
+        <ul>
+            <li>Base currency: <strong>INR</strong> — affordable for Indian market</li>
+            <li>Teachers propose course price; admin approves or adjusts</li>
+            <li>All prices stored in INR; converted on display via EduCurrency API</li>
+            <li>Price range: Free to ₹50,000+ for premium professional courses</li>
+        </ul>
+
+        <h3>10.3 Live Revenue Data</h3>
+        <p>Auto-calculated from current enrollment data:</p>
+        <div id="revenueStats" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:12px;">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- ==================== 11. ROADMAP ==================== -->
+    <div class="prd-section" id="sec-roadmap">
+        <h2><i class="fas fa-road"></i> 11. Product Roadmap</h2>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 1 — Foundation (MVP) <span class="badge badge-done">Completed</span></div>
+            <ul>
+                <li>User registration and login (student + teacher)</li>
+                <li>Course catalog with 120+ courses</li>
+                <li>Enrollment and payment flow</li>
+                <li>Student and teacher dashboards</li>
+                <li>Basic admin dashboard</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 2 — Engagement & Quality <span class="badge badge-done">Completed</span></div>
+            <ul>
+                <li>AI chatbot with confidentiality controls</li>
+                <li>18-currency localization with auto-detection</li>
+                <li>Certificate generation with unique IDs and verification URLs</li>
+                <li>5-dimension course filtering</li>
+                <li>Demo class booking system</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 3 — Live Learning & Controls <span class="badge badge-done">Completed</span></div>
+            <ul>
+                <li>Live class meeting room with 3-hour timer</li>
+                <li>Teacher/admin-gated completion for live courses</li>
+                <li>Teacher mark-complete functionality</li>
+                <li>Revenue split dashboard (60/40)</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 4 — Super Admin & Documentation <span class="badge badge-done">Completed</span></div>
+            <ul>
+                <li>Full super admin control (11 dashboard tabs)</li>
+                <li>User CRUD: add, suspend, reactivate, delete</li>
+                <li>Teacher approval workflow (persistent)</li>
+                <li>Certificate revocation</li>
+                <li>CSV report exports (users, enrollments, revenue, certificates)</li>
+                <li>Access control on all dashboards</li>
+                <li>Password verification for registered users</li>
+                <li>Auto-updating FRD and PRD documents</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 5 — Growth & Scale <span class="badge badge-planned">Planned</span></div>
+            <ul>
+                <li>Server-side backend (Node.js / Django) with database (PostgreSQL)</li>
+                <li>Real payment gateway integration (Razorpay / Stripe)</li>
+                <li>Video hosting and streaming (own CDN or AWS)</li>
+                <li>Multi-language UI support (Hindi, Tamil, Bengali, etc.)</li>
+                <li>Mobile app (React Native / Flutter)</li>
+                <li>Email notifications and OTP verification</li>
+                <li>Advanced analytics dashboard with charts</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 6 — Enterprise & Expansion <span class="badge badge-planned">Planned</span></div>
+            <ul>
+                <li>B2B school/college institutional subscriptions</li>
+                <li>AI-powered course recommendations</li>
+                <li>Peer-to-peer discussion forums</li>
+                <li>Assignment/quiz engine with auto-grading</li>
+                <li>Parent portal for K-12 progress monitoring</li>
+                <li>Instructor certification and quality program</li>
+                <li>API marketplace for third-party integrations</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== 12. RISKS ==================== -->
+    <div class="prd-section" id="sec-risks">
+        <h2><i class="fas fa-exclamation-triangle"></i> 12. Risks & Mitigations</h2>
+        <table>
+            <thead><tr><th>Risk</th><th>Impact</th><th>Probability</th><th>Mitigation</th></tr></thead>
+            <tbody>
+                <tr><td>localStorage data loss (user clears browser data)</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-med">Medium</span></td><td>Phase 5: Migrate to server-side database. Current: CSV export for admin backup.</td></tr>
+                <tr><td>Client-side password storage (no encryption)</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-low">Low</span></td><td>Phase 5: Server-side auth with bcrypt hashing. Current: demo-only deployment.</td></tr>
+                <tr><td>No real payment processing</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: Razorpay/Stripe integration before production launch.</td></tr>
+                <tr><td>Single admin bottleneck for teacher approvals</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Phase 6: Multi-admin roles with approval workflows.</td></tr>
+                <tr><td>Chatbot knowledge gaps</td><td><span class="badge badge-low">Low</span></td><td><span class="badge badge-med">Medium</span></td><td>Continuously expand knowledge base; add fallback to support email.</td></tr>
+                <tr><td>Currency conversion rates hardcoded</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: Live exchange rate API integration.</td></tr>
+                <tr><td>No video hosting capability</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: AWS S3 + CloudFront or dedicated video platform.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 13. SUCCESS METRICS ==================== -->
+    <div class="prd-section" id="sec-success">
+        <h2><i class="fas fa-chart-line"></i> 13. Success Metrics</h2>
+
+        <h3>13.1 Key Performance Indicators</h3>
+        <table>
+            <thead><tr><th>KPI</th><th>Definition</th><th>Target</th><th>Measurement</th></tr></thead>
+            <tbody>
+                <tr><td>Registered Users</td><td>Total users in edunova_users</td><td>10,000 (Year 1)</td><td>Auto-tracked</td></tr>
+                <tr><td>Student Enrollment Rate</td><td>Enrollments ÷ Registered Students</td><td>>40%</td><td>Auto-tracked</td></tr>
+                <tr><td>Course Completion Rate</td><td>Completed ÷ Total Enrollments</td><td>>60%</td><td>Auto-tracked</td></tr>
+                <tr><td>Certificate Claim Rate</td><td>Certificates ÷ Completed Enrollments</td><td>>80%</td><td>Auto-tracked</td></tr>
+                <tr><td>Teacher Approval Rate</td><td>Approved ÷ Total Teacher Applications</td><td>>50%</td><td>Auto-tracked</td></tr>
+                <tr><td>Avg Revenue Per Enrollment</td><td>Total Revenue ÷ Enrollments</td><td>₹2,000+</td><td>Auto-tracked</td></tr>
+                <tr><td>Chatbot Satisfaction</td><td>Queries answered without "I don't know"</td><td>>85%</td><td>Manual review</td></tr>
+                <tr><td>Page Load Time</td><td>Time to interactive</td><td><2 seconds</td><td>Lighthouse</td></tr>
+            </tbody>
+        </table>
+
+        <h3>13.2 North Star Metric</h3>
+        <p><strong>Course Completions Per Month</strong> — This single metric captures user acquisition (they registered), engagement (they enrolled), course quality (they completed), and teacher effectiveness (live courses marked done). A growing completion count means the entire funnel is healthy.</p>
+    </div>
+
+    <!-- ==================== 14. DEPENDENCIES ==================== -->
+    <div class="prd-section" id="sec-dependencies">
+        <h2><i class="fas fa-link"></i> 14. Dependencies & Constraints</h2>
+
+        <h3>14.1 Technical Dependencies</h3>
+        <table>
+            <thead><tr><th>Dependency</th><th>Type</th><th>Impact</th></tr></thead>
+            <tbody>
+                <tr><td>Google Fonts CDN</td><td>External CDN</td><td>Typography — fallback to system fonts if unavailable</td></tr>
+                <tr><td>Font Awesome 6.5.1 CDN</td><td>External CDN</td><td>Icons — graceful degradation to text if unavailable</td></tr>
+                <tr><td>Browser localStorage API</td><td>Browser API</td><td>Core data persistence — required, no fallback</td></tr>
+                <tr><td>HTML5 Canvas API</td><td>Browser API</td><td>Certificate generation — required for PNG download</td></tr>
+                <tr><td>Intl.DateTimeFormat</td><td>Browser API</td><td>Timezone detection for currency auto-selection</td></tr>
+            </tbody>
+        </table>
+
+        <h3>14.2 Constraints</h3>
+        <ul>
+            <li><strong>No server-side:</strong> All logic runs in the browser; no backend, API, or database</li>
+            <li><strong>localStorage limit:</strong> ~5-10 MB per origin depending on browser</li>
+            <li><strong>No real payments:</strong> Payment flow is simulated (no Razorpay/Stripe integration yet)</li>
+            <li><strong>No video streaming:</strong> Course content is textual/structural (no actual video hosting)</li>
+            <li><strong>Single admin:</strong> One super admin account (multi-admin not yet supported)</li>
+            <li><strong>English only:</strong> UI is English; multi-language support is Phase 6</li>
+        </ul>
+
+        <h3>14.3 Assumptions</h3>
+        <ul>
+            <li>Users have a modern browser (Chrome 80+, Firefox 78+, Safari 14+, Edge 80+)</li>
+            <li>JavaScript is enabled in the browser</li>
+            <li>Users have internet access (for CDN resources on first load)</li>
+            <li>The platform is used as a prototype/demo until Phase 5 server-side deployment</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 15. GLOSSARY ==================== -->
+    <div class="prd-section" id="sec-glossary">
+        <h2><i class="fas fa-spell-check"></i> 15. Glossary</h2>
+        <table>
+            <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+            <tbody>
+                <tr><td>EduNova</td><td>The platform name — "Learn Without Limits"</td></tr>
+                <tr><td>Super Admin</td><td>The platform owner with unrestricted access to all features and data</td></tr>
+                <tr><td>EduCurrency</td><td>Global JavaScript API for currency localization (18 currencies)</td></tr>
+                <tr><td>EduCert</td><td>Global JavaScript API for certificate generation, storage, and download</td></tr>
+                <tr><td>ENOVA-XXX-XXX</td><td>Certificate ID format (e.g., ENOVA-A3F-8K2) — unique per certificate</td></tr>
+                <tr><td>Teaching Mode</td><td>How a course is delivered: recorded (self-paced), individual (1-on-1 live), group (live), hybrid (mix)</td></tr>
+                <tr><td>BLOCKED_KEYWORDS</td><td>List of sensitive terms the chatbot refuses to discuss (passwords, bank details, etc.)</td></tr>
+                <tr><td>INR</td><td>Indian Rupees — the base/default currency for all course pricing</td></tr>
+                <tr><td>Revenue Split</td><td>60% teacher / 40% platform on every enrollment payment</td></tr>
+                <tr><td>FRD</td><td>Functional Requirement Document — technical specification of all features</td></tr>
+                <tr><td>PRD</td><td>Product Requirement Document — this document; product vision, stories, and strategy</td></tr>
+                <tr><td>localStorage</td><td>Browser API for persistent client-side data storage (key-value pairs)</td></tr>
+                <tr><td>CBSE</td><td>Central Board of Secondary Education (India)</td></tr>
+                <tr><td>ICSE</td><td>Indian Certificate of Secondary Education</td></tr>
+                <tr><td>IB</td><td>International Baccalaureate</td></tr>
+                <tr><td>IGCSE</td><td>International General Certificate of Secondary Education (Cambridge)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== 16. LIVE KPI DASHBOARD ==================== -->
+    <div class="prd-section" id="sec-kpi">
+        <h2><i class="fas fa-tachometer-alt"></i> 16. Live KPI Dashboard</h2>
+        <p>Auto-calculated from live localStorage data. Refresh this page to see updated numbers.</p>
+        <div id="kpiGrid">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
+        <p>EduNova Product Requirement Document v3.0</p>
+        <p>Auto-generated from live platform state. &copy; 2026 EduNova — Learn Without Limits</p>
+        <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
+    </div>
+
+</div>
+
+<!-- ==================== AUTO-UPDATE SCRIPT ==================== -->
+<script>
+(function() {
+    'use strict';
+
+    // Update timestamp
+    document.getElementById('prdLastUpdated').textContent = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    // Pull live data
+    const users = JSON.parse(localStorage.getItem('edunova_users') || '[]');
+    const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');
+    const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]');
+    const certificates = JSON.parse(localStorage.getItem('edunova_certificates') || '[]');
+    const payments = JSON.parse(localStorage.getItem('edunova_payments') || '[]');
+    const progress = JSON.parse(localStorage.getItem('edunova_progress') || '{}');
+    const currency = localStorage.getItem('edunova_currency') || 'INR';
+
+    const students = users.filter(u => u.role === 'student');
+    const teachers = users.filter(u => u.role === 'teacher');
+    const approvedTeachers = teachers.filter(t => t.status === 'approved');
+    const pendingTeachers = teachers.filter(t => t.status === 'pending');
+    const completedEnrollments = enrollments.filter(e => e.status === 'completed');
+    const totalRevenue = enrollments.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
+    const platformRevenue = totalRevenue * 0.40;
+    const teacherRevenue = totalRevenue * 0.60;
+    const avgRevenuePerEnrollment = enrollments.length > 0 ? totalRevenue / enrollments.length : 0;
+    const completionRate = enrollments.length > 0 ? ((completedEnrollments.length / enrollments.length) * 100).toFixed(1) : 0;
+    const certClaimRate = completedEnrollments.length > 0 ? ((certificates.length / completedEnrollments.length) * 100).toFixed(1) : 0;
+    const enrollmentRate = students.length > 0 ? ((enrollments.length / students.length) * 100).toFixed(1) : 0;
+    const teacherApprovalRate = teachers.length > 0 ? ((approvedTeachers.length / teachers.length) * 100).toFixed(1) : 0;
+
+    // KPI Grid
+    const kpis = [
+        { label: 'Registered Users', value: users.length, target: 'Target: 10,000', color: '#667eea', icon: 'fa-users' },
+        { label: 'Students', value: students.length, target: 'Primary user segment', color: '#4facfe', icon: 'fa-user-graduate' },
+        { label: 'Teachers', value: teachers.length, target: 'Target: 500', color: '#f093fb', icon: 'fa-chalkboard-teacher' },
+        { label: 'Pending Teachers', value: pendingTeachers.length, target: 'Awaiting approval', color: '#fdcb6e', icon: 'fa-hourglass-half' },
+        { label: 'Teacher Approval Rate', value: teacherApprovalRate + '%', target: 'Target: >50%', color: '#00b894', icon: 'fa-check-circle' },
+        { label: 'Total Enrollments', value: enrollments.length, target: 'Target: 50,000', color: '#e17055', icon: 'fa-user-plus' },
+        { label: 'Enrollment Rate', value: enrollmentRate + '%', target: 'Target: >40%', color: '#6c5ce7', icon: 'fa-percentage' },
+        { label: 'Completion Rate', value: completionRate + '%', target: 'Target: >60%', color: '#00cec9', icon: 'fa-flag-checkered' },
+        { label: 'Certificates Issued', value: certificates.length, target: 'Auto-tracked', color: '#a78bfa', icon: 'fa-certificate' },
+        { label: 'Cert Claim Rate', value: certClaimRate + '%', target: 'Target: >80%', color: '#fd79a8', icon: 'fa-award' },
+        { label: 'Total Revenue', value: '₹' + totalRevenue.toLocaleString('en-IN'), target: 'Target: ₹1 Crore', color: '#00b894', icon: 'fa-rupee-sign' },
+        { label: 'Platform Share (40%)', value: '₹' + platformRevenue.toLocaleString('en-IN'), target: 'Platform earnings', color: '#667eea', icon: 'fa-building' },
+        { label: 'Teacher Share (60%)', value: '₹' + teacherRevenue.toLocaleString('en-IN'), target: 'Total teacher earnings', color: '#f093fb', icon: 'fa-hand-holding-usd' },
+        { label: 'Avg Revenue/Enrollment', value: '₹' + Math.round(avgRevenuePerEnrollment).toLocaleString('en-IN'), target: 'Target: ₹2,000+', color: '#fdcb6e', icon: 'fa-calculator' },
+        { label: 'Uploaded Courses', value: courses.length, target: 'Teacher-submitted', color: '#4facfe', icon: 'fa-book-open' },
+        { label: 'Active Currency', value: currency, target: '18 supported', color: '#e17055', icon: 'fa-coins' },
+    ];
+
+    document.getElementById('kpiGrid').innerHTML = kpis.map(k => `
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:${k.color};">
+                <i class="fas ${k.icon}" style="font-size:0.8em; margin-right:4px;"></i>
+                ${k.value}
+            </div>
+            <div class="kpi-label">${k.label}</div>
+            <div class="kpi-target">${k.target}</div>
+        </div>
+    `).join('');
+
+    // Revenue stats in section 10
+    const revContainer = document.getElementById('revenueStats');
+    if (revContainer) {
+        const revCards = [
+            { label: 'Total Revenue', value: '₹' + totalRevenue.toLocaleString('en-IN'), color: '#00b894' },
+            { label: 'Platform (40%)', value: '₹' + platformRevenue.toLocaleString('en-IN'), color: '#667eea' },
+            { label: 'Teachers (60%)', value: '₹' + teacherRevenue.toLocaleString('en-IN'), color: '#f093fb' },
+            { label: 'Total Enrollments', value: enrollments.length, color: '#e17055' },
+        ];
+        revContainer.innerHTML = revCards.map(r => `
+            <div style="background:rgba(102,126,234,0.08); border-radius:12px; padding:16px; text-align:center;">
+                <div style="font-size:1.5rem; font-weight:700; color:${r.color}; font-family:'Space Grotesk',sans-serif;">${r.value}</div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">${r.label}</div>
+            </div>
+        `).join('');
+    }
+
+})();
+</script>
+
+</body>
+</html>

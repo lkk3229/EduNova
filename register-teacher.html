@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teach on EduNova — Apply Now</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar navbar-transparent" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline-light btn-sm">Log In</a>
+                <a href="register-student.html" class="btn btn-primary btn-sm">Join as Student</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="auth-card auth-card-wide animate-fade-in-up">
+            <div class="auth-header">
+                <div class="auth-icon gradient-bg-2">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h1>Become an EduNova Teacher</h1>
+                <p>Share your expertise with thousands of eager learners worldwide.</p>
+            </div>
+
+            <!-- Teacher Benefits -->
+            <div class="teacher-benefits">
+                <div class="benefit-item">
+                    <div class="benefit-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div>
+                        <h4>Earn Revenue</h4>
+                        <p>Earn 60% revenue share on every course &amp; session</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon"><i class="fas fa-globe"></i></div>
+                    <div>
+                        <h4>Global Reach</h4>
+                        <p>Teach students from 150+ countries</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon"><i class="fas fa-tools"></i></div>
+                    <div>
+                        <h4>Pro Tools</h4>
+                        <p>HD video, analytics, and content management</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="auth-form" id="teacherRegForm">
+                <h3 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="tFirstName" placeholder="Jane" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="tLastName" placeholder="Smith" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="tEmail" placeholder="jane@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="tPhone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="password-input">
+                            <input type="password" id="tPassword" placeholder="Min 8 characters" required minlength="8">
+                            <button type="button" class="toggle-password" onclick="togglePassword('tPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="password-input">
+                            <input type="password" id="tConfirmPassword" placeholder="Re-enter password" required minlength="8">
+                            <button type="button" class="toggle-password" onclick="togglePassword('tConfirmPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title"><i class="fas fa-briefcase"></i> Professional Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Highest Qualification</label>
+                        <select id="qualification" required>
+                            <option value="">Select qualification</option>
+                            <option value="bachelors">Bachelor's Degree</option>
+                            <option value="masters">Master's Degree</option>
+                            <option value="phd">Ph.D / Doctorate</option>
+                            <option value="professional">Professional Certification</option>
+                            <option value="industry">Industry Expert (10+ years)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Experience</label>
+                        <select id="experience" required>
+                            <option value="">Select experience</option>
+                            <option value="1-3">1-3 years</option>
+                            <option value="3-5">3-5 years</option>
+                            <option value="5-10">5-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Area of Expertise</label>
+                    <div class="interest-tags">
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="programming"> Programming
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="web-dev"> Web Development
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="data-science"> Data Science
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="ai-ml"> AI & Machine Learning
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="design"> Design
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="business"> Business
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="mathematics"> Mathematics
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="science"> Science
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="language"> Languages
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" value="cloud"> Cloud & DevOps
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Brief Bio / Teaching Philosophy</label>
+                    <textarea id="bio" rows="4" placeholder="Tell us about your teaching experience and what drives your passion for education..." required></textarea>
+                </div>
+
+                <h3 class="form-section-title"><i class="fas fa-chalkboard"></i> Teaching Style & Fees</h3>
+                <div class="form-group">
+                    <label>Describe Your Teaching Style</label>
+                    <textarea id="teachingStyle" rows="3" placeholder="e.g., Interactive sessions with live coding, project-based learning, hands-on assignments, whiteboard explanations..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Fee Amount (USD)</label>
+                        <input type="number" id="feeAmount" placeholder="e.g., 25" min="1" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fee Period</label>
+                        <select id="feePeriod" required>
+                            <option value="">Select period</option>
+                            <option value="per-hour">Per Hour</option>
+                            <option value="per-week">Per Week</option>
+                            <option value="per-month">Per Month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Teaching Mode</label>
+                    <div class="interest-tags">
+                        <label class="tag-checkbox">
+                            <input type="checkbox" name="teachingMode" value="individual"> Individual (1-on-1)
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" name="teachingMode" value="group"> Group Classes
+                        </label>
+                        <label class="tag-checkbox">
+                            <input type="checkbox" name="teachingMode" value="recorded"> Recorded Courses
+                        </label>
+                    </div>
+                </div>
+                <div class="revenue-info-box">
+                    <div class="revenue-info-icon"><i class="fas fa-info-circle"></i></div>
+                    <div>
+                        <h4>Revenue Split: 60% You / 40% Platform</h4>
+                        <p>For every enrollment or session fee, you receive 60% and EduNova retains 40%. Final course prices are subject to admin approval.</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>LinkedIn Profile (optional)</label>
+                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    <div class="form-group">
+                        <label>Portfolio / Website (optional)</label>
+                        <input type="url" id="portfolio" placeholder="https://yourwebsite.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-upload"></i> Upload Resume / CV</label>
+                    <div class="file-upload">
+                        <input type="file" id="resume" accept=".pdf,.doc,.docx">
+                        <div class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Drop your file here or click to browse</span>
+                            <small>PDF, DOC up to 10MB</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>I agree to the <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Teacher Agreement</a></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-secondary btn-lg btn-full">
+                    <i class="fas fa-paper-plane"></i> Submit Application
+                </button>
+                <p class="auth-footer-text">
+                    Already have an account? <a href="login.html">Log In</a> · 
+                    Want to learn instead? <a href="register-student.html">Join as Student</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration — EduNova</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar navbar-transparent" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><div class="logo-shape"><i class="fas fa-graduation-cap"></i></div></div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline-light btn-sm">Log In</a>
+                <a href="register-teacher.html" class="btn btn-secondary btn-sm">Teach on EduNova</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="auth-card animate-fade-in-up">
+            <div class="auth-header">
+                <div class="auth-icon gradient-bg-1">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h1>Join as a Student</h1>
+                <p>Start your learning journey today — it's free!</p>
+            </div>
+            <form class="auth-form" id="studentRegForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> First Name</label>
+                        <input type="text" id="firstName" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" placeholder="Min 8 characters" required minlength="8">
+                        <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar"><div class="strength-fill"></div></div>
+                        <span class="strength-text">Password strength</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Confirm Password</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" placeholder="Re-enter password" required minlength="8">
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-graduation-cap"></i> Education Level</label>
+                    <select id="education" required>
+                        <option value="">Select your level</option>
+                        <option value="high-school">High School</option>
+                        <option value="senior-secondary">Senior Secondary</option>
+                        <option value="undergraduate">Undergraduate</option>
+                        <option value="graduate">Graduate</option>
+                        <option value="postgraduate">Post Graduate</option>
+                        <option value="professional">Working Professional</option>
+                    </select>
+                </div>
+                <div class="form-group" id="interestsGroup" style="display: none;">
+                    <label><i class="fas fa-book"></i> Interests (select multiple)</label>
+                    <div class="interest-tags" id="interestTags">
+                        <!-- Populated dynamically based on education level -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-full">
+                    <i class="fas fa-rocket"></i> Create My Account
+                </button>
+                <div class="auth-divider">
+                    <span>or sign up with</span>
+                </div>
+                <div class="social-auth">
+                    <button type="button" class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="btn btn-social btn-github">
+                        <i class="fab fa-github"></i> GitHub
+                    </button>
+                </div>
+                <p class="auth-footer-text">
+                    Already have an account? <a href="login.html">Log In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

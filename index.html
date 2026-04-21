@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNova — Learn Without Limits</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-logo">
+            <div class="logo-icon-large">
+                <div class="logo-gradient-circle">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+            <h2>EduNova</h2>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <div class="logo-shape">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                </div>
+                <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="meeting.html">Live Classes</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline-light btn-sm">Log In</a>
+                <a href="register-student.html" class="btn btn-primary btn-sm">Get Started Free</a>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="hero-glow"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-in">
+                    <i class="fas fa-rocket"></i> India's Most Inclusive Learning Platform 2026
+                </div>
+                <h1 class="hero-title animate-fade-in-up">
+                    From <span class="gradient-text">Playway</span> to <span class="gradient-text-2">PhD</span>
+                    <br>Learn Without Limits
+                </h1>
+                <p class="hero-subtitle animate-fade-in-up delay-1">
+                    The only platform where a 3-year-old learning ABCs and a PhD researcher writing 
+                    their thesis study side by side. 120+ courses across every board, every stream, 
+                    every career — in your local currency.
+                </p>
+                <div class="hero-cta animate-fade-in-up delay-2">
+                    <a href="register-student.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-graduate"></i> Start Learning Free
+                    </a>
+                    <a href="register-teacher.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-chalkboard-teacher"></i> Become a Teacher
+                    </a>
+                    <a href="courses.html" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-compass"></i> Explore Courses
+                    </a>
+                </div>
+                <div class="hero-stats animate-fade-in-up delay-3">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="50000">0</div>
+                        <div class="stat-label">Active Students</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="120">0</div>
+                        <div class="stat-label">Courses</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="18">0</div>
+                        <div class="stat-label">Currencies</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="98">0</div>
+                        <div class="stat-label">% Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual animate-fade-in-right">
+                <div class="hero-card-stack">
+                    <div class="hero-card card-1">
+                        <div class="card-header">
+                            <div class="live-dot"></div> Live Now
+                        </div>
+                        <h4>CBSE Class 10 — Science</h4>
+                        <div class="card-teacher">
+                            <div class="avatar avatar-sm bg-purple">PS</div>
+                            <span>Dr. Priya Sharma</span>
+                        </div>
+                        <div class="card-students">
+                            <div class="avatar-stack">
+                                <div class="avatar avatar-xs bg-blue">A</div>
+                                <div class="avatar avatar-xs bg-green">B</div>
+                                <div class="avatar avatar-xs bg-orange">C</div>
+                            </div>
+                            <span>+183 students</span>
+                        </div>
+                    </div>
+                    <div class="hero-card card-2">
+                        <div class="mini-chart">
+                            <div class="chart-bar" style="height: 40%"></div>
+                            <div class="chart-bar" style="height: 65%"></div>
+                            <div class="chart-bar" style="height: 85%"></div>
+                            <div class="chart-bar" style="height: 55%"></div>
+                            <div class="chart-bar active" style="height: 95%"></div>
+                        </div>
+                        <h4>Your Progress</h4>
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 36 36">
+                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="url(#gradient)" stroke-width="3" stroke-dasharray="78, 100"/>
+                            </svg>
+                            <span>78%</span>
+                        </div>
+                    </div>
+                    <div class="hero-card card-3">
+                        <div class="notification-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h4>Certificate Earned!</h4>
+                        <p>NEET Biology Prep</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Education Boards Banner -->
+    <section class="trusted-by">
+        <div class="container">
+            <p class="trusted-label">All Major Education Boards & Frameworks</p>
+            <div class="trusted-logos">
+                <div class="trusted-logo"><i class="fas fa-school"></i> CBSE</div>
+                <div class="trusted-logo"><i class="fas fa-school"></i> ICSE</div>
+                <div class="trusted-logo"><i class="fas fa-school"></i> State Boards</div>
+                <div class="trusted-logo"><i class="fas fa-globe"></i> IB</div>
+                <div class="trusted-logo"><i class="fas fa-globe"></i> Cambridge</div>
+                <div class="trusted-logo"><i class="fas fa-globe"></i> IGCSE</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Levels Section — NEW -->
+    <section class="edu-levels" id="levels">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fas fa-layer-group"></i> Every Level Covered</span>
+                <h2 class="section-title">One Platform, <span class="gradient-text">Every Learner</span></h2>
+                <p class="section-subtitle">From a toddler's first ABCs to a doctoral thesis defense — we have expert-led courses for every stage of life.</p>
+            </div>
+            <div class="edu-levels-grid">
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #ff9a9e, #fad0c4);">
+                    <div class="edu-level-icon">🧒</div>
+                    <h3>Playway & Nursery</h3>
+                    <p>Fun phonics, rhymes, motor skills, early maths</p>
+                    <span class="edu-level-age">Ages 3-5</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #a18cd1, #fbc2eb);">
+                    <div class="edu-level-icon">📚</div>
+                    <h3>Primary School</h3>
+                    <p>Classes 1-5 · CBSE, ICSE, State, IB</p>
+                    <span class="edu-level-age">Ages 6-11</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #667eea, #764ba2);">
+                    <div class="edu-level-icon">🔬</div>
+                    <h3>Middle School</h3>
+                    <p>Classes 6-8 · All boards · Science, Maths, Social</p>
+                    <span class="edu-level-age">Ages 11-14</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <div class="edu-level-icon">📝</div>
+                    <h3>Secondary</h3>
+                    <p>Classes 9-10 · Board exam prep · Foundation</p>
+                    <span class="edu-level-age">Ages 14-16</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <div class="edu-level-icon">🎯</div>
+                    <h3>Senior Secondary</h3>
+                    <p>Classes 11-12 · PCM, PCB, Commerce, Arts, JEE, NEET</p>
+                    <span class="edu-level-age">Ages 16-18</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #00b894, #00cec9);">
+                    <div class="edu-level-icon">🎓</div>
+                    <h3>Undergraduate</h3>
+                    <p>B.Tech, BBA, B.Sc, MBBS, B.Com, BA & more</p>
+                    <span class="edu-level-age">Ages 18-22</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #fdcb6e, #e17055);">
+                    <div class="edu-level-icon">🏆</div>
+                    <h3>Postgraduate</h3>
+                    <p>MBA, M.Tech, MCA, M.Sc, MA & specializations</p>
+                    <span class="edu-level-age">Ages 22-28</span>
+                </a>
+                <a href="courses.html" class="edu-level-card" style="--card-gradient: linear-gradient(135deg, #6c5ce7, #a78bfa);">
+                    <div class="edu-level-icon">🔭</div>
+                    <h3>PhD & Research</h3>
+                    <p>Research methods, thesis writing, publications</p>
+                    <span class="edu-level-age">Ages 25+</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Browse by Category — NEW -->
+    <section class="browse-categories" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fas fa-th-large"></i> Explore Fields</span>
+                <h2 class="section-title">Browse by <span class="gradient-text">Category</span></h2>
+                <p class="section-subtitle">Whether you dream of coding apps, healing patients, building businesses, or exploring the cosmos — we've got your course.</p>
+            </div>
+            <div class="categories-grid">
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);"><i class="fas fa-code"></i></div>
+                    <h4>Computer Science & IT</h4>
+                    <span>Web Dev, AI/ML, Cybersecurity, Cloud</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);"><i class="fas fa-heartbeat"></i></div>
+                    <h4>Medical & Health</h4>
+                    <span>NEET Prep, Anatomy, Nursing, Pharmacy</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #00b894, #00cec9);"><i class="fas fa-chart-pie"></i></div>
+                    <h4>Commerce & Business</h4>
+                    <span>Accounting, Finance, Marketing, MBA</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #fdcb6e, #e17055);"><i class="fas fa-cogs"></i></div>
+                    <h4>Engineering</h4>
+                    <span>JEE Prep, Mechanical, Electrical, Civil</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"><i class="fas fa-flask"></i></div>
+                    <h4>Science & Research</h4>
+                    <span>Physics, Chemistry, Biology, Mathematics</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb);"><i class="fas fa-paint-brush"></i></div>
+                    <h4>Arts & Humanities</h4>
+                    <span>Literature, History, Psychology, Languages</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4);"><i class="fas fa-balance-scale"></i></div>
+                    <h4>Law & Governance</h4>
+                    <span>CLAT Prep, Constitutional Law, Legal Studies</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #6c5ce7, #a78bfa);"><i class="fas fa-pencil-ruler"></i></div>
+                    <h4>Design & Creative</h4>
+                    <span>UI/UX, Graphic Design, Architecture, Fashion</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #e17055, #d63031);"><i class="fas fa-briefcase"></i></div>
+                    <h4>Competitive Exams</h4>
+                    <span>UPSC, SSC, Banking, GATE, CAT, GRE</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #00cec9, #55efc4);"><i class="fas fa-child"></i></div>
+                    <h4>Early Childhood</h4>
+                    <span>Phonics, Rhymes, Motor Skills, Fun Maths</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #fd79a8, #e84393);"><i class="fas fa-language"></i></div>
+                    <h4>Languages</h4>
+                    <span>English, Hindi, French, German, Japanese</span>
+                </a>
+                <a href="courses.html" class="category-card">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);"><i class="fas fa-running"></i></div>
+                    <h4>Fitness & Wellness</h4>
+                    <span>Yoga, Sports Science, Nutrition, Mental Health</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Why EduNova?</span>
+                <h2 class="section-title">Everything You Need to <span class="gradient-text">Learn & Grow</span></h2>
+                <p class="section-subtitle">Built for every learner — from curious toddlers to ambitious professionals. Our platform adapts to you.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card feature-card-large">
+                    <div class="feature-icon-wrapper gradient-bg-1">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>HD Live Classes</h3>
+                    <p>Crystal-clear live sessions with screen sharing, whiteboard, and real-time chat. Max 3 hours per session with a built-in timer. Just like a real classroom.</p>
+                    <div class="feature-preview">
+                        <div class="video-preview-mock">
+                            <div class="video-grid-mock">
+                                <div class="video-tile"><i class="fas fa-user"></i></div>
+                                <div class="video-tile"><i class="fas fa-user"></i></div>
+                                <div class="video-tile active"><i class="fas fa-chalkboard-teacher"></i></div>
+                                <div class="video-tile"><i class="fas fa-user"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-2">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h3>18 Currencies, Auto-Detected</h3>
+                    <p>See prices in INR, USD, EUR, GBP and 14 more. Auto-detected by your timezone — no manual setup needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-3">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Verifiable Certificates</h3>
+                    <p>Earn certificates with unique IDs, verification URLs, and QR codes. Download as PNG — add to your resume instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-4">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>All Boards, All Levels</h3>
+                    <p>CBSE, ICSE, State Boards, IB, Cambridge — from Playway nursery to PhD-level research. One platform for your entire journey.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-5">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Chatbot Assistant</h3>
+                    <p>Get instant answers about courses, enrollment, and more. Privacy-first: your personal data is never shared.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-6">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>Teachers Earn 60%</h3>
+                    <p>Transparent revenue sharing — teachers keep 60% of every sale. Propose your own prices, track earnings in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper gradient-bg-1">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Session-based access control, password protection, and admin oversight. Your data stays confidential.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Simple Process</span>
+                <h2 class="section-title">Start Learning in <span class="gradient-text">3 Easy Steps</span></h2>
+            </div>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>Create Account</h3>
+                    <p>Sign up as a student or teacher in seconds. It's completely free to get started.</p>
+                </div>
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-dot"></div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <h3>Choose Courses</h3>
+                    <p>Browse thousands of courses or create your own. Find the perfect match for your goals.</p>
+                </div>
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-dot"></div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+                    <h3>Start Learning</h3>
+                    <p>Join live classes, access materials, and interact with teachers and peers in real time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses Preview -->
+    <section class="courses-preview">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Top Rated</span>
+                <h2 class="section-title">Trending <span class="gradient-text">Courses</span></h2>
+                <p class="section-subtitle">Handpicked from our 120+ course library — across academics, professional skills, and creative arts.</p>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <div class="course-badge">Bestseller</div>
+                        <div class="course-category">CBSE Class 10</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span>4.9 (3,410)</span>
+                        </div>
+                        <h3>CBSE Class 10 Science — Complete Board Prep</h3>
+                        <p>Physics, Chemistry, Biology — chapter-wise lectures, practicals, and board exam strategies.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 56 hours</span>
+                            <span><i class="fas fa-signal"></i> Secondary</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-purple">PS</div>
+                                <span>Dr. Priya Sharma</span>
+                            </div>
+                            <div class="course-price">₹2,499</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <div class="course-badge">Hot</div>
+                        <div class="course-category">Medical</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span>5.0 (2,890)</span>
+                        </div>
+                        <h3>NEET Biology Master Course — Complete Prep</h3>
+                        <p>Botany + Zoology with NCERT line-by-line analysis, previous year questions, and mock tests.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 80 hours</span>
+                            <span><i class="fas fa-signal"></i> Senior Secondary</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-pink">SC</div>
+                                <span>Dr. Sarah Chen</span>
+                            </div>
+                            <div class="course-price">₹4,999</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                        <div class="course-badge">New</div>
+                        <div class="course-category">Commerce</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span>4.7 (1,234)</span>
+                        </div>
+                        <h3>CA Foundation — Complete Accounting & Law</h3>
+                        <p>Financial accounting, business law, quantitative aptitude & economics for CA aspirants.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 65 hours</span>
+                            <span><i class="fas fa-signal"></i> Undergraduate</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-green">RP</div>
+                                <span>Prof. Raj Patel</span>
+                            </div>
+                            <div class="course-price">₹3,499</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <div class="course-badge">Bestseller</div>
+                        <div class="course-category">Web Development</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span>4.8 (2,341)</span>
+                        </div>
+                        <h3>Full-Stack Web Development Bootcamp</h3>
+                        <p>HTML, CSS, JavaScript, React, Node.js — build 20+ real projects from scratch.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 48 hours</span>
+                            <span><i class="fas fa-signal"></i> Professional</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-cyan">AP</div>
+                                <span>Alex Parker</span>
+                            </div>
+                            <div class="course-price">₹4,149</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #fdcb6e, #e17055);">
+                        <div class="course-badge">Popular</div>
+                        <div class="course-category">Early Learning</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span>5.0 (876)</span>
+                        </div>
+                        <h3>Fun Phonics & Early Maths — Playway Level</h3>
+                        <p>Interactive rhymes, letter tracing, number games, and motor skill activities for ages 3-5.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 20 hours</span>
+                            <span><i class="fas fa-signal"></i> Playway</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-orange">AM</div>
+                                <span>Anita Mehra</span>
+                            </div>
+                            <div class="course-price">₹999</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #6c5ce7, #a78bfa);">
+                        <div class="course-badge">Advanced</div>
+                        <div class="course-category">Research</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span>4.8 (432)</span>
+                        </div>
+                        <h3>PhD Research Methodology & Thesis Writing</h3>
+                        <p>Literature review, research design, statistical analysis, journal publication strategy.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 35 hours</span>
+                            <span><i class="fas fa-signal"></i> PhD</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-teacher">
+                                <div class="avatar avatar-sm bg-purple">KN</div>
+                                <span>Prof. K. Narayan</span>
+                            </div>
+                            <div class="course-price">₹5,999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="courses.html" class="btn btn-primary btn-lg">Browse All 120+ Courses <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fas fa-heart"></i> Student Love</span>
+                <h2 class="section-title">What Our <span class="gradient-text">Learners Say</span></h2>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"My daughter scored 97 in CBSE Class 10 Science. The live classes and chapter-wise videos were exactly what she needed. Best investment as a parent!"</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-pink">MG</div>
+                        <div>
+                            <h4>Meera Gupta</h4>
+                            <span>Parent of Class 10 Student, Delhi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"Cleared NEET with AIR 342. The biology master course and mock tests on EduNova were more effective than any coaching centre I tried."</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-green">RK</div>
+                        <div>
+                            <h4>Rahul Kumar</h4>
+                            <span>NEET Qualifier, Now at AIIMS Patna</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"As a working professional, the Full-Stack Development course helped me switch from banking to tech. The certificates are recognised by top companies."</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-blue">SS</div>
+                        <div>
+                            <h4>Sneha Srivastava</h4>
+                            <span>Software Engineer, Pune (Career Switcher)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"I teach classical music on EduNova and earn more than my offline classes. The 60% revenue share is unmatched. The live class tools are fantastic."</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-orange">VD</div>
+                        <div>
+                            <h4>Vidya Desai</h4>
+                            <span>Hindustani Classical Music Teacher</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>"The CA Foundation course helped me clear my exam in the first attempt. The accounting lectures by Prof. Patel are incredibly clear and practical."</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-purple">AJ</div>
+                        <div>
+                            <h4>Aditya Joshi</h4>
+                            <span>CA Aspirant, Mumbai</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"My 4-year-old loves the Fun Phonics course! The animated lessons keep her engaged for the full session. She recognises all 26 letters now."</p>
+                    <div class="testimonial-author">
+                        <div class="avatar bg-cyan">NK</div>
+                        <div>
+                            <h4>Neha Kapoor</h4>
+                            <span>Parent of Playway Student, Bengaluru</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-bg-shapes">
+                    <div class="cta-shape cta-shape-1"></div>
+                    <div class="cta-shape cta-shape-2"></div>
+                </div>
+                <div class="cta-content">
+                    <h2>Your Learning Journey Starts Today</h2>
+                    <p>From toddlers learning ABCs to PhDs publishing research — 50,000+ learners already trust EduNova.</p>
+                    <div class="cta-buttons">
+                        <a href="register-student.html" class="btn btn-white btn-lg">Start Learning Free</a>
+                        <a href="register-teacher.html" class="btn btn-outline-white btn-lg">Apply to Teach</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Get in Touch</span>
+                <h2 class="section-title">Have Questions? <span class="gradient-text">Let's Talk</span></h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon gradient-bg-1"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4>Email Us</h4>
+                            <p>support@edunova.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon gradient-bg-2"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <h4>Call Us</h4>
+                            <p>+91 80-4567-8900</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon gradient-bg-3"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4>Visit Us</h4>
+                            <p>HSR Layout, Bengaluru, Karnataka 560102</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" placeholder="How can we help?" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea rows="5" placeholder="Tell us more..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-full">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">
+                            <div class="logo-shape">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                        <span class="logo-text">Edu<span class="logo-highlight">Nova</span></span>
+                    </a>
+                    <p>From Playway to PhD — empowering every learner in India and beyond with world-class education in their own language and currency.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="courses.html">Browse Courses</a></li>
+                        <li><a href="meeting.html">Live Classes</a></li>
+                        <li><a href="register-teacher.html">Become a Teacher</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EduNova. All rights reserved. Made with <i class="fas fa-heart" style="color: #f5576c;"></i> for learners worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/currency.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>
