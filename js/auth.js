@@ -153,7 +153,7 @@ function initStudentForm() {
         });
     }
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const password = document.getElementById('password').value;
@@ -170,27 +170,35 @@ function initStudentForm() {
         }
 
         // Collect form data
-        const studentData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
+        const userData = {
+            name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            education: document.getElementById('education').value,
-            interests: getCheckedValues(form.querySelectorAll('.interest-tags input[type="checkbox"]:checked')),
             password: password,
-            role: 'student',
-            status: 'active',
-            createdAt: new Date().toISOString()
+            userType: 'student'
         };
 
-        // Save to localStorage
-        saveUser(studentData);
+        try {
+            // Try to register via API
+            if (typeof apiClient === 'undefined') {
+                throw new Error('API client not available');
+            }
 
-        showNotification('Account created successfully! Welcome to EduNova! 🎉', 'success');
-
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 2000);
+            const result = await apiClient.auth.register(userData.name, userData.email, userData.password, userData.userType);
+            
+            showNotification('✅ Account created! Check your email to verify your account.', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        } catch (error) {
+            console.error('Registration error:', error);
+            showNotification(`❌ Registration failed: ${error.message}`, 'error');
+            
+            // Fallback: Save to localStorage
+            console.log('   Falling back to local storage');
+            saveUser(userData);
+        }
     });
 }
 

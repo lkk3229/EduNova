@@ -1,0 +1,14 @@
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 EduNova Backend running on http://localhost:5000\u001b[39m","timestamp":"2026-05-10 23:17:46:1746"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📚 API Base: http://localhost:5000/api\u001b[39m","timestamp":"2026-05-10 23:17:46:1746"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🏥 Health Check: http://localhost:5000/api/health\u001b[39m","timestamp":"2026-05-10 23:17:46:1746"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🔐 Security: Helmet, Rate Limiting, CORS enabled\u001b[39m","timestamp":"2026-05-10 23:17:46:1746"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📁 Log files: backend/logs/\u001b[39m","timestamp":"2026-05-10 23:17:46:1746"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m✗ MongoDB connection failed: connect ECONNREFUSED 127.0.0.1:27017, connect ECONNREFUSED ::1:27017\u001b[39m","timestamp":"2026-05-10 23:18:16:1816"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 EduNova Backend running on http://localhost:5000\u001b[39m","timestamp":"2026-05-10 23:18:58:1858"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📚 API Base: http://localhost:5000/api\u001b[39m","timestamp":"2026-05-10 23:18:58:1858"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🏥 Health Check: http://localhost:5000/api/health\u001b[39m","timestamp":"2026-05-10 23:18:58:1858"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🔐 Security: Helmet, Rate Limiting, CORS enabled\u001b[39m","timestamp":"2026-05-10 23:18:58:1858"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📁 Log files: backend/logs/\u001b[39m","timestamp":"2026-05-10 23:18:58:1858"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m⚠ MongoDB unavailable (async): connect ECONNREFUSED 127.0.0.1:27017, connect ECONNREFUSED ::1:27017\u001b[39m","timestamp":"2026-05-10 23:18:59:1859"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m  API server will accept requests but data persistence disabled.\u001b[39m","timestamp":"2026-05-10 23:18:59:1859"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m  Provide a running MongoDB instance for production or full feature testing.\u001b[39m","timestamp":"2026-05-10 23:18:59:1859"}

@@ -29,13 +29,60 @@ const G = {
     plum:    'linear-gradient(135deg, #c471f5, #fa71cd)',
 };
 
-const coursesData = []; // Sample seed data removed � only real teacher uploads will appear
+const coursesData = []; // Sample seed data removed � only real teacher uploads will appear
 
 // Convert USD-scale prices to INR (base currency)
 const USD_TO_INR = 83;
 coursesData.forEach(c => { if (c.price > 0) c.price = Math.round(c.price * USD_TO_INR); });
 
-document.addEventListener('DOMContentLoaded', () => {
+// ==================== API Integration ====================
+
+async function loadCoursesFromAPI() {
+    try {
+        if (typeof apiClient === 'undefined') {
+            console.warn('⚠️ API client not available, using local data');
+            return false;
+        }
+
+        const response = await apiClient.courses.getAll();
+        const courses = (response && (response.courses || response.data)) || [];
+        if (courses.length) {
+            console.log(`✓ Loaded ${courses.length} courses from API`);
+            
+            // Merge API courses with local data
+            courses.forEach(course => {
+                // Check if course already exists in coursesData
+                const exists = coursesData.some(c => c.id === course._id);
+                if (!exists) {
+                    coursesData.push({
+                        id: course._id,
+                        title: course.title,
+                        description: course.description,
+                        category: course.category,
+                        level: course.level,
+                        price: course.price,
+                        teacher: course.teacher,
+                        image: course.image || 'images/default-course.jpg',
+                        students: course.enrolledCount || 0,
+                        rating: course.rating || 4.5,
+                        duration: course.duration || 0,
+                        gradient: G.blue // Default gradient
+                    });
+                }
+            });
+            return true;
+        }
+    } catch (error) {
+        console.warn('⚠️ Could not load courses from API:', error.message);
+        console.log('   Using local data instead');
+    }
+    return false;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load courses from API first, then render
+    await loadCoursesFromAPI();
+    
     // Merge teacher-uploaded courses from localStorage
     loadTeacherCourses();
     renderCourses(coursesData);
@@ -453,12 +500,29 @@ function closePaymentModal() {
     if (modal) modal.remove();
 }
 
-function processPayment(event, courseId) {
+async function processPayment(event, courseId) {
     event.preventDefault();
 
     const session = JSON.parse(localStorage.getItem('edunova_session') || 'null');
     const course = coursesData.find(c => c.id === courseId);
     if (!session || !course) return;
+
+    // Prefer backend checkout flow if auth token exists.
+    if (typeof apiClient !== 'undefined' && localStorage.getItem('edunova_token')) {
+        try {
+            const result = await apiClient.payments.checkout(courseId);
+            closePaymentModal();
+            if (result.mode === 'gateway') {
+                showNotification('Payment order created. Razorpay client flow can be attached next.', 'success');
+            } else {
+                showNotification(`Payment successful! You are now enrolled in "${course.title}"`, 'success');
+            }
+            setTimeout(() => renderCourses(coursesData), 500);
+            return;
+        } catch (error) {
+            showNotification(`Backend payment failed: ${error.message}. Using demo fallback.`, 'warning');
+        }
+    }
 
     // Record enrollment
     const enrollments = JSON.parse(localStorage.getItem('edunova_enrollments') || '[]');

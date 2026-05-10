@@ -15,6 +15,35 @@
 
     const GREETINGS = ['hi', 'hello', 'hey', 'good morning', 'good evening'];
 
+    // ==================== API Integration ====================
+    
+    async function loadBooksFromAPI() {
+        try {
+            // Try to load books from backend API
+            if (typeof apiClient === 'undefined') {
+                console.warn('⚠️ API client not available, using local data');
+                return false;
+            }
+
+            const response = await apiClient.books.getAll();
+            if (response && response.data) {
+                const books = response.data;
+                console.log(`✓ Loaded ${books.length} books from API`);
+                
+                // Update the library data with API results
+                // We'll merge them with existing structure
+                library.apiBooks = books;
+                return true;
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not load books from API:', error.message);
+            console.log('   Using local hardcoded book data instead');
+        }
+        return false;
+    }
+
+    const GREETINGS = ['hi', 'hello', 'hey', 'good morning', 'good evening'];
+
     function init() {
         ui.overview = document.getElementById('libraryOverview');
         ui.boardTabs = document.getElementById('libraryBoardTabs');
@@ -35,12 +64,15 @@
 
         if (!ui.overview || !ui.boardTabs || !ui.classTabs || !ui.shelf) return;
 
-        renderOverview();
-        renderBoardTabs();
-        renderClassTabs();
-        bindEvents();
-        renderShelf();
-        initAgent();
+        // Try to load books from API first
+        loadBooksFromAPI().then(() => {
+            renderOverview();
+            renderBoardTabs();
+            renderClassTabs();
+            bindEvents();
+            renderShelf();
+            initAgent();
+        });
     }
 
     function bindEvents() {
@@ -68,10 +100,29 @@
         });
 
         ui.shelf.addEventListener('click', (event) => {
-            const button = event.target.closest('[data-book-id]');
-            if (!button) return;
+            // Handle "Open Book" button clicks
+            const openButton = event.target.closest('.library-book-open');
+            if (openButton) {
+                const bookId = openButton.dataset.bookId;
+                const book = library.getBookById(bookId);
+                if (book) {
+                    // If book has PDF URL from NCERT, open it directly
+                    if (book.reader && book.reader.pdfUrl) {
+                        window.open(book.reader.pdfUrl, '_blank');
+                    } else {
+                        // Otherwise open custom reader with book ID parameter
+                        const bookUrl = `book-reader.html?id=${encodeURIComponent(bookId)}`;
+                        window.open(bookUrl, '_blank');
+                    }
+                }
+                return;
+            }
 
-            state.selectedBookId = button.dataset.bookId;
+            // Handle book card clicks (select book)
+            const card = event.target.closest('[data-book-id]');
+            if (!card) return;
+
+            state.selectedBookId = card.dataset.bookId;
             renderShelf();
         });
 

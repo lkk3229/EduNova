@@ -24,102 +24,437 @@
         'environmental studies': ['environmental studies', 'evs']
     };
 
-    // Real NCERT Textbook Catalog (Classes 1-12)
+    // Real NCERT Textbook Catalog (Classes 1-12) with PDF URLs from ncert.nic.in
     const NCERT_TEXTBOOKS = {
         1: {
-            English: { title: 'Marigold', description: 'Introductory English course with colorful stories and illustrations for Class 1' },
-            Mathematics: { title: 'Math-Magic', description: 'Foundational mathematics with engaging number activities for Class 1' },
-            Hindi: { title: 'Rimjhim', description: 'Introduction to Hindi language through stories and activities for Class 1' },
-            'Environmental Studies': { title: 'Looking Around', description: 'Basic environmental awareness and observation skills for Class 1' }
+            English: { 
+                title: 'Marigold', 
+                description: 'Introductory English course with colorful stories and illustrations for Class 1',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class1English.pdf'
+            },
+            Mathematics: { 
+                title: 'Math-Magic', 
+                description: 'Foundational mathematics with engaging number activities for Class 1',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class1Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Rimjhim', 
+                description: 'Introduction to Hindi language through stories and activities for Class 1',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class1Hindi.pdf'
+            },
+            'Environmental Studies': { 
+                title: 'Looking Around', 
+                description: 'Basic environmental awareness and observation skills for Class 1',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class1EVS.pdf'
+            }
         },
         2: {
-            English: { title: 'Marigold', description: 'Intermediate English with stories, poems and language activities for Class 2' },
-            Mathematics: { title: 'Math-Magic', description: 'Number concepts, addition, subtraction and basic geometry for Class 2' },
-            Hindi: { title: 'Rimjhim', description: 'Hindi language development through stories, poems and rhymes for Class 2' },
-            'Environmental Studies': { title: 'Looking Around', description: 'Environmental studies covering plants, animals and social awareness for Class 2' }
+            English: { 
+                title: 'Marigold', 
+                description: 'Intermediate English with stories, poems and language activities for Class 2',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class2English.pdf'
+            },
+            Mathematics: { 
+                title: 'Math-Magic', 
+                description: 'Number concepts, addition, subtraction and basic geometry for Class 2',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class2Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Rimjhim', 
+                description: 'Hindi language development through stories, poems and rhymes for Class 2',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class2Hindi.pdf'
+            },
+            'Environmental Studies': { 
+                title: 'Looking Around', 
+                description: 'Environmental studies covering plants, animals and social awareness for Class 2',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class2EVS.pdf'
+            }
         },
         3: {
-            English: { title: 'Marigold', description: 'English language and literature with stories, dialogues and comprehension for Class 3' },
-            Mathematics: { title: 'Math-Magic', description: 'Multiplication, division, fractions and basic data handling for Class 3' },
-            Hindi: { title: 'Rimjhim', description: 'Hindi language development with prose and poems for Class 3' },
-            'Environmental Studies': { title: 'Looking Around', description: 'Life skills, health awareness and basic science concepts for Class 3' }
+            English: { 
+                title: 'Marigold', 
+                description: 'English language and literature with stories, dialogues and comprehension for Class 3',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class3English.pdf'
+            },
+            Mathematics: { 
+                title: 'Math-Magic', 
+                description: 'Multiplication, division, fractions and basic data handling for Class 3',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class3Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Rimjhim', 
+                description: 'Hindi language development with prose and poems for Class 3',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class3Hindi.pdf'
+            },
+            'Environmental Studies': { 
+                title: 'Looking Around', 
+                description: 'Life skills, health awareness and basic science concepts for Class 3',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class3EVS.pdf'
+            }
         },
         4: {
-            English: { title: 'Marigold', description: 'English language skills and literature comprehension for Class 4' },
-            Mathematics: { title: 'Math-Magic', description: 'Large numbers, multiplication, division, fractions and geometry for Class 4' },
-            Hindi: { title: 'Rimjhim', description: 'Comprehensive Hindi language and literature for Class 4' },
-            'Environmental Studies': { title: 'Looking Around', description: 'Science, social science and life skills integrated curriculum for Class 4' }
+            English: { 
+                title: 'Marigold', 
+                description: 'English language skills and literature comprehension for Class 4',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class4English.pdf'
+            },
+            Mathematics: { 
+                title: 'Math-Magic', 
+                description: 'Large numbers, multiplication, division, fractions and geometry for Class 4',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class4Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Rimjhim', 
+                description: 'Comprehensive Hindi language and literature for Class 4',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class4Hindi.pdf'
+            },
+            'Environmental Studies': { 
+                title: 'Looking Around', 
+                description: 'Science, social science and life skills integrated curriculum for Class 4',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class4EVS.pdf'
+            }
         },
         5: {
-            English: { title: 'Marigold', description: 'Advanced English language and comprehension for Class 5' },
-            Mathematics: { title: 'Math-Magic', description: 'Decimals, percentages, measurements and basic statistics for Class 5' },
-            Hindi: { title: 'Rimjhim', description: 'Advanced Hindi language, literature and creative writing for Class 5' },
-            'Environmental Studies': { title: 'Looking Around', description: 'Integrated environmental science and social studies for Class 5' }
+            English: { 
+                title: 'Marigold', 
+                description: 'Advanced English language and comprehension for Class 5',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class5English.pdf'
+            },
+            Mathematics: { 
+                title: 'Math-Magic', 
+                description: 'Decimals, percentages, measurements and basic statistics for Class 5',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class5Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Rimjhim', 
+                description: 'Advanced Hindi language, literature and creative writing for Class 5',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class5Hindi.pdf'
+            },
+            'Environmental Studies': { 
+                title: 'Looking Around', 
+                description: 'Integrated environmental science and social studies for Class 5',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class5EVS.pdf'
+            }
         },
         6: {
-            English: { title: 'Honeysuckle', description: 'English language and literature textbook for Class 6' },
-            Mathematics: { title: 'Mathematics', description: 'Number systems, geometry, algebra basics and data handling for Class 6' },
-            Hindi: { title: 'Vasant', description: 'Hindi language and literature for Class 6' },
-            Science: { title: 'Science', description: 'Basic physical science, life science and earth science for Class 6' },
-            'Social Science': { title: 'Our Pasts–I, The Earth Our Habitat, Social and Political Life–I', description: 'History, geography and civics for Class 6' }
+            English: { 
+                title: 'Honeysuckle', 
+                description: 'English language and literature textbook for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6English.pdf'
+            },
+            Mathematics: { 
+                title: 'Mathematics', 
+                description: 'Number systems, geometry, algebra basics and data handling for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Vasant', 
+                description: 'Hindi language and literature for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6Hindi.pdf'
+            },
+            Science: { 
+                title: 'Science', 
+                description: 'Basic physical science, life science and earth science for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6Science.pdf'
+            },
+            'Social Science': { 
+                title: 'Our Pasts–I, The Earth Our Habitat, Social and Political Life–I', 
+                description: 'History, geography and civics for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6SSt.pdf'
+            },
+            Sanskrit: { 
+                title: 'Ruchira', 
+                description: 'Sanskrit language fundamentals for Class 6',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class6Sanskrit.pdf'
+            }
         },
         7: {
-            English: { title: 'Honeysuckle', description: 'English language and literature with diverse texts for Class 7' },
-            Mathematics: { title: 'Mathematics', description: 'Fractions, algebraic expressions, geometry and statistics for Class 7' },
-            Hindi: { title: 'Vasant', description: 'Hindi literature and comprehension skills for Class 7' },
-            Science: { title: 'Science', description: 'Physics, chemistry and biology concepts for Class 7' },
-            'Social Science': { title: 'Our Pasts–II, Our Environment, Social and Political Life–II', description: 'History, geography and civics for Class 7' }
+            English: { 
+                title: 'Honeysuckle', 
+                description: 'English language and literature with diverse texts for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7English.pdf'
+            },
+            Mathematics: { 
+                title: 'Mathematics', 
+                description: 'Fractions, algebraic expressions, geometry and statistics for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Vasant', 
+                description: 'Hindi literature and comprehension skills for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7Hindi.pdf'
+            },
+            Science: { 
+                title: 'Science', 
+                description: 'Physics, chemistry and biology concepts for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7Science.pdf'
+            },
+            'Social Science': { 
+                title: 'Our Pasts–II, Our Environment, Social and Political Life–II', 
+                description: 'History, geography and civics for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7SSt.pdf'
+            },
+            Sanskrit: { 
+                title: 'Ruchira', 
+                description: 'Sanskrit language development for Class 7',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class7Sanskrit.pdf'
+            }
         },
         8: {
-            English: { title: 'Honeydew', description: 'English language and literature for Class 8' },
-            Mathematics: { title: 'Mathematics', description: 'Rational numbers, exponents, algebraic expressions and geometry for Class 8' },
-            Hindi: { title: 'Vasant', description: 'Hindi language and literature for Class 8' },
-            Science: { title: 'Science', description: 'Cell structure, reproduction, force and pressure, electricity for Class 8' },
-            'Social Science': { title: 'Our Pasts–III, Resources and Development, Social and Political Life–III', description: 'History, geography and civics for Class 8' }
+            English: { 
+                title: 'Honeydew', 
+                description: 'English language and literature for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8English.pdf'
+            },
+            Mathematics: { 
+                title: 'Mathematics', 
+                description: 'Rational numbers, exponents, algebraic expressions and geometry for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Vasant', 
+                description: 'Hindi language and literature for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8Hindi.pdf'
+            },
+            Science: { 
+                title: 'Science', 
+                description: 'Cell structure, reproduction, force and pressure, electricity for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8Science.pdf'
+            },
+            'Social Science': { 
+                title: 'Our Pasts–III, Resources and Development, Social and Political Life–III', 
+                description: 'History, geography and civics for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8SSt.pdf'
+            },
+            Sanskrit: { 
+                title: 'Ruchira', 
+                description: 'Sanskrit language advanced level for Class 8',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class8Sanskrit.pdf'
+            }
         },
         9: {
-            English: { title: 'Beehive / Moments', description: 'English textbook and supplementary reader for Class 9' },
-            Mathematics: { title: 'Mathematics', description: 'Number systems, polynomials, geometry, coordinates and statistics for Class 9' },
-            Hindi: { title: 'Kshitij / Sparsh', description: 'Hindi textbook and supplementary reader for Class 9' },
-            Science: { title: 'Science', description: 'Physics, chemistry and biology for Class 9 (Matter, Atoms, Forces, Life Processes)' },
-            'Social Science': { title: 'India and the Contemporary World–I, Contemporary India–I, Democratic Politics–I', description: 'History, geography and civics for Class 9' }
+            English: { 
+                title: 'Beehive / Moments', 
+                description: 'English textbook and supplementary reader for Class 9',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9English.pdf'
+            },
+            Mathematics: { 
+                title: 'Mathematics', 
+                description: 'Number systems, polynomials, geometry, coordinates and statistics for Class 9',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Kshitij / Sparsh', 
+                description: 'Hindi textbook and supplementary reader for Class 9',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9Hindi.pdf'
+            },
+            Science: { 
+                title: 'Science', 
+                description: 'Physics, chemistry and biology for Class 9 (Matter, Atoms, Forces, Life Processes)',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9Science.pdf'
+            },
+            'Social Science': { 
+                title: 'India and the Contemporary World–I, Contemporary India–I, Democratic Politics–I', 
+                description: 'History, geography and civics for Class 9',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9SSt.pdf'
+            },
+            Sanskrit: { 
+                title: 'Shemushi', 
+                description: 'Sanskrit language and literature for Class 9',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class9Sanskrit.pdf'
+            }
         },
         10: {
-            English: { title: 'First Flight / Footprints Without Feet', description: 'English textbook and supplementary reader for Class 10' },
-            Mathematics: { title: 'Mathematics', description: 'Real numbers, polynomials, trigonometry, geometry and statistics for Class 10' },
-            Hindi: { title: 'Kshitij / Sparsh', description: 'Hindi textbook and supplementary reader for Class 10' },
-            Science: { title: 'Science', description: 'Physics, chemistry and biology for Class 10 (Electricity, Acids, Genetics, Evolution)' },
-            'Social Science': { title: 'India and the Contemporary World–II, Contemporary India–II, Democratic Politics–II', description: 'History, geography and civics for Class 10' }
+            English: { 
+                title: 'First Flight / Footprints Without Feet', 
+                description: 'English textbook and supplementary reader for Class 10',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10English.pdf'
+            },
+            Mathematics: { 
+                title: 'Mathematics', 
+                description: 'Real numbers, polynomials, trigonometry, geometry and statistics for Class 10',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10Maths.pdf'
+            },
+            Hindi: { 
+                title: 'Kshitij / Sparsh', 
+                description: 'Hindi textbook and supplementary reader for Class 10',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10Hindi.pdf'
+            },
+            Science: { 
+                title: 'Science', 
+                description: 'Physics, chemistry and biology for Class 10 (Electricity, Acids, Genetics, Evolution)',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10Science.pdf'
+            },
+            'Social Science': { 
+                title: 'India and the Contemporary World–II, Contemporary India–II, Democratic Politics–II', 
+                description: 'History, geography and civics for Class 10',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10SSt.pdf'
+            },
+            Sanskrit: { 
+                title: 'Shemushi', 
+                description: 'Sanskrit language advanced for Class 10',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class10Sanskrit.pdf'
+            }
         },
         11: {
-            'Science-Physics': { title: 'Physics', stream: 'Science', description: 'Mechanics, waves, thermodynamics, electricity and magnetism for Class 11' },
-            'Science-Chemistry': { title: 'Chemistry', stream: 'Science', description: 'Chemical bonding, thermodynamics, equilibrium, organic chemistry for Class 11' },
-            'Science-Mathematics': { title: 'Mathematics', stream: 'Science', description: 'Functions, limits, derivatives, conic sections, probability for Class 11' },
-            'Science-Biology': { title: 'Biology', stream: 'Science', description: 'Cell structure, photosynthesis, respiration, genetics for Class 11' },
-            'English-General': { title: 'Hornbill / Snapshots', stream: 'General', description: 'English textbook and supplementary reader for Class 11' },
-            'Hindi-General': { title: 'Aroh / Vitan', stream: 'General', description: 'Hindi textbook and supplementary reader for Class 11' },
-            'Commerce-Accountancy': { title: 'Accountancy', stream: 'Commerce', description: 'Financial accounting basics for Class 11' },
-            'Commerce-Economics': { title: 'Introductory Microeconomics', stream: 'Commerce', description: 'Economics fundamentals for Class 11' },
-            'Commerce-BusinessStudies': { title: 'Business Studies', stream: 'Commerce', description: 'Business fundamentals and organization for Class 11' },
-            'Arts-History': { title: 'Themes in World History', stream: 'Arts', description: 'World history themes for Class 11' },
-            'Arts-Geography': { title: 'Fundamentals of Physical Geography', stream: 'Arts', description: 'Physical geography basics for Class 11' },
-            'Arts-PoliticalScience': { title: 'Political Theory', stream: 'Arts', description: 'Political science concepts for Class 11' },
-            'Arts-Sociology': { title: 'Introduction to Sociology', stream: 'Arts', description: 'Sociology basics for Class 11' }
+            'Science-Physics': { 
+                title: 'Physics', 
+                stream: 'Science', 
+                description: 'Mechanics, waves, thermodynamics, electricity and magnetism for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Physics.pdf'
+            },
+            'Science-Chemistry': { 
+                title: 'Chemistry', 
+                stream: 'Science', 
+                description: 'Chemical bonding, thermodynamics, equilibrium, organic chemistry for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Chemistry.pdf'
+            },
+            'Science-Mathematics': { 
+                title: 'Mathematics', 
+                stream: 'Science', 
+                description: 'Functions, limits, derivatives, conic sections, probability for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Maths.pdf'
+            },
+            'Science-Biology': { 
+                title: 'Biology', 
+                stream: 'Science', 
+                description: 'Cell structure, photosynthesis, respiration, genetics for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Biology.pdf'
+            },
+            'English-General': { 
+                title: 'Hornbill / Snapshots', 
+                stream: 'General', 
+                description: 'English textbook and supplementary reader for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11English.pdf'
+            },
+            'Hindi-General': { 
+                title: 'Aroh / Vitan', 
+                stream: 'General', 
+                description: 'Hindi textbook and supplementary reader for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Hindi.pdf'
+            },
+            'Commerce-Accountancy': { 
+                title: 'Accountancy', 
+                stream: 'Commerce', 
+                description: 'Financial accounting basics for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Accountancy.pdf'
+            },
+            'Commerce-Economics': { 
+                title: 'Introductory Microeconomics', 
+                stream: 'Commerce', 
+                description: 'Economics fundamentals for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Economics.pdf'
+            },
+            'Commerce-BusinessStudies': { 
+                title: 'Business Studies', 
+                stream: 'Commerce', 
+                description: 'Business fundamentals and organization for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11BusinessStudies.pdf'
+            },
+            'Arts-History': { 
+                title: 'Themes in World History', 
+                stream: 'Arts', 
+                description: 'World history themes for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11History.pdf'
+            },
+            'Arts-Geography': { 
+                title: 'Fundamentals of Physical Geography', 
+                stream: 'Arts', 
+                description: 'Physical geography basics for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Geography.pdf'
+            },
+            'Arts-PoliticalScience': { 
+                title: 'Political Theory', 
+                stream: 'Arts', 
+                description: 'Political science concepts for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11PoliticalScience.pdf'
+            },
+            'Arts-Sociology': { 
+                title: 'Introduction to Sociology', 
+                stream: 'Arts', 
+                description: 'Sociology basics for Class 11',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class11Sociology.pdf'
+            }
         },
         12: {
-            'Science-Physics': { title: 'Physics', stream: 'Science', description: 'Electrostatics, optics, semiconductors, nuclei for Class 12' },
-            'Science-Chemistry': { title: 'Chemistry', stream: 'Science', description: 'Solutions, electrochemistry, kinetics, polymers for Class 12' },
-            'Science-Mathematics': { title: 'Mathematics', stream: 'Science', description: 'Relations, calculus, vectors, 3D geometry, linear programming for Class 12' },
-            'Science-Biology': { title: 'Biology', stream: 'Science', description: 'Reproduction, genetics, molecular biology, evolution for Class 12' },
-            'English-General': { title: 'Flamingo / Vistas', stream: 'General', description: 'English textbook and supplementary reader for Class 12' },
-            'Hindi-General': { title: 'Antra / Antral', stream: 'General', description: 'Hindi textbook and supplementary reader for Class 12' },
-            'Commerce-Accountancy': { title: 'Accountancy', stream: 'Commerce', description: 'Advanced financial and management accounting for Class 12' },
-            'Commerce-Economics': { title: 'Introductory Macroeconomics', stream: 'Commerce', description: 'Macroeconomics for Class 12' },
-            'Commerce-BusinessStudies': { title: 'Business Studies', stream: 'Commerce', description: 'Advanced business management and organization for Class 12' },
-            'Arts-History': { title: 'Themes in Indian History', stream: 'Arts', description: 'Indian history themes for Class 12' },
-            'Arts-Geography': { title: 'Fundamentals of Human Geography', stream: 'Arts', description: 'Human geography for Class 12' },
-            'Arts-PoliticalScience': { title: 'Politics in India since Independence', stream: 'Arts', description: 'Indian political science for Class 12' },
-            'Arts-Sociology': { title: 'Indian Society', stream: 'Arts', description: 'Sociology of Indian society for Class 12' }
+            'Science-Physics': { 
+                title: 'Physics', 
+                stream: 'Science', 
+                description: 'Electrostatics, optics, semiconductors, nuclei for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Physics.pdf'
+            },
+            'Science-Chemistry': { 
+                title: 'Chemistry', 
+                stream: 'Science', 
+                description: 'Solutions, electrochemistry, kinetics, polymers for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Chemistry.pdf'
+            },
+            'Science-Mathematics': { 
+                title: 'Mathematics', 
+                stream: 'Science', 
+                description: 'Relations, calculus, vectors, 3D geometry, linear programming for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Maths.pdf'
+            },
+            'Science-Biology': { 
+                title: 'Biology', 
+                stream: 'Science', 
+                description: 'Reproduction, genetics, molecular biology, evolution for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Biology.pdf'
+            },
+            'English-General': { 
+                title: 'Flamingo / Vistas', 
+                stream: 'General', 
+                description: 'English textbook and supplementary reader for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12English.pdf'
+            },
+            'Hindi-General': { 
+                title: 'Antra / Antral', 
+                stream: 'General', 
+                description: 'Hindi textbook and supplementary reader for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Hindi.pdf'
+            },
+            'Commerce-Accountancy': { 
+                title: 'Accountancy', 
+                stream: 'Commerce', 
+                description: 'Advanced financial and management accounting for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Accountancy.pdf'
+            },
+            'Commerce-Economics': { 
+                title: 'Introductory Macroeconomics', 
+                stream: 'Commerce', 
+                description: 'Macroeconomics for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Economics.pdf'
+            },
+            'Commerce-BusinessStudies': { 
+                title: 'Business Studies', 
+                stream: 'Commerce', 
+                description: 'Advanced business management and organization for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12BusinessStudies.pdf'
+            },
+            'Arts-History': { 
+                title: 'Themes in Indian History', 
+                stream: 'Arts', 
+                description: 'Indian history themes for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12History.pdf'
+            },
+            'Arts-Geography': { 
+                title: 'Fundamentals of Human Geography', 
+                stream: 'Arts', 
+                description: 'Human geography for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Geography.pdf'
+            },
+            'Arts-PoliticalScience': { 
+                title: 'Politics in India since Independence', 
+                stream: 'Arts', 
+                description: 'Indian political science for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12PoliticalScience.pdf'
+            },
+            'Arts-Sociology': { 
+                title: 'Indian Society', 
+                stream: 'Arts', 
+                description: 'Sociology of Indian society for Class 12',
+                pdfUrl: 'https://ncert.nic.in/pdf/publication/Class12Sociology.pdf'
+            }
         }
     };
 
@@ -203,11 +538,14 @@
         ];
     }
 
-    function buildReader(board, classNumber, subject) {
+    function buildReader(board, classNumber, subject, pdfUrl) {
         const normalizedSubject = subject.toLowerCase();
         const genericReader = {
             access: 'preview',
-            availabilityNote: 'Interactive preview is available now. Full scanned books or PDFs can be attached later.',
+            availabilityNote: pdfUrl 
+                ? 'NCERT official PDF available. Download or open in reader.' 
+                : 'Interactive preview is available now. Full scanned books or PDFs can be attached later.',
+            pdfUrl: pdfUrl || null,
             chapters: buildGenericChapters(subject, classNumber)
         };
 
@@ -290,7 +628,7 @@
                     title: `NCERT Class ${classNumber} ${bookData.title}`,
                     description: bookData.description,
                     tags: [board.name, `Class ${classNumber}`, subject, board.badge],
-                    reader: buildReader(board, classNumber, subject)
+                    reader: buildReader(board, classNumber, subject, bookData.pdfUrl)
                 }));
             });
         } else {

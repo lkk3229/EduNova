@@ -1,0 +1,24 @@
+2026-05-10 23:15:20:1520 [31merror[39m: [31muncaughtException: app.use() requires a middleware function[39m
+[31mTypeError: app.use() requires a middleware function[39m
+[31m    at app.use (C:\Users\kasaudha\OneDrive - Agilent Technologies\Desktop\Data\Jar\JS_Workspace\WebDesign_EduNova\backend\node_modules\express\lib\application.js:217:11)[39m
+[31m    at Object.<anonymous> (C:\Users\kasaudha\OneDrive - Agilent Technologies\Desktop\Data\Jar\JS_Workspace\WebDesign_EduNova\backend\server.js:114:5)[39m
+[31m    at Module._compile (node:internal/modules/cjs/loader:1761:14)[39m
+[31m    at Object..js (node:internal/modules/cjs/loader:1893:10)[39m
+[31m    at Module.load (node:internal/modules/cjs/loader:1481:32)[39m
+[31m    at Module._load (node:internal/modules/cjs/loader:1300:12)[39m
+[31m    at TracingChannel.traceSync (node:diagnostics_channel:328:14)[39m
+[31m    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)[39m
+[31m    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)[39m
+[31m    at node:internal/main/run_main_module:33:47[39m
+2026-05-10 23:15:40:1540 [31merror[39m: [31muncaughtException: app.use() requires a middleware function[39m
+[31mTypeError: app.use() requires a middleware function[39m
+[31m    at app.use (C:\Users\kasaudha\OneDrive - Agilent Technologies\Desktop\Data\Jar\JS_Workspace\WebDesign_EduNova\backend\node_modules\express\lib\application.js:217:11)[39m
+[31m    at Object.<anonymous> (C:\Users\kasaudha\OneDrive - Agilent Technologies\Desktop\Data\Jar\JS_Workspace\WebDesign_EduNova\backend\server.js:114:5)[39m
+[31m    at Module._compile (node:internal/modules/cjs/loader:1761:14)[39m
+[31m    at Object..js (node:internal/modules/cjs/loader:1893:10)[39m
+[31m    at Module.load (node:internal/modules/cjs/loader:1481:32)[39m
+[31m    at Module._load (node:internal/modules/cjs/loader:1300:12)[39m
+[31m    at TracingChannel.traceSync (node:diagnostics_channel:328:14)[39m
+[31m    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)[39m
+[31m    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)[39m
+[31m    at node:internal/main/run_main_module:33:47[39m

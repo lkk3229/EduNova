@@ -163,7 +163,7 @@
         <h1>EduNova — Product Requirement Document</h1>
         <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
         <div class="prd-meta">
-            <div class="prd-meta-item">Version: <strong>3.2</strong></div>
+            <div class="prd-meta-item">Version: <strong>5.2</strong></div>
             <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
             <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
@@ -383,6 +383,10 @@
             <div class="story-id">US-S10 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>user</em>, I want a <em>forgot-password flow</em> so I can recover access when I do not remember my login password.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-S11 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want <em>server-side payment transaction tracking</em> so enrollments and payment history remain consistent across sessions and devices.</p>
+        </div>
 
         <h3>5.2 Teacher Stories</h3>
         <div class="story-card">
@@ -404,6 +408,10 @@
         <div class="story-card">
             <div class="story-id">US-T05 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>teacher</em>, I want <em>live classes limited to 3 hours</em> with a timer warning at 2h50m so sessions don't run indefinitely.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-T06 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>teacher</em>, I want to <em>upload course videos/images via backend API</em> so media is validated and served from stable static URLs.</p>
         </div>
 
         <h3>5.3 Admin Stories</h3>
@@ -435,6 +443,14 @@
             <div class="story-id">US-A07 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>super admin</em>, I want an <em>auto-updating PRD and FRD</em> so documentation stays current with every platform change.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-A08 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>super admin</em>, I want a <em>live backend monitoring console API</em> so I can track latency, error rates, and cache behavior without direct server access.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A09 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>platform operator</em>, I want the backend to <em>start reliably with correctly wired middleware and explicit env validation</em> so API checks for payments and uploads can run end-to-end without boot-time failures.</p>
+        </div>
     </div>
 
     <!-- ==================== 6. FEATURE REQUIREMENTS ==================== -->
@@ -448,7 +464,7 @@
                 <tr><td>F-01</td><td>User Registration & Login</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Student & teacher registration with password strength, login with verification, session management</td></tr>
                 <tr><td>F-02</td><td>Course Catalog (120+ courses)</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Playway to PhD, all boards, 5-dimension filtering, real-time search</td></tr>
                 <tr><td>F-03</td><td>Currency Localization (18 currencies)</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Auto-detect via timezone, manual selector, INR base, EduCurrency API</td></tr>
-                <tr><td>F-04</td><td>Enrollment & Payment Flow</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Teaching mode selection, payment recording, enrollment tracking</td></tr>
+                <tr><td>F-04</td><td>Enrollment & Payment Flow</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Backend checkout endpoint, transaction records, and enrollment linkage</td></tr>
                 <tr><td>F-05</td><td>Student Dashboard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Enrolled courses, progress tracking, certificates, payments, demos</td></tr>
                 <tr><td>F-06</td><td>Teacher Dashboard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Courses, students, earnings, live class management</td></tr>
                 <tr><td>F-07</td><td>Certificate System</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Canvas PNG render, unique ENOVA-XXX-XXX IDs, verification URLs, download</td></tr>
@@ -467,6 +483,11 @@
                 <tr><td>F-20</td><td>AI English Speaking Trainer</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Voice conversation coach with question answering, correction, phoneme scoring, scorecard, and LLM integration</td></tr>
                 <tr><td>F-21</td><td>School Library Module</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Board-first and class-wise book catalog (Classes 1-12) with shelf filters and library AI assistant</td></tr>
                 <tr><td>F-22</td><td>Password Recovery Workflow</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Forgot password and reset flow on login with safeguards for demo accounts</td></tr>
+                <tr><td>F-23</td><td>Payment Gateway Backend APIs</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Checkout, signature verification, user history, and admin transaction views</td></tr>
+                <tr><td>F-24</td><td>Media Upload APIs</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Multer-backed teacher/admin uploads for image and video with static URL hosting</td></tr>
+                <tr><td>F-25</td><td>Platform Monitoring & Response Cache</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Admin metrics APIs, route-level performance telemetry, and TTL cache for GET-heavy endpoints</td></tr>
+                <tr><td>F-26</td><td>Dependency Security Hardening</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Upgraded vulnerable email dependency to patched major version and cleared backend audit findings</td></tr>
+                <tr><td>F-27</td><td>Backend Startup Reliability Guard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Correct middleware wiring and fail-fast env validation to prevent boot-time API outage</td></tr>
             </tbody>
         </table>
 
@@ -526,6 +547,13 @@
             <li>Password reset persists to registered user records in local storage</li>
             <li>Demo credentials intentionally excluded from reset path to preserve demo integrity</li>
         </ul>
+
+        <h4>6.2.7 Backend Runtime Reliability</h4>
+        <ul>
+            <li>Express error middleware is mounted through named export binding to avoid invalid middleware registration at startup.</li>
+            <li>Environment validation blocks server boot on invalid configuration, enabling deterministic failure diagnostics before API traffic.</li>
+            <li>This reliability guard directly supports end-to-end verification for checkout, verify, and media upload APIs.</li>
+        </ul>
     </div>
 
     <!-- ==================== 7. NON-FUNCTIONAL ==================== -->
@@ -540,7 +568,8 @@
                 <tr><td>Accessibility</td><td>Semantic HTML, ARIA labels, keyboard navigation for core flows</td><td><span class="badge badge-progress">Partial</span></td></tr>
                 <tr><td>Security</td><td>XSS prevention, input sanitization, session-based access control, chatbot confidentiality</td><td><span class="badge badge-done">Met</span></td></tr>
                 <tr><td>Offline Capability</td><td>localStorage persistence — data survives page reloads and browser restarts</td><td><span class="badge badge-done">Met</span></td></tr>
-                <tr><td>Scalability</td><td>Current: client-side only. Future: migration to server-side with database</td><td><span class="badge badge-planned">Planned</span></td></tr>
+                <tr><td>Scalability</td><td>Current: hybrid frontend + Node backend. Next: distributed cache/object storage and horizontal scaling</td><td><span class="badge badge-progress">In Progress</span></td></tr>
+                <tr><td>Backend Observability</td><td>Admin metrics endpoint with request latency, p95, error rate, and process health telemetry</td><td><span class="badge badge-done">Met</span></td></tr>
                 <tr><td>Internationalization</td><td>18 currencies supported; English-only UI (multi-language planned)</td><td><span class="badge badge-progress">Partial</span></td></tr>
                 <tr><td>Speech API Graceful Fallback</td><td>Trainer remains usable via text input when speech APIs are unavailable</td><td><span class="badge badge-done">Met</span></td></tr>
                 <tr><td>Print Support</td><td>FRD and PRD pages optimized for print/PDF export</td><td><span class="badge badge-done">Met</span></td></tr>
@@ -676,12 +705,12 @@
         </div>
 
         <div class="roadmap-phase">
-            <div class="phase-title">Phase 3 — Live Learning & Controls <span class="badge badge-done">Completed</span></div>
+            <div class="phase-title">Phase 3 — Reliability & Observability <span class="badge badge-done">Completed</span></div>
             <ul>
-                <li>Live class meeting room with 3-hour timer</li>
-                <li>Teacher/admin-gated completion for live courses</li>
-                <li>Teacher mark-complete functionality</li>
-                <li>Revenue split dashboard (60/40)</li>
+                <li>TTL-based response cache for high-traffic GET APIs (courses/books)</li>
+                <li>Admin-only monitoring APIs for process health, route latency, and cache telemetry</li>
+                <li>Slow-request detection with centralized logging</li>
+                <li>Query/index optimizations for course and enrollment access paths</li>
             </ul>
         </div>
 
@@ -698,6 +727,7 @@
                 <li>Auto-updating FRD and PRD documents</li>
                 <li>AI English speaking trainer with scorecard analytics and LLM settings</li>
                 <li>Library module with board/class segmentation and AI-assisted catalog help</li>
+                <li>Post-launch security polish: backend dependency hardening and clean audit report</li>
             </ul>
         </div>
 
@@ -737,10 +767,13 @@
                 <tr><td>localStorage data loss (user clears browser data)</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-med">Medium</span></td><td>Phase 5: Migrate to server-side database. Current: CSV export for admin backup.</td></tr>
                 <tr><td>Client-side password storage (no encryption)</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-low">Low</span></td><td>Phase 5: Server-side auth with bcrypt hashing. Current: demo-only deployment.</td></tr>
                 <tr><td>No real payment processing</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: Razorpay/Stripe integration before production launch.</td></tr>
+                <tr><td>Gateway key misconfiguration can block live checkout</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Manual checkout fallback mode remains active when Razorpay keys are absent.</td></tr>
                 <tr><td>Single admin bottleneck for teacher approvals</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Phase 6: Multi-admin roles with approval workflows.</td></tr>
                 <tr><td>Chatbot knowledge gaps</td><td><span class="badge badge-low">Low</span></td><td><span class="badge badge-med">Medium</span></td><td>Continuously expand knowledge base; add fallback to support email.</td></tr>
                 <tr><td>Currency conversion rates hardcoded</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: Live exchange rate API integration.</td></tr>
                 <tr><td>No video hosting capability</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: AWS S3 + CloudFront or dedicated video platform.</td></tr>
+                <tr><td>Local filesystem upload storage may not scale on multi-instance deployments</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Move uploads to object storage (S3/Blob) in next infra iteration.</td></tr>
+                <tr><td>In-memory cache is per-process and may serve stale data briefly</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Short TTL + write-triggered prefix invalidation now; move to shared Redis cache for multi-instance scale.</td></tr>
                 <tr><td>Browser speech API behavior varies by device/browser</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Fallback to typed mode and retain coaching quality without microphone access.</td></tr>
                 <tr><td>Direct frontend LLM key usage is not production-safe</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Move to backend proxy for token handling and provider routing before production release.</td></tr>
                 <tr><td>Library dataset is static client-side content</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Move catalog and access rights to backend CMS/data store in scale phase.</td></tr>
@@ -790,15 +823,19 @@
                 <tr><td>Web Speech API</td><td>Browser API</td><td>Speech recognition and voice synthesis for English trainer</td></tr>
                 <tr><td>EduNovaLibrary API</td><td>Client JS API</td><td>Board/class catalog model and search helper layer for library module</td></tr>
                 <tr><td>Browser Crypto API</td><td>Browser API</td><td>Secure meeting code generation for live classes</td></tr>
+                <tr><td>Razorpay SDK</td><td>Node package</td><td>Payment order creation and signature verification support</td></tr>
+                <tr><td>Multer</td><td>Node package</td><td>Multipart file ingestion, MIME validation, and file size controls</td></tr>
+                <tr><td>Winston File Logging</td><td>Node package</td><td>Structured JSON log retention with slow-request diagnostics</td></tr>
             </tbody>
         </table>
 
         <h3>14.2 Constraints</h3>
         <ul>
-            <li><strong>No server-side:</strong> All logic runs in the browser; no backend, API, or database</li>
+            <li><strong>Hybrid architecture:</strong> Frontend remains localStorage-backed while backend APIs now handle auth, payments, uploads, and monitoring</li>
             <li><strong>localStorage limit:</strong> ~5-10 MB per origin depending on browser</li>
-            <li><strong>No real payments:</strong> Payment flow is simulated (no Razorpay/Stripe integration yet)</li>
-            <li><strong>No video streaming:</strong> Course content is textual/structural (no actual video hosting)</li>
+            <li><strong>Gateway optional mode:</strong> If payment keys are missing, checkout falls back to manual/dev completion mode</li>
+            <li><strong>No distributed media store:</strong> Uploads are stored on local filesystem by default</li>
+            <li><strong>No distributed cache layer yet:</strong> Response cache is process-local and non-shared across instances</li>
             <li><strong>Single admin:</strong> One super admin account (multi-admin not yet supported)</li>
             <li><strong>English only:</strong> UI is English; multi-language support is Phase 6</li>
         </ul>
@@ -827,6 +864,10 @@
                 <tr><td>BLOCKED_KEYWORDS</td><td>List of sensitive terms the chatbot refuses to discuss (passwords, bank details, etc.)</td></tr>
                 <tr><td>INR</td><td>Indian Rupees — the base/default currency for all course pricing</td></tr>
                 <tr><td>Revenue Split</td><td>60% teacher / 40% platform on every enrollment payment</td></tr>
+                <tr><td>Transaction</td><td>Persistent payment record containing checkout status, provider IDs, and payout split values</td></tr>
+                <tr><td>Razorpay Order</td><td>Gateway-side order object used for payment authorization and signature verification</td></tr>
+                <tr><td>Response Cache</td><td>In-memory TTL layer for public GET endpoints with explicit invalidation on writes</td></tr>
+                <tr><td>Operational Metrics</td><td>Backend route/request telemetry exposed through admin-only monitoring APIs</td></tr>
                 <tr><td>Speaking Scorecard</td><td>Per-student report containing fluency, pronunciation, streak, suggestions, and recent history</td></tr>
                 <tr><td>Library Module</td><td>Board-wise and class-wise school book catalog with in-page AI assistant</td></tr>
                 <tr><td>FRD</td><td>Functional Requirement Document — technical specification of all features</td></tr>
@@ -851,8 +892,9 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
-        <p>EduNova Product Requirement Document v3.2</p>
-        <p>Auto-generated from live platform state. &copy; 2026 EduNova — Learn Without Limits</p>
+        <p>EduNova Product Requirement Document v5.2</p>
+        <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v5.2 includes: backend startup reliability guard (error middleware wiring fix), validated env-first boot flow, and prior security hardening baseline</p>
         <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
     </div>
 

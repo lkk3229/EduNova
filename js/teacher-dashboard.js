@@ -231,7 +231,7 @@ function initUploadForm() {
         });
     }
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const session = JSON.parse(localStorage.getItem('edunova_session') || 'null');
@@ -261,6 +261,45 @@ function initUploadForm() {
             approvedPrice: null,
             createdAt: new Date().toISOString()
         };
+
+        // Try backend upload + course create first.
+        try {
+            if (typeof apiClient !== 'undefined' && localStorage.getItem('edunova_token')) {
+                const file = document.getElementById('courseVideo')?.files?.[0];
+                let videoUrl = null;
+
+                if (file) {
+                    const uploadResult = await apiClient.uploads.uploadVideo(file);
+                    videoUrl = uploadResult?.file?.url || null;
+                }
+
+                await apiClient.courses.create({
+                    title: courseData.title,
+                    description: courseData.description,
+                    category: courseData.category,
+                    level: courseData.level,
+                    price: courseData.price,
+                    duration: courseData.hours,
+                    thumbnail: '',
+                    status: 'draft',
+                    modules: videoUrl ? [{ title: 'Module 1', lessons: [{ title: 'Lesson 1', videoUrl }] }] : []
+                });
+
+                showNotification('Course submitted to backend successfully! Awaiting admin publish review. 📝', 'success');
+                form.reset();
+                const previewBox = document.getElementById('videoPreviewBox');
+                if (previewBox) previewBox.style.display = 'none';
+
+                setTimeout(() => {
+                    switchTab('my-courses');
+                    loadTeacherCourses();
+                    loadOverviewStats();
+                }, 1200);
+                return;
+            }
+        } catch (error) {
+            showNotification(`Backend submission failed: ${error.message}. Saving locally.`, 'warning');
+        }
 
         // Save course
         const courses = JSON.parse(localStorage.getItem('edunova_courses') || '[]');

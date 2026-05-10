@@ -322,7 +322,7 @@
         <h1>EduNova — Functional Requirement Document</h1>
         <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
         <div class="frd-meta">
-            <div class="frd-meta-item">Version: <strong>3.2</strong></div>
+            <div class="frd-meta-item">Version: <strong>5.2</strong></div>
             <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
             <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript</strong></div>
@@ -424,7 +424,16 @@
                 <tr><td>prd.html</td><td>Page</td><td>Product requirement document — auto-updating PRD</td></tr>
                 <tr><td>js/app.js</td><td>JS</td><td>Global utilities — preloader, navbar, scroll, notifications</td></tr>
                 <tr><td>js/auth.js</td><td>JS</td><td>Login, registration, session management</td></tr>
-                <tr><td>js/courses.js</td><td>JS</td><td>120-course catalog data + filtering + payment modal</td></tr>
+                <tr><td>js/courses.js</td><td>JS</td><td>Course catalog data + filtering + backend checkout integration</td></tr>
+                <tr><td>backend/server.js</td><td>Node Server</td><td>Express bootstrap, middleware wiring, route mounting, and startup health/runtime initialization</td></tr>
+                <tr><td>backend/middleware/errorHandler.js</td><td>Node Middleware</td><td>Centralized API error mapping (validation, duplicate keys, cast errors) and JSON error responses</td></tr>
+                <tr><td>backend/routes/payments.js</td><td>Node Route</td><td>Checkout, verification, and payment history APIs</td></tr>
+                <tr><td>backend/routes/uploads.js</td><td>Node Route</td><td>Teacher/admin image and video upload APIs</td></tr>
+                <tr><td>backend/models/Transaction.js</td><td>Node Model</td><td>Persistent payment transaction records and revenue split fields</td></tr>
+                <tr><td>backend/middleware/upload.js</td><td>Node Middleware</td><td>Multer-based file validation, sizing, and storage policy</td></tr>
+                <tr><td>backend/middleware/cache.js</td><td>Node Middleware</td><td>In-memory response caching with TTL, cache telemetry, and route-prefix invalidation</td></tr>
+                <tr><td>backend/middleware/performanceMonitor.js</td><td>Node Middleware</td><td>Per-route latency, slow-request detection, and runtime performance snapshot collection</td></tr>
+                <tr><td>backend/routes/monitoring.js</td><td>Node Route</td><td>Admin-only operational metrics endpoints for performance and cache control</td></tr>
                 <tr><td>js/dashboard.js</td><td>JS</td><td>Admin dashboard — all tab populations and super admin actions</td></tr>
                 <tr><td>js/student-dashboard.js</td><td>JS</td><td>Student dashboard logic</td></tr>
                 <tr><td>js/teacher-dashboard.js</td><td>JS</td><td>Teacher dashboard logic</td></tr>
@@ -617,13 +626,25 @@
         <ol>
             <li>Student clicks "Enroll Now" on course card (courses.html)</li>
             <li>Payment modal opens showing price in user's detected currency</li>
-            <li>Student selects teaching mode (Recorded / Live 1-on-1 / Group / Hybrid)</li>
-            <li>On confirm, enrollment record saved to <code>edunova_enrollments</code></li>
-            <li>Payment record saved to <code>edunova_payments</code></li>
+            <li>Frontend calls <code>POST /api/payments/checkout/:courseId</code> with JWT authorization</li>
+            <li>If Razorpay keys exist, order is created and pending transaction is stored</li>
+            <li>If gateway keys are not configured, manual/dev fallback marks transaction as completed</li>
+            <li>Enrollment is persisted in MongoDB and attached to student and course records</li>
             <li>Student redirected to dashboard</li>
         </ol>
 
-        <h3>6.2 Enrollment Record Schema</h3>
+        <h3>6.2 Payment API Contracts</h3>
+        <table>
+            <thead><tr><th>Endpoint</th><th>Method</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>/api/payments/checkout/:courseId</td><td>POST</td><td>Create gateway/manual transaction and complete enrollment when applicable</td></tr>
+                <tr><td>/api/payments/verify</td><td>POST</td><td>Verify Razorpay signature and finalize transaction enrollment</td></tr>
+                <tr><td>/api/payments/mine</td><td>GET</td><td>Student payment history</td></tr>
+                <tr><td>/api/payments</td><td>GET</td><td>Admin-wide transaction listing</td></tr>
+            </tbody>
+        </table>
+
+        <h3>6.3 Enrollment Record Schema</h3>
         <table>
             <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
             <tbody>
@@ -642,11 +663,12 @@
             </tbody>
         </table>
 
-        <h3>6.3 Revenue Model</h3>
+        <h3>6.4 Revenue Model</h3>
         <ul>
             <li><strong>Teacher Share:</strong> 60% of course price</li>
             <li><strong>Platform Share:</strong> 40% of course price</li>
             <li>Revenue breakdown visible in admin dashboard (Revenue tab) and teacher dashboard</li>
+            <li>Revenue split persisted per transaction in <code>Transaction.teacherShare</code> and <code>Transaction.platformShare</code></li>
         </ul>
     </div>
 
@@ -808,12 +830,23 @@
                 <tr><td>Class Segmentation</td><td>Books are further grouped by class level (1-12)</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Search & Filter</td><td>Search by title/subject/stream plus board/class filters</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Book Reader Preview</td><td>Right-side preview panel with chapter and concept summaries</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>NCERT PDF Integration</td><td>Direct links to official NCERT PDFs (ncert.nic.in) with fallback to custom reader</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Open Book in New Tab</td><td>"Open Book" button opens NCERT PDF or custom reader in new browser tab</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Library AI Assistant</td><td>Library-scoped answering with controlled fallback to in-script educational guidance</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Scope Control</td><td>Library focuses on content access; subscription workflow is deferred</td><td><span class="frd-badge frd-badge-live">Deferred</span></td></tr>
             </tbody>
         </table>
 
-        <h3>10A.3 Data Access Layer</h3>
+        <h3>10A.3 NCERT Catalog Details</h3>
+        <ul>
+            <li>All NCERT books (Classes 1-12) include direct PDF links to official ncert.nic.in publications</li>
+            <li>Supported languages: English, Hindi, Sanskrit (Classes 6-10), Urdu (where applicable)</li>
+            <li>Full subject coverage: Core subjects (English, Mathematics, Science, Social Science, Environmental Studies) + Streams (Science, Commerce, Arts) for Classes 11-12</li>
+            <li>PDF URLs follow standard NCERT structure: <code>https://ncert.nic.in/pdf/publication/Class{N}{Subject}.pdf</code></li>
+            <li>When user clicks "Open Book", NCERT PDF opens in new tab if available, otherwise custom reader page loads</li>
+        </ul>
+
+        <h3>10A.4 Data Access Layer</h3>
         <ul>
             <li><code>window.EduNovaLibrary</code> exposes board metadata, full book catalog, and helper methods</li>
             <li>Key APIs: <code>getBooks()</code>, <code>searchBooks()</code>, <code>getBookById()</code>, <code>findBook()</code>, <code>getBoardOverview()</code></li>
@@ -931,6 +964,21 @@
 
         <h3>12.2 Platform Summary Metrics</h3>
         <p>The Reports tab shows a live summary table with these metrics: Registered Users, Students, Teachers, Uploaded Courses, Approved Courses, Total Enrollments, Completed Courses, Certificates Issued, Total Revenue, Payments Processed.</p>
+
+        <h3>12.3 Backend Operational Metrics (Phase 3)</h3>
+        <p>Admin users can access operational telemetry through backend APIs:</p>
+        <ul>
+            <li><strong>GET /api/monitoring/metrics</strong> — process memory, CPU usage, request/error totals, route-level average/max/p95 latency, and cache state</li>
+            <li><strong>POST /api/monitoring/metrics/reset</strong> — reset collected performance counters</li>
+            <li><strong>POST /api/monitoring/cache/clear</strong> — clear response cache globally or by URL prefix</li>
+        </ul>
+
+        <h3>12.4 Runtime Stability Controls</h3>
+        <p>Backend startup now requires valid middleware registration ordering and references before accepting traffic.</p>
+        <ul>
+            <li>Central error middleware is mounted using named export wiring from <code>backend/middleware/errorHandler.js</code> to avoid startup-time middleware type failures.</li>
+            <li>Environment validation executes before service boot, so misconfiguration fails fast with explicit diagnostics.</li>
+        </ul>
     </div>
 
     <!-- ==================== 13. SECURITY ==================== -->
@@ -965,6 +1013,7 @@
             <li>Passwords stored in plaintext in localStorage (acceptable for demo; production would use bcrypt + server-side storage)</li>
             <li>No CSRF protection (no server-side state)</li>
             <li>Demo credentials are hardcoded in auth.js</li>
+            <li>Current response caching is in-memory per process (no shared Redis layer across multiple instances yet)</li>
         </ul>
     </div>
 
@@ -1001,12 +1050,16 @@
                 <tr><td>edunova_users</td><td>Array</td><td>Registered users (firstName, lastName, email, password, role, status, createdAt)</td></tr>
                 <tr><td>edunova_courses</td><td>Array</td><td>Teacher-uploaded courses pending/approved</td></tr>
                 <tr><td>edunova_enrollments</td><td>Array</td><td>Student enrollments with course, teacher, mode, amount, status</td></tr>
-                <tr><td>edunova_payments</td><td>Array</td><td>Payment records</td></tr>
+                <tr><td>edunova_payments</td><td>Array</td><td>Legacy local payment records (fallback mode)</td></tr>
                 <tr><td>edunova_certificates</td><td>Array</td><td>Issued certificates with certId, student, course, teacher, dates, URLs</td></tr>
                 <tr><td>edunova_progress</td><td>Object</td><td>Progress tracking { "courseId_email": percentage }</td></tr>
                 <tr><td>edunova_demos</td><td>Array</td><td>Demo class requests</td></tr>
                 <tr><td>edunova_currency</td><td>String</td><td>User's selected currency code</td></tr>
                 <tr><td>edunova_schedules</td><td>Array</td><td>Class schedules</td></tr>
+                <tr><td>transactions (MongoDB)</td><td>Collection</td><td>Checkout lifecycle, gateway IDs, status, and revenue split per payment</td></tr>
+                <tr><td>uploads (filesystem)</td><td>Directory</td><td>Uploaded images/videos served through <code>/uploads/*</code> static URLs</td></tr>
+                <tr><td>response cache (in-memory)</td><td>Process Map</td><td>TTL-based cache for GET-heavy APIs (books/courses) with prefix invalidation on writes</td></tr>
+                <tr><td>performance metrics (in-memory)</td><td>Process Map</td><td>Route-level latency/error snapshots used by admin monitoring endpoints</td></tr>
                 <tr><td>Library dataset</td><td>In-memory</td><td>Board/class/subject book catalog generated by js/library-data.js</td></tr>
                 <tr><td>edunova_english_profiles</td><td>Object</td><td>Per-student speaking attempts, scores, suggestions context, and history</td></tr>
                 <tr><td>edunova_english_llm_config</td><td>Object</td><td>Per-student LLM provider settings for speaking trainer</td></tr>
@@ -1026,8 +1079,9 @@
 
     <!-- FOOTER -->
     <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
-        <p>EduNova Functional Requirement Document v3.2</p>
+        <p>EduNova Functional Requirement Document v5.2</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v5.2 includes: backend runtime stability fix for error middleware wiring, validated local environment boot path, and prior Phase 4 dependency hardening</p>
     </div>
 
 </div>
