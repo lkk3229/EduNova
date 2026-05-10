@@ -163,7 +163,7 @@
         <h1>EduNova — Product Requirement Document</h1>
         <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
         <div class="prd-meta">
-            <div class="prd-meta-item">Version: <strong>3.0</strong></div>
+            <div class="prd-meta-item">Version: <strong>3.2</strong></div>
             <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
             <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
@@ -371,6 +371,18 @@
             <div class="story-id">US-S07 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>student</em>, I want to <em>track my progress</em> across enrolled courses and view all my certificates in one place.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-S08 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student</em>, I want to <em>practice English speaking with a voice coach that answers my questions, corrects mistakes, and gives scorecard-based improvement tips</em> so I can become confident in real conversations.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S09 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>learner</em>, I want to <em>open a library where books are segregated board-wise and class-wise</em> so I can quickly find NCERT, ICSE, or State Board content for my class.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-S10 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>user</em>, I want a <em>forgot-password flow</em> so I can recover access when I do not remember my login password.</p>
+        </div>
 
         <h3>5.2 Teacher Stories</h3>
         <div class="story-card">
@@ -452,6 +464,9 @@
                 <tr><td>F-17</td><td>Auto-Updating PRD</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>This document — product vision, stories, KPIs, roadmap with live data</td></tr>
                 <tr><td>F-18</td><td>Demo Class Booking</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Students can request trial/demo sessions</td></tr>
                 <tr><td>F-19</td><td>Platform Data Reset</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Admin can clear specific data categories (users, enrollments, etc.)</td></tr>
+                <tr><td>F-20</td><td>AI English Speaking Trainer</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Voice conversation coach with question answering, correction, phoneme scoring, scorecard, and LLM integration</td></tr>
+                <tr><td>F-21</td><td>School Library Module</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Board-first and class-wise book catalog (Classes 1-12) with shelf filters and library AI assistant</td></tr>
+                <tr><td>F-22</td><td>Password Recovery Workflow</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Forgot password and reset flow on login with safeguards for demo accounts</td></tr>
             </tbody>
         </table>
 
@@ -483,6 +498,34 @@
             <li>Admin dashboard shows all teacher revenues</li>
             <li>CSV export with split amounts</li>
         </ul>
+
+        <h4>6.2.4 English Speaking Trainer Engine</h4>
+        <ul>
+            <li>Dedicated English speaking module for student role with login-gated entry and redirect handling</li>
+            <li>SpeechRecognition for live listening transcript and SpeechSynthesis for spoken tutor responses</li>
+            <li>Question-first tutor behavior: direct answer first, then correction/tip for language improvement</li>
+            <li>Pronunciation scoring via phoneme-level similarity and Levenshtein-based comparison logic</li>
+            <li>Per-student scorecard with fluency average, pronunciation average, practice streak, and suggestions</li>
+            <li>Configurable LLM provider support (OpenAI/Anthropic/custom endpoint) with local fallback trainer</li>
+            <li>Conversation-focused response style with human-like follow-up prompts to sustain dialogue</li>
+        </ul>
+
+        <h4>6.2.5 Library Module Engine</h4>
+        <ul>
+            <li>Dedicated Library page with board-wise (NCERT, ICSE, State Boards) and class-wise (1-12) segmentation</li>
+            <li>Search and filter layer over catalog by title, subject, stream, class, and board</li>
+            <li>Book preview panel showing chapter-level and concept-level summaries</li>
+            <li>Library AI assistant with catalog-first responses and built-in educational fallback when no exact catalog match is found</li>
+            <li>Navigation integration in public navbar and logged-in user dropdown for faster access</li>
+            <li>Subscription model intentionally deferred for later business decision</li>
+        </ul>
+
+        <h4>6.2.6 Authentication Recovery Engine</h4>
+        <ul>
+            <li>Forgot password action from login page with inline modal/user-input flow</li>
+            <li>Password reset persists to registered user records in local storage</li>
+            <li>Demo credentials intentionally excluded from reset path to preserve demo integrity</li>
+        </ul>
     </div>
 
     <!-- ==================== 7. NON-FUNCTIONAL ==================== -->
@@ -499,6 +542,7 @@
                 <tr><td>Offline Capability</td><td>localStorage persistence — data survives page reloads and browser restarts</td><td><span class="badge badge-done">Met</span></td></tr>
                 <tr><td>Scalability</td><td>Current: client-side only. Future: migration to server-side with database</td><td><span class="badge badge-planned">Planned</span></td></tr>
                 <tr><td>Internationalization</td><td>18 currencies supported; English-only UI (multi-language planned)</td><td><span class="badge badge-progress">Partial</span></td></tr>
+                <tr><td>Speech API Graceful Fallback</td><td>Trainer remains usable via text input when speech APIs are unavailable</td><td><span class="badge badge-done">Met</span></td></tr>
                 <tr><td>Print Support</td><td>FRD and PRD pages optimized for print/PDF export</td><td><span class="badge badge-done">Met</span></td></tr>
             </tbody>
         </table>
@@ -652,6 +696,8 @@
                 <li>Access control on all dashboards</li>
                 <li>Password verification for registered users</li>
                 <li>Auto-updating FRD and PRD documents</li>
+                <li>AI English speaking trainer with scorecard analytics and LLM settings</li>
+                <li>Library module with board/class segmentation and AI-assisted catalog help</li>
             </ul>
         </div>
 
@@ -695,6 +741,10 @@
                 <tr><td>Chatbot knowledge gaps</td><td><span class="badge badge-low">Low</span></td><td><span class="badge badge-med">Medium</span></td><td>Continuously expand knowledge base; add fallback to support email.</td></tr>
                 <tr><td>Currency conversion rates hardcoded</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: Live exchange rate API integration.</td></tr>
                 <tr><td>No video hosting capability</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: AWS S3 + CloudFront or dedicated video platform.</td></tr>
+                <tr><td>Browser speech API behavior varies by device/browser</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Fallback to typed mode and retain coaching quality without microphone access.</td></tr>
+                <tr><td>Direct frontend LLM key usage is not production-safe</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Move to backend proxy for token handling and provider routing before production release.</td></tr>
+                <tr><td>Library dataset is static client-side content</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Move catalog and access rights to backend CMS/data store in scale phase.</td></tr>
+                <tr><td>Library AI fallback may answer beyond strict catalog text</td><td><span class="badge badge-low">Low</span></td><td><span class="badge badge-med">Medium</span></td><td>Add strict-mode toggle to force catalog-only responses when required.</td></tr>
             </tbody>
         </table>
     </div>
@@ -714,6 +764,8 @@
                 <tr><td>Teacher Approval Rate</td><td>Approved ÷ Total Teacher Applications</td><td>>50%</td><td>Auto-tracked</td></tr>
                 <tr><td>Avg Revenue Per Enrollment</td><td>Total Revenue ÷ Enrollments</td><td>₹2,000+</td><td>Auto-tracked</td></tr>
                 <tr><td>Chatbot Satisfaction</td><td>Queries answered without "I don't know"</td><td>>85%</td><td>Manual review</td></tr>
+                <tr><td>Speaking Engagement</td><td>Total speaking attempts per active speaking student</td><td>>10 attempts/week</td><td>Auto-tracked</td></tr>
+                <tr><td>Speaking Improvement Rate</td><td>Students with +10 or more fluency points over time</td><td>>50%</td><td>Auto-tracked</td></tr>
                 <tr><td>Page Load Time</td><td>Time to interactive</td><td><2 seconds</td><td>Lighthouse</td></tr>
             </tbody>
         </table>
@@ -735,6 +787,9 @@
                 <tr><td>Browser localStorage API</td><td>Browser API</td><td>Core data persistence — required, no fallback</td></tr>
                 <tr><td>HTML5 Canvas API</td><td>Browser API</td><td>Certificate generation — required for PNG download</td></tr>
                 <tr><td>Intl.DateTimeFormat</td><td>Browser API</td><td>Timezone detection for currency auto-selection</td></tr>
+                <tr><td>Web Speech API</td><td>Browser API</td><td>Speech recognition and voice synthesis for English trainer</td></tr>
+                <tr><td>EduNovaLibrary API</td><td>Client JS API</td><td>Board/class catalog model and search helper layer for library module</td></tr>
+                <tr><td>Browser Crypto API</td><td>Browser API</td><td>Secure meeting code generation for live classes</td></tr>
             </tbody>
         </table>
 
@@ -772,6 +827,8 @@
                 <tr><td>BLOCKED_KEYWORDS</td><td>List of sensitive terms the chatbot refuses to discuss (passwords, bank details, etc.)</td></tr>
                 <tr><td>INR</td><td>Indian Rupees — the base/default currency for all course pricing</td></tr>
                 <tr><td>Revenue Split</td><td>60% teacher / 40% platform on every enrollment payment</td></tr>
+                <tr><td>Speaking Scorecard</td><td>Per-student report containing fluency, pronunciation, streak, suggestions, and recent history</td></tr>
+                <tr><td>Library Module</td><td>Board-wise and class-wise school book catalog with in-page AI assistant</td></tr>
                 <tr><td>FRD</td><td>Functional Requirement Document — technical specification of all features</td></tr>
                 <tr><td>PRD</td><td>Product Requirement Document — this document; product vision, stories, and strategy</td></tr>
                 <tr><td>localStorage</td><td>Browser API for persistent client-side data storage (key-value pairs)</td></tr>
@@ -794,7 +851,7 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
-        <p>EduNova Product Requirement Document v3.0</p>
+        <p>EduNova Product Requirement Document v3.2</p>
         <p>Auto-generated from live platform state. &copy; 2026 EduNova — Learn Without Limits</p>
         <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
     </div>
@@ -818,6 +875,7 @@
     const certificates = JSON.parse(localStorage.getItem('edunova_certificates') || '[]');
     const payments = JSON.parse(localStorage.getItem('edunova_payments') || '[]');
     const progress = JSON.parse(localStorage.getItem('edunova_progress') || '{}');
+    const englishProfiles = JSON.parse(localStorage.getItem('edunova_english_profiles') || '{}');
     const currency = localStorage.getItem('edunova_currency') || 'INR';
 
     const students = users.filter(u => u.role === 'student');
@@ -833,6 +891,12 @@
     const certClaimRate = completedEnrollments.length > 0 ? ((certificates.length / completedEnrollments.length) * 100).toFixed(1) : 0;
     const enrollmentRate = students.length > 0 ? ((enrollments.length / students.length) * 100).toFixed(1) : 0;
     const teacherApprovalRate = teachers.length > 0 ? ((approvedTeachers.length / teachers.length) * 100).toFixed(1) : 0;
+    const speakingStudents = Object.keys(englishProfiles).length;
+    const speakingAttempts = Object.values(englishProfiles).reduce((sum, profile) => {
+        const attempts = profile && Array.isArray(profile.attempts) ? profile.attempts.length : 0;
+        return sum + attempts;
+    }, 0);
+    const speakingEngagement = speakingStudents > 0 ? (speakingAttempts / speakingStudents).toFixed(1) : '0.0';
 
     // KPI Grid
     const kpis = [
@@ -851,6 +915,9 @@
         { label: 'Teacher Share (60%)', value: '₹' + teacherRevenue.toLocaleString('en-IN'), target: 'Total teacher earnings', color: '#f093fb', icon: 'fa-hand-holding-usd' },
         { label: 'Avg Revenue/Enrollment', value: '₹' + Math.round(avgRevenuePerEnrollment).toLocaleString('en-IN'), target: 'Target: ₹2,000+', color: '#fdcb6e', icon: 'fa-calculator' },
         { label: 'Uploaded Courses', value: courses.length, target: 'Teacher-submitted', color: '#4facfe', icon: 'fa-book-open' },
+        { label: 'Speaking Students', value: speakingStudents, target: 'Active speaking learners', color: '#00cec9', icon: 'fa-microphone-lines' },
+        { label: 'Speaking Attempts', value: speakingAttempts, target: 'Conversation practice volume', color: '#a78bfa', icon: 'fa-comments' },
+        { label: 'Speaking Engagement', value: speakingEngagement, target: 'Attempts per speaking student', color: '#fd79a8', icon: 'fa-chart-bar' },
         { label: 'Active Currency', value: currency, target: '18 supported', color: '#e17055', icon: 'fa-coins' },
     ];
 

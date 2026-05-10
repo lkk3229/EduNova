@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initPreloader();
     initNavbar();
     initMobileMenu();
+    injectLibraryNavigation();
+    injectEnglishSpeakingNavigation();
     initScrollReveal();
     initCounters();
     initSessionNavbar();
@@ -111,6 +113,44 @@ function initResponsiveHelpers() {
         });
         mo.observe(modal, { attributes: true, attributeFilter: ['class'] });
     });
+}
+
+function injectLibraryNavigation() {
+    const navLinks = document.getElementById('navLinks');
+    if (!navLinks || navLinks.querySelector('a[href="library.html"]')) return;
+
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const item = document.createElement('li');
+    item.innerHTML = `<a href="library.html"${currentPage === 'library.html' ? ' class="active"' : ''}>Library</a>`;
+
+    const coursesLink = navLinks.querySelector('a[href="courses.html"]')?.parentElement;
+    if (coursesLink) {
+        coursesLink.insertAdjacentElement('afterend', item);
+    } else {
+        navLinks.appendChild(item);
+    }
+}
+
+function injectEnglishSpeakingNavigation() {
+    const navLinks = document.getElementById('navLinks');
+    if (!navLinks || navLinks.querySelector('a[href="english-speaking.html"]')) return;
+
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const item = document.createElement('li');
+    item.innerHTML = `<a href="english-speaking.html"${currentPage === 'english-speaking.html' ? ' class="active"' : ''}>English Speaking</a>`;
+
+    const libraryLink = navLinks.querySelector('a[href="library.html"]')?.parentElement;
+    if (libraryLink) {
+        libraryLink.insertAdjacentElement('afterend', item);
+        return;
+    }
+
+    const coursesLink = navLinks.querySelector('a[href="courses.html"]')?.parentElement;
+    if (coursesLink) {
+        coursesLink.insertAdjacentElement('afterend', item);
+    } else {
+        navLinks.appendChild(item);
+    }
 }
 
 /* ---- Preloader ---- */
@@ -412,6 +452,8 @@ function initSessionNavbar() {
                     <span>${session.role.charAt(0).toUpperCase() + session.role.slice(1)}</span>
                 </div>
                 <a href="${dashUrl}"><i class="fas fa-tachometer-alt"></i> My Dashboard</a>
+                <a href="library.html"><i class="fas fa-book-open"></i> Library</a>
+                <a href="english-speaking.html"><i class="fas fa-microphone-lines"></i> English Speaking</a>
                 <a href="courses.html"><i class="fas fa-book-open"></i> Browse Courses</a>
                 <div class="nav-dropdown-divider"></div>
                 <a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>

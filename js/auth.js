@@ -244,6 +244,40 @@ function initLoginForm() {
     const form = document.getElementById('loginForm');
     if (!form) return;
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedNext = urlParams.get('next');
+
+    function getPostLoginTargetByRole(role) {
+        const safeNext = resolveSafeNext(requestedNext);
+        if (safeNext) return safeNext;
+
+        if (role === 'admin') return 'admin.html';
+        if (role === 'teacher') return 'teacher-dashboard.html';
+        return 'student-dashboard.html';
+    }
+
+    function resolveSafeNext(nextValue) {
+        if (!nextValue) return '';
+        const normalized = String(nextValue).trim();
+        if (!normalized) return '';
+        if (/^https?:\/\//i.test(normalized)) return '';
+        if (normalized.includes('..')) return '';
+        return normalized;
+    }
+
+    function setEnglishLoginTicket(session) {
+        const target = resolveSafeNext(requestedNext);
+        if (target !== 'english-speaking.html') return;
+
+        const userId = String(session.email || session.name || '').toLowerCase();
+        if (!userId) return;
+
+        sessionStorage.setItem('edunova_english_login_ticket', JSON.stringify({
+            userId,
+            issuedAt: new Date().toISOString()
+        }));
+    }
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -277,17 +311,12 @@ function initLoginForm() {
             };
 
             localStorage.setItem('edunova_session', JSON.stringify(session));
+            setEnglishLoginTicket(session);
 
             showNotification(`Welcome back, ${demoUser.name}! 👋`, 'success');
 
             setTimeout(() => {
-                if (demoUser.role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else if (demoUser.role === 'teacher') {
-                    window.location.href = 'teacher-dashboard.html';
-                } else {
-                    window.location.href = 'student-dashboard.html';
-                }
+                window.location.href = getPostLoginTargetByRole(demoUser.role);
             }, 1500);
             return;
         }
@@ -334,17 +363,12 @@ function initLoginForm() {
             };
 
             localStorage.setItem('edunova_session', JSON.stringify(session));
+            setEnglishLoginTicket(session);
 
             showNotification(`Welcome back, ${session.name}! 👋`, 'success');
 
             setTimeout(() => {
-                if (user.role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else if (user.role === 'teacher') {
-                    window.location.href = 'teacher-dashboard.html';
-                } else {
-                    window.location.href = 'student-dashboard.html';
-                }
+                window.location.href = getPostLoginTargetByRole(user.role);
             }, 1500);
         } else {
             showNotification('Invalid credentials. Please try again.', 'error');

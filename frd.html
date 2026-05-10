@@ -322,7 +322,7 @@
         <h1>EduNova — Functional Requirement Document</h1>
         <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
         <div class="frd-meta">
-            <div class="frd-meta-item">Version: <strong>3.0</strong></div>
+            <div class="frd-meta-item">Version: <strong>3.2</strong></div>
             <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
             <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript</strong></div>
@@ -346,6 +346,8 @@
             <li><a href="#sec-certificates">Certificates</a></li>
             <li><a href="#sec-currency">Currency Localization</a></li>
             <li><a href="#sec-chatbot">AI Chatbot</a></li>
+            <li><a href="#sec-library">Library Module</a></li>
+            <li><a href="#sec-speaking">English Speaking Trainer</a></li>
             <li><a href="#sec-admin">Super Admin Controls</a></li>
             <li><a href="#sec-reports">Reports & Analytics</a></li>
             <li><a href="#sec-security">Security</a></li>
@@ -416,7 +418,10 @@
                 <tr><td>teacher-dashboard.html</td><td>Page</td><td>Teacher dashboard — courses, students, earnings</td></tr>
                 <tr><td>admin.html</td><td>Page</td><td>Super admin dashboard — full platform management</td></tr>
                 <tr><td>meeting.html</td><td>Page</td><td>Live class meeting room with timer</td></tr>
+                <tr><td>library.html</td><td>Page</td><td>Board-wise and class-wise school library with AI assistant</td></tr>
+                <tr><td>english-speaking.html</td><td>Page</td><td>AI English speaking trainer with voice, correction, scorecard, and LLM settings</td></tr>
                 <tr><td>frd.html</td><td>Page</td><td>This document — auto-updating FRD</td></tr>
+                <tr><td>prd.html</td><td>Page</td><td>Product requirement document — auto-updating PRD</td></tr>
                 <tr><td>js/app.js</td><td>JS</td><td>Global utilities — preloader, navbar, scroll, notifications</td></tr>
                 <tr><td>js/auth.js</td><td>JS</td><td>Login, registration, session management</td></tr>
                 <tr><td>js/courses.js</td><td>JS</td><td>120-course catalog data + filtering + payment modal</td></tr>
@@ -427,10 +432,16 @@
                 <tr><td>js/certificate.js</td><td>JS</td><td>EduCert API — issue, render, download certificates</td></tr>
                 <tr><td>js/currency.js</td><td>JS</td><td>EduCurrency API — 18 currencies, auto-detect, format</td></tr>
                 <tr><td>js/chatbot.js</td><td>JS</td><td>AI chatbot with confidentiality controls</td></tr>
+                <tr><td>js/library-data.js</td><td>JS</td><td>Library dataset and board/class/subject helper APIs</td></tr>
+                <tr><td>js/library.js</td><td>JS</td><td>Library UI rendering, filtering, reader panel, and library AI assistant</td></tr>
+                <tr><td>js/english-speaking.js</td><td>JS</td><td>Speaking coach engine: recognition, coaching, scoring, analytics, LLM integration</td></tr>
                 <tr><td>css/style.css</td><td>CSS</td><td>Global styles, components, responsive</td></tr>
+                <tr><td>css/responsive.css</td><td>CSS</td><td>Shared responsive utilities and breakpoints</td></tr>
                 <tr><td>css/dashboard.css</td><td>CSS</td><td>Dashboard-specific styles</td></tr>
                 <tr><td>css/meeting.css</td><td>CSS</td><td>Meeting room styles</td></tr>
                 <tr><td>css/chatbot.css</td><td>CSS</td><td>Chatbot widget styles</td></tr>
+                <tr><td>css/library.css</td><td>CSS</td><td>Library board/class shelf UI, reader panel, and AI assistant styles</td></tr>
+                <tr><td>css/english-speaking.css</td><td>CSS</td><td>English speaking trainer UI, scorecard, and responsive styles</td></tr>
                 <tr><td>css/animations.css</td><td>CSS</td><td>Animation utilities</td></tr>
             </tbody>
         </table>
@@ -481,6 +492,13 @@
         <ul>
             <li>Clears <code>edunova_session</code> from localStorage</li>
             <li>Redirects to login.html</li>
+        </ul>
+
+        <h3>3.6 Password Reset</h3>
+        <ul>
+            <li>Forgot password flow available on login page with email verification and new password entry</li>
+            <li>Demo accounts are excluded from reset and must use fixed demo credentials</li>
+            <li>Updated password is persisted in <code>edunova_users</code> localStorage records</li>
         </ul>
     </div>
 
@@ -743,7 +761,7 @@
 
         <h3>10.1 Overview</h3>
         <ul>
-            <li>Floating chatbot widget available on 8 of 9 pages (excluded from meeting.html)</li>
+            <li>Floating chatbot widget is injected on main platform pages; excluded from meeting room and documentation/tooling pages where it is intentionally not loaded</li>
             <li>Pattern-matching chatbot with 40+ KB knowledge base</li>
             <li>Implemented as IIFE in <code>js/chatbot.js</code></li>
             <li>Styled via <code>css/chatbot.css</code></li>
@@ -767,6 +785,81 @@
             <li>Teaching modes and live classes</li>
             <li>Teacher registration and application process</li>
             <li>Platform features and support</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 10A. LIBRARY ==================== -->
+    <div class="frd-section" id="sec-library">
+        <h2><i class="fas fa-book-open-reader"></i> 10A. Library Module</h2>
+
+        <h3>10A.1 Overview</h3>
+        <ul>
+            <li>Dedicated page: <code>library.html</code> available from navbar and logged-in dropdown navigation</li>
+            <li>Board-first, class-second segregation for Classes 1 to 12</li>
+            <li>Current board collections: NCERT, ICSE, and representative State Boards</li>
+            <li>Integrated library AI assistant is library-first, and falls back to built-in educational general-knowledge responses when strict catalog match is unavailable</li>
+        </ul>
+
+        <h3>10A.2 Functional Requirements</h3>
+        <table>
+            <thead><tr><th>Requirement</th><th>Description</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Board Segmentation</td><td>Books are grouped and filterable by board collection</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Class Segmentation</td><td>Books are further grouped by class level (1-12)</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Search & Filter</td><td>Search by title/subject/stream plus board/class filters</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Book Reader Preview</td><td>Right-side preview panel with chapter and concept summaries</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Library AI Assistant</td><td>Library-scoped answering with controlled fallback to in-script educational guidance</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Scope Control</td><td>Library focuses on content access; subscription workflow is deferred</td><td><span class="frd-badge frd-badge-live">Deferred</span></td></tr>
+            </tbody>
+        </table>
+
+        <h3>10A.3 Data Access Layer</h3>
+        <ul>
+            <li><code>window.EduNovaLibrary</code> exposes board metadata, full book catalog, and helper methods</li>
+            <li>Key APIs: <code>getBooks()</code>, <code>searchBooks()</code>, <code>getBookById()</code>, <code>findBook()</code>, <code>getBoardOverview()</code></li>
+            <li>Current catalog is client-side and generated from static dataset definitions in <code>js/library-data.js</code></li>
+        </ul>
+    </div>
+
+    <!-- ==================== 10B. ENGLISH SPEAKING ==================== -->
+    <div class="frd-section" id="sec-speaking">
+        <h2><i class="fas fa-microphone-lines"></i> 10B. English Speaking Trainer</h2>
+
+        <h3>10B.1 Overview</h3>
+        <ul>
+            <li>Dedicated page: <code>english-speaking.html</code> with guided conversation-oriented speaking practice</li>
+            <li>Supports typed and voice input, live transcript, grammar corrections, and spoken coach replies</li>
+            <li>Coach answers student questions first, then gives correction and practice tips</li>
+            <li>Conversation tone optimized for human-like tutoring with contextual follow-up prompts</li>
+        </ul>
+
+        <h3>10B.2 Access & Session Rules</h3>
+        <ul>
+            <li>Student must be logged in before accessing the trainer page</li>
+            <li>Unauthenticated access redirects to <code>login.html?next=english-speaking.html&amp;reason=english-agent-auth</code></li>
+            <li>Post-login flow supports safe redirect back to trainer via next parameter validation</li>
+            <li>Session ticket for trainer access is validated through <code>sessionStorage</code> key <code>edunova_english_login_ticket</code></li>
+        </ul>
+
+        <h3>10B.3 Core Functional Requirements</h3>
+        <table>
+            <thead><tr><th>Requirement</th><th>Description</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Voice Listening</td><td>Browser SpeechRecognition captures and transcribes student speech in real-time</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Coach Speech Output</td><td>SpeechSynthesis reads coach response with preferred English voice selection</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Multi-Mode Practice</td><td>Conversation, Grammar Fix, and Pronunciation modes alter coaching behavior</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Question-First Answers</td><td>For questions, coach provides direct answer before correction/tips</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Pronunciation Scoring</td><td>Phoneme-level similarity scoring for voice attempts with detailed feedback</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>LLM Provider Settings</td><td>OpenAI / Anthropic / Custom endpoint configuration with fallback coach logic</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Scorecard & Suggestions</td><td>Per-student scorecard modal with trends, tips, and recent session history</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+            </tbody>
+        </table>
+
+        <h3>10B.4 Persistence Model</h3>
+        <ul>
+            <li><code>edunova_english_profiles</code>: per-student speaking attempts, scores, timestamps, and mode</li>
+            <li><code>edunova_english_llm_config</code>: per-student LLM provider/model/endpoint/key settings</li>
+            <li>Profiles are segmented by logged-in user identity and rendered in scorecard analytics</li>
         </ul>
     </div>
 
@@ -890,7 +983,10 @@
                 <tr><td>Teacher Dashboard</td><td>teacher-dashboard.html</td><td>Teacher</td><td>currency.js, teacher-dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Admin Dashboard</td><td>admin.html</td><td>Admin</td><td>currency.js, dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Meeting Room</td><td>meeting.html</td><td>Teacher</td><td>meeting.js, app.js</td><td>No</td></tr>
+                <tr><td>Library Module</td><td>library.html</td><td>No</td><td>library-data.js, library.js, app.js</td><td>No</td></tr>
+                <tr><td>English Speaking Trainer</td><td>english-speaking.html</td><td>Student</td><td>english-speaking.js, app.js</td><td>No</td></tr>
                 <tr><td>FRD Document</td><td>frd.html</td><td>No</td><td>(self-contained)</td><td>No</td></tr>
+                <tr><td>PRD Document</td><td>prd.html</td><td>No</td><td>(self-contained)</td><td>No</td></tr>
             </tbody>
         </table>
     </div>
@@ -911,8 +1007,12 @@
                 <tr><td>edunova_demos</td><td>Array</td><td>Demo class requests</td></tr>
                 <tr><td>edunova_currency</td><td>String</td><td>User's selected currency code</td></tr>
                 <tr><td>edunova_schedules</td><td>Array</td><td>Class schedules</td></tr>
+                <tr><td>Library dataset</td><td>In-memory</td><td>Board/class/subject book catalog generated by js/library-data.js</td></tr>
+                <tr><td>edunova_english_profiles</td><td>Object</td><td>Per-student speaking attempts, scores, suggestions context, and history</td></tr>
+                <tr><td>edunova_english_llm_config</td><td>Object</td><td>Per-student LLM provider settings for speaking trainer</td></tr>
             </tbody>
         </table>
+        <p><strong>Session-only key:</strong> <code>edunova_english_login_ticket</code> in <code>sessionStorage</code> controls validated trainer entry after login.</p>
     </div>
 
     <!-- ==================== 16. LIVE STATS ==================== -->
@@ -926,7 +1026,7 @@
 
     <!-- FOOTER -->
     <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
-        <p>EduNova Functional Requirement Document v3.0</p>
+        <p>EduNova Functional Requirement Document v3.2</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
     </div>
 
@@ -949,10 +1049,16 @@
     const certificates = JSON.parse(localStorage.getItem('edunova_certificates') || '[]');
     const payments = JSON.parse(localStorage.getItem('edunova_payments') || '[]');
     const progress = JSON.parse(localStorage.getItem('edunova_progress') || '{}');
+    const englishProfiles = JSON.parse(localStorage.getItem('edunova_english_profiles') || '{}');
     const currency = localStorage.getItem('edunova_currency') || 'INR';
 
     const totalRevenue = enrollments.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
     const completedEnrollments = enrollments.filter(e => e.status === 'completed').length;
+    const speakingStudents = Object.keys(englishProfiles).length;
+    const speakingAttempts = Object.values(englishProfiles).reduce((sum, profile) => {
+        const attempts = profile && Array.isArray(profile.attempts) ? profile.attempts.length : 0;
+        return sum + attempts;
+    }, 0);
 
     const stats = [
         { label: 'Registered Users', value: users.length, icon: 'fa-users', color: '#667eea' },
@@ -966,6 +1072,8 @@
         { label: 'Total Revenue', value: '₹' + totalRevenue.toLocaleString('en-IN'), icon: 'fa-rupee-sign', color: '#6c5ce7' },
         { label: 'Payments', value: payments.length, icon: 'fa-credit-card', color: '#fd79a8' },
         { label: 'Progress Entries', value: Object.keys(progress).length, icon: 'fa-tasks', color: '#00b894' },
+        { label: 'Speaking Students', value: speakingStudents, icon: 'fa-microphone-lines', color: '#4facfe' },
+        { label: 'Speaking Attempts', value: speakingAttempts, icon: 'fa-comments', color: '#a78bfa' },
         { label: 'Active Currency', value: currency, icon: 'fa-coins', color: '#fdcb6e' },
     ];
 

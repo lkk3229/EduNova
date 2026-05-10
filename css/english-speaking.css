@@ -1,0 +1,479 @@
+/* ============================================
+   EduNova — English Speaking Trainer Styles
+   ============================================ */
+
+.speaking-hero {
+    padding-top: 148px;
+    padding-bottom: 68px;
+}
+
+.speaking-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 360px);
+    gap: 28px;
+    align-items: center;
+}
+
+.speaking-hero-copy {
+    max-width: 780px;
+}
+
+.speaking-hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.speaking-hero-points div {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+.speaking-hero-card {
+    display: grid;
+    gap: 14px;
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(155deg, rgba(79, 172, 254, 0.12), rgba(245, 87, 108, 0.12), rgba(18, 19, 31, 0.95));
+    box-shadow: var(--shadow-lg);
+}
+
+.speaking-hero-stat {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.speaking-hero-stat strong {
+    display: block;
+    font-size: 1.8rem;
+    font-family: var(--font-display);
+}
+
+.speaking-hero-stat span {
+    color: var(--text-secondary);
+}
+
+.speaking-main {
+    padding: 0 0 88px;
+}
+
+.speaking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(300px, 380px);
+    gap: 24px;
+    align-items: start;
+}
+
+.trainer-shell,
+.coach-card {
+    border-radius: 24px;
+    background: rgba(12, 14, 26, 0.84);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-lg);
+}
+
+.trainer-shell {
+    padding: 22px;
+    display: grid;
+    gap: 18px;
+}
+
+.trainer-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+
+.trainer-toolbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.trainer-toolbar p,
+.live-transcript,
+.pronunciation-target,
+.feedback-points li,
+.support-note {
+    color: var(--text-secondary);
+}
+
+.pronunciation-target {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px dashed rgba(79, 172, 254, 0.35);
+    background: rgba(79, 172, 254, 0.08);
+}
+
+.trainer-mode-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.trainer-mode {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.trainer-mode:hover,
+.trainer-mode.active {
+    border-color: rgba(79, 172, 254, 0.75);
+    color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.25), rgba(0, 242, 254, 0.18));
+}
+
+.trainer-live-card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(160deg, rgba(0, 242, 254, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.trainer-live-card.live-inline {
+    padding: 12px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgba(79, 172, 254, 0.09), rgba(255, 255, 255, 0.02));
+}
+
+.trainer-live-card.live-inline .live-header {
+    margin-bottom: 6px;
+}
+
+.trainer-live-card.live-inline .live-header h3 {
+    font-size: 0.96rem;
+}
+
+.trainer-live-card.live-inline .live-transcript {
+    font-size: 0.88rem;
+}
+
+.trainer-live-card.live-inline .pronunciation-target {
+    margin-top: 6px;
+    font-size: 0.84rem;
+    padding: 7px 9px;
+}
+
+.trainer-live-card.live-inline .live-actions {
+    margin-top: 8px;
+}
+
+.live-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.live-state {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.live-state.listening {
+    background: rgba(34, 197, 94, 0.16);
+    color: #4ade80;
+}
+
+.live-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.chat-shell {
+    display: grid;
+    gap: 12px;
+}
+
+.chat-messages {
+    min-height: 280px;
+    max-height: 440px;
+    overflow-y: auto;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(8, 9, 18, 0.68);
+    display: grid;
+    gap: 12px;
+}
+
+.chat-message {
+    display: flex;
+}
+
+.chat-message.user {
+    justify-content: flex-end;
+}
+
+.chat-bubble {
+    max-width: min(90%, 560px);
+    padding: 12px 14px;
+    border-radius: 14px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+}
+
+.chat-bubble.user {
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.75), rgba(0, 242, 254, 0.55));
+    color: #ffffff;
+}
+
+.chat-bubble.ai {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-form input {
+    flex: 1;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    padding: 12px 14px;
+}
+
+.coach-side-panel {
+    display: grid;
+    gap: 16px;
+}
+
+.coach-card {
+    padding: 18px;
+}
+
+.analytics-grid {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.analytics-item {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
+}
+
+.analytics-item span {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.analytics-item strong {
+    font-size: 1rem;
+}
+
+.session-history {
+    margin-top: 12px;
+    max-height: 180px;
+    overflow-y: auto;
+    display: grid;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+.session-history-item {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.86rem;
+}
+
+.llm-settings-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: rgba(5, 8, 18, 0.82);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.llm-settings-modal.active {
+    display: flex;
+}
+
+.llm-settings-card {
+    width: min(760px, 100%);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(150deg, rgba(79, 172, 254, 0.1), rgba(18, 19, 31, 0.98));
+    box-shadow: var(--shadow-lg);
+    padding: 20px;
+}
+
+.scorecard-card {
+    max-height: min(84vh, 760px);
+    overflow-y: auto;
+}
+
+.scorecard-sections {
+    margin-top: 14px;
+    display: grid;
+    gap: 14px;
+}
+
+.scorecard-sections h4 {
+    margin-bottom: 8px;
+}
+
+.llm-settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.llm-settings-header button {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.llm-settings-grid {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.llm-settings-grid label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.llm-settings-grid input,
+.llm-settings-grid select {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    padding: 10px 12px;
+}
+
+.llm-settings-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.llm-settings-status {
+    margin-top: 10px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.feedback-score {
+    margin-top: 12px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(79, 172, 254, 0.12);
+    font-weight: 700;
+}
+
+.feedback-points {
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+}
+
+.prompt-grid {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+}
+
+.prompt-grid button {
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.prompt-grid button:hover {
+    color: var(--text-primary);
+    border-color: rgba(79, 172, 254, 0.6);
+    background: rgba(79, 172, 254, 0.12);
+}
+
+@media (max-width: 1100px) {
+    .speaking-layout,
+    .speaking-hero-inner {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .speaking-hero {
+        padding-top: 120px;
+    }
+
+    .trainer-toolbar,
+    .chat-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .trainer-toolbar-actions {
+        width: 100%;
+    }
+
+    .llm-settings-grid,
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-messages {
+        min-height: 260px;
+        max-height: 380px;
+    }
+}
