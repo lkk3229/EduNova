@@ -8,6 +8,11 @@ services:
       - "27017:27017"
     volumes:
       - edunova_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -15,16 +20,23 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     env_file:
       - .env
     environment:
+      - DB_MODE=mongo
       - MONGODB_URI=mongodb://mongodb:27017/edunova
       - NODE_ENV=production
     ports:
       - "5000:5000"
     volumes:
       - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/api/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
 volumes:
   edunova_mongo_data:

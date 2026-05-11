@@ -23,6 +23,29 @@ const { testConnection: testSupabaseConnection } = require('./config/supabase');
 const mongoose = require('mongoose');
 
 const app = express();
+const DB_MODE = (config.DB_MODE || 'mongo').toLowerCase();
+
+const dbState = {
+    mode: DB_MODE,
+    mongodb: {
+        configured: Boolean(config.MONGODB_URI),
+        required: DB_MODE === 'mongo' || DB_MODE === 'hybrid',
+        connected: false,
+        lastError: null
+    },
+    supabase: {
+        configured: Boolean(config.SUPABASE_URL && (config.SUPABASE_SERVICE_KEY || config.SUPABASE_ANON_KEY)),
+        required: DB_MODE === 'supabase' || DB_MODE === 'hybrid',
+        connected: false,
+        lastError: null
+    }
+};
+
+const isReady = () => {
+    const mongoReady = !dbState.mongodb.required || dbState.mongodb.connected;
+    const supabaseReady = !dbState.supabase.required || dbState.supabase.connected;
+    return mongoReady && supabaseReady;
+};
 
 // ==================== Security Middleware ====================
 // Helmet - Set security HTTP headers
@@ -66,24 +89,61 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/uploads', express.static(process.env.UPLOAD_PATH || path.join(__dirname, 'uploads')));
 
 // ==================== MongoDB Connection ====================
-// Non-blocking connection: server accepts API requests even if MongoDB is unavailable
-// This enables API testing without local database setup
-mongoose.connect(config.MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
-    .then(() => logger.info('✓ MongoDB connected successfully'))
-    .catch(err => {
-        logger.warn('⚠ MongoDB unavailable (async): ' + err.message);
-        logger.warn('  API server will accept requests but data persistence disabled.');
-        logger.warn('  Provide a running MongoDB instance for production or full feature testing.');
+if (config.MONGODB_URI) {
+    mongoose.connection.on('connected', () => {
+        dbState.mongodb.connected = true;
+        dbState.mongodb.lastError = null;
     });
 
+    mongoose.connection.on('disconnected', () => {
+        dbState.mongodb.connected = false;
+    });
+
+    mongoose.connection.on('error', (err) => {
+        dbState.mongodb.connected = false;
+        dbState.mongodb.lastError = err.message;
+    });
+
+    mongoose.connect(config.MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
+        .then(() => logger.info('✓ MongoDB connected successfully'))
+        .catch(err => {
+            dbState.mongodb.connected = false;
+            dbState.mongodb.lastError = err.message;
+            logger.warn('⚠ MongoDB unavailable (async): ' + err.message);
+            if (dbState.mongodb.required && process.env.NODE_ENV === 'production') {
+                logger.error('Production deployment requires MongoDB connectivity in current DB_MODE. Exiting.');
+                process.exit(1);
+            }
+        });
+} else if (dbState.mongodb.required) {
+    logger.error('DB_MODE requires MongoDB but MONGODB_URI is not configured. Exiting.');
+    process.exit(1);
+}
+
 // ==================== Supabase PostgreSQL Connection (Phase 8) ====================
-testSupabaseConnection().catch(err => {
-    logger.warn('⚠ Supabase PostgreSQL unavailable: ' + err.message);
-    if (process.env.NODE_ENV === 'production') {
-        logger.error('Production deployment requires Supabase connection. Exiting.');
-        process.exit(1);
-    }
-});
+if (dbState.supabase.configured) {
+    testSupabaseConnection()
+        .then((connected) => {
+            dbState.supabase.connected = Boolean(connected);
+            dbState.supabase.lastError = connected ? null : 'Supabase probe failed';
+            if (!connected && dbState.supabase.required && process.env.NODE_ENV === 'production') {
+                logger.error('Production deployment requires Supabase connectivity in current DB_MODE. Exiting.');
+                process.exit(1);
+            }
+        })
+        .catch(err => {
+            dbState.supabase.connected = false;
+            dbState.supabase.lastError = err.message;
+            logger.warn('⚠ Supabase PostgreSQL unavailable: ' + err.message);
+            if (dbState.supabase.required && process.env.NODE_ENV === 'production') {
+                logger.error('Production deployment requires Supabase connection in current DB_MODE. Exiting.');
+                process.exit(1);
+            }
+        });
+} else if (dbState.supabase.required) {
+    logger.error('DB_MODE requires Supabase but SUPABASE_URL / keys are not fully configured. Exiting.');
+    process.exit(1);
+}
 
 // ==================== Health Check ====================
 app.get('/api/health', (req, res) => {
@@ -92,9 +152,38 @@ app.get('/api/health', (req, res) => {
         status: 'ok',
         timestamp: new Date(),
         uptime: process.uptime(),
+        ready: isReady(),
         database: {
-            mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-            supabase: process.env.SUPABASE_URL ? 'configured' : 'not configured'
+            mode: dbState.mode,
+            mongodb: dbState.mongodb,
+            supabase: dbState.supabase
+        }
+    });
+});
+
+// ==================== Readiness Check ====================
+app.get('/api/ready', (req, res) => {
+    if (!isReady()) {
+        return res.status(503).json({
+            success: false,
+            status: 'not-ready',
+            timestamp: new Date(),
+            database: {
+                mode: dbState.mode,
+                mongodb: dbState.mongodb,
+                supabase: dbState.supabase
+            }
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        status: 'ready',
+        timestamp: new Date(),
+        database: {
+            mode: dbState.mode,
+            mongodb: dbState.mongodb,
+            supabase: dbState.supabase
         }
     });
 });

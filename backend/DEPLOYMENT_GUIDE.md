@@ -1,6 +1,6 @@
 # EduNova Backend - Deployment & Production Guide
 
-## Version 6.0
+## Version 8.0
 
 This guide covers everything needed to deploy the EduNova backend to production environments.
 
@@ -25,14 +25,16 @@ This guide covers everything needed to deploy the EduNova backend to production 
 
 ### Infrastructure & Runtime
 - [ ] Set `NODE_ENV=production` and deploy behind HTTPS only.
+- [ ] Set `DB_MODE=mongo` for stable production runtime (current API routes are Mongoose-backed).
 - [ ] Provision production MongoDB (Atlas recommended) and verify connectivity from app host.
 - [ ] Ensure process manager is configured (PM2/systemd/container orchestrator).
-- [ ] Configure reverse proxy/load balancer health check to `GET /api/health`.
+- [ ] Configure reverse proxy/load balancer liveness check to `GET /api/health` and readiness check to `GET /api/ready`.
 
 ### Secrets & Configuration
 - [ ] Create `.env` from `.env.production.example` (never from local dev `.env`).
 - [ ] Set strong `JWT_SECRET` (64+ chars random value).
 - [ ] Set valid `MONGODB_URI`, `FRONTEND_URL`, and `CORS_ORIGIN` for production domains.
+- [ ] Rotate Supabase keys if previously exposed and keep only placeholders in templates.
 - [ ] Set real `EMAIL_SERVICE`, `EMAIL_USER`, and `EMAIL_PASS` credentials.
 - [ ] Set Razorpay live keys (`RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`) if live checkout is enabled.
 
@@ -71,6 +73,7 @@ nano .env
 # Server
 PORT=5000
 NODE_ENV=production
+DB_MODE=mongo
 LOG_LEVEL=info
 AUDIT_LOGGING_ENABLED=true
 
@@ -79,7 +82,13 @@ FRONTEND_URL=https://app.edunova.example
 CORS_ORIGIN=https://app.edunova.example
 
 # Database
+# Current production contract: MongoDB required in DB_MODE=mongo
 MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/edunova?retryWrites=true&w=majority
+
+# Optional in DB_MODE=mongo; required in DB_MODE=supabase/hybrid
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_ANON_KEY=replace-with-supabase-anon-key-from-api-settings
+SUPABASE_SERVICE_KEY=replace-with-supabase-service-role-key-from-api-settings
 
 # Auth
 JWT_SECRET=generate-64-plus-char-random-value
@@ -256,7 +265,36 @@ The repository includes a backend CI workflow at `.github/workflows/backend-ci.y
 
 - JavaScript syntax for backend source files
 - Required environment keys in both `.env.example` and `.env.production.example`
+- DB mode contract (`DB_MODE=mongo|supabase|hybrid`) and corresponding DB key presence
 - Required deployment artifacts (Dockerfile, .dockerignore, server entry)
+
+Critical API contract checks are executed via `npm run test:integration:critical` for:
+
+- Auth route (`/api/auth/login`)
+- Course list and enroll route mounting (`/api/courses`, `/api/courses/:id/enroll`)
+- Payment verification auth guard (`/api/payments/verify`)
+- Upload auth guard (`/api/uploads/image`)
+- Health and readiness endpoints (`/api/health`, `/api/ready`)
+
+---
+
+## Production Rehearsal Workflow (Phase 8.1)
+
+Run one production-like rehearsal before every release cut:
+
+```bash
+npm run rehearse:production
+```
+
+This executes:
+
+1. Compose build/start of production stack.
+2. Health and readiness contract checks.
+3. Mongo backup rehearsal (`mongodump --archive`).
+4. Mongo restore rehearsal (`mongorestore --archive --drop`).
+5. Backend container force-recreate (rollback rehearsal path).
+
+If Docker is unavailable in the runner environment, run the rehearsal on the deployment host or CI runner with Docker Engine installed.
 
 ---
 

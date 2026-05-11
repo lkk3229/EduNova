@@ -53,10 +53,9 @@ const testConnection = async () => {
   }
 
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('users')
-      .select('COUNT(*)', { count: 'exact' })
-      .limit(1);
+      .select('id', { head: true, count: 'exact' });
 
     if (error && error.code !== 'PGRST116') {
       // PGRST116 = no rows returned (acceptable)
@@ -66,7 +65,17 @@ const testConnection = async () => {
     logger.info('✓ Supabase connection test passed');
     return true;
   } catch (error) {
-    logger.error('✗ Supabase connection test failed:', error.message);
+    const details = JSON.stringify(
+      {
+        code: error.code,
+        message: error.message,
+        hint: error.hint,
+        details: error.details,
+      },
+      null,
+      0
+    );
+    logger.error(`✗ Supabase connection test failed: ${details}`);
     // Non-blocking in dev, fail-hard in production
     if (process.env.NODE_ENV === 'production') {
       logger.error('Database connection required in production. Exiting.');

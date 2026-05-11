@@ -11,6 +11,7 @@ require('dotenv').config();
 const REQUIRED_VARS = {
     NODE_ENV: { default: 'development', type: 'string' },
     PORT: { default: 5000, type: 'number' },
+    DB_MODE: { default: 'mongo', type: 'string', allowedValues: ['mongo', 'supabase', 'hybrid'] },
     // Database: Supabase (primary) or MongoDB (fallback)
     SUPABASE_URL: { required: false, type: 'string' },
     SUPABASE_ANON_KEY: { required: false, type: 'string' },
@@ -90,6 +91,11 @@ const validateEnvironment = () => {
                 config[key] = value;
             }
 
+            // Validate allowed values
+            if (rules.allowedValues && !rules.allowedValues.includes(String(value).toLowerCase())) {
+                errors.push(`❌ ${key}: Must be one of [${rules.allowedValues.join(', ')}], got "${value}"`);
+            }
+
             // Validate minimum length
             if (rules.minLength && value.length < rules.minLength) {
                 errors.push(`❌ ${key}: Must be at least ${rules.minLength} characters (got ${value.length})`);
@@ -120,18 +126,27 @@ const validateEnvironment = () => {
         }
     }
 
+    const dbMode = (process.env.DB_MODE || config.DB_MODE || 'mongo').toLowerCase();
+    const hasSupabase = Boolean(process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY));
+    const hasMongoDB = Boolean(process.env.MONGODB_URI);
+
+    // DB mode checks (all environments)
+    if ((dbMode === 'mongo' || dbMode === 'hybrid') && !hasMongoDB) {
+        errors.push('❌ DATABASE: MONGODB_URI is required when DB_MODE is mongo or hybrid');
+    }
+
+    if ((dbMode === 'supabase' || dbMode === 'hybrid') && !hasSupabase) {
+        errors.push('❌ DATABASE: SUPABASE_URL and one key (SUPABASE_SERVICE_KEY or SUPABASE_ANON_KEY) are required when DB_MODE is supabase or hybrid');
+    }
+
     // Production-specific checks
     if (process.env.NODE_ENV === 'production') {
         if (process.env.JWT_SECRET === 'dev-secret') {
             errors.push('❌ SECURITY: JWT_SECRET is set to default dev value in production!');
         }
-        
-        // Check database configuration (Supabase or MongoDB required)
-        const hasSupabase = process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY);
-        const hasMongoDB = process.env.MONGODB_URI;
-        
+
         if (!hasSupabase && !hasMongoDB) {
-            errors.push('❌ DATABASE: Either Supabase (SUPABASE_URL + SUPABASE_SERVICE_KEY) or MongoDB (MONGODB_URI) must be configured');
+            errors.push('❌ DATABASE: At least one database must be configured in production');
         }
         
         // Validate Supabase URL format
@@ -146,9 +161,13 @@ const validateEnvironment = () => {
             }
         }
         
-        // Recommend Supabase for production
-        if (hasMongoDB && !hasSupabase) {
-            warnings.push('⚠️  DATABASE: Consider using Supabase (PostgreSQL) for improved scalability and compliance');
+        // Product currently runs Mongoose routes, so mongo mode is enforced for production stability.
+        if (dbMode === 'supabase') {
+            warnings.push('⚠️  DATABASE: DB_MODE=supabase is not yet route-complete. Use DB_MODE=mongo for stable production runtime.');
+        }
+
+        if (dbMode === 'mongo' && hasSupabase) {
+            warnings.push('⚠️  DATABASE: Supabase is configured but currently treated as optional telemetry/preview while routes remain Mongo-backed.');
         }
     }
 

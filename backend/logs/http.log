@@ -24,3 +24,22 @@
 {"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m  API server will accept requests but data persistence disabled.\u001b[39m","timestamp":"2026-05-11 14:27:33:2733"}
 {"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m  Provide a running MongoDB instance for production or full feature testing.\u001b[39m","timestamp":"2026-05-11 14:27:33:2733"}
 {"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m✗ Supabase connection test failed:\u001b[39m","timestamp":"2026-05-11 14:27:39:2739"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m✓ Supabase client initialized\u001b[39m","timestamp":"2026-05-11 14:54:03:543"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 EduNova Backend running on http://localhost:5000\u001b[39m","timestamp":"2026-05-11 14:54:04:544"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📚 API Base: http://localhost:5000/api\u001b[39m","timestamp":"2026-05-11 14:54:04:544"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🏥 Health Check: http://localhost:5000/api/health\u001b[39m","timestamp":"2026-05-11 14:54:04:544"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🔐 Security: Helmet, Rate Limiting, CORS enabled\u001b[39m","timestamp":"2026-05-11 14:54:04:544"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📁 Log files: backend/logs/\u001b[39m","timestamp":"2026-05-11 14:54:04:544"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m⚠ MongoDB unavailable (async): connect ECONNREFUSED 127.0.0.1:27017, connect ECONNREFUSED ::1:27017\u001b[39m","timestamp":"2026-05-11 14:54:05:545"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m✗ Supabase connection test failed: {\"code\":\"\",\"message\":\"TypeError: fetch failed\",\"hint\":\"\",\"details\":\"TypeError: fetch failed\\n\\nCaused by: Error: unable to get local issuer certificate (UNABLE_TO_GET_ISSUER_CERT_LOCALLY)\\nError: unable to get local issuer certificate\\n    at TLSSocket.onConnectSecure (node:_tls_wrap:1631:34)\\n    at TLSSocket.emit (node:events:508:28)\\n    at TLSSocket._finishInit (node:_tls_wrap:1077:8)\\n    at ssl.onhandshakedone (node:_tls_wrap:863:12)\"}\u001b[39m","timestamp":"2026-05-11 14:54:12:5412"}
+{"level":"\u001b[35mhttp\u001b[39m","message":"\u001b[35m[MP0ZWB6MT43QB63HMRI] GET /api/health - 200 - 3ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:22:5422"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m[MP0ZWB76K9MPVBQG7RL] GET /api/ready - 503 - 1ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:22:5422"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m[MP0ZWB7E25M1PLGDX6Q] GET / - 500 - 10010ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:32:5432"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m[PERF] Slow request detected (10013.08ms): GET /api/courses -> 500\u001b[39m","timestamp":"2026-05-11 14:54:32:5432"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m[MP0ZWIY2MZFC4AFEZL] POST /login - 500 - 10082ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m[PERF] Slow request detected (10089.15ms): POST /api/auth/login -> 500\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m[MP0ZWQQQST6GJTBC5T9] POST /000000000000000000000000/enroll - 401 - 2ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m[MP0ZWQR4NLWQ3C2011M] POST /verify - 401 - 4ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m[AUDIT] {\"type\":\"audit\",\"scope\":\"payments\",\"method\":\"POST\",\"path\":\"/api/payments/verify\",\"statusCode\":401,\"durationMs\":6,\"ip\":\"::ffff:127.0.0.1\",\"actor\":null,\"query\":{},\"body\":{}}\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33m[MP0ZWQRHH4TEFLHV36F] POST /image - 401 - 2ms - ::ffff:127.0.0.1\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m[AUDIT] {\"type\":\"audit\",\"scope\":\"uploads\",\"method\":\"POST\",\"path\":\"/api/uploads/image\",\"statusCode\":401,\"durationMs\":6,\"ip\":\"::ffff:127.0.0.1\",\"actor\":null,\"query\":{},\"body\":{}}\u001b[39m","timestamp":"2026-05-11 14:54:42:5442"}

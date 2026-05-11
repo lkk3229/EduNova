@@ -13,6 +13,11 @@ on:
 jobs:
   smoke-checks:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
 
     defaults:
       run:
@@ -34,3 +39,23 @@ jobs:
 
       - name: Run backend CI smoke checks
         run: npm run test:ci
+
+      - name: Prepare CI environment
+        run: cp .env.ci .env
+
+      - name: Start backend
+        run: npm start &
+
+      - name: Wait for backend health
+        run: |
+          for i in {1..30}; do
+            if curl -sf http://127.0.0.1:5000/api/health >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not become healthy in time"
+          exit 1
+
+      - name: Run critical path integration checks
+        run: npm run test:integration:critical

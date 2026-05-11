@@ -7,11 +7,11 @@ const ignoredDirs = new Set(['node_modules', 'logs', 'uploads', '.git']);
 const requiredEnvKeys = [
     'PORT',
     'NODE_ENV',
+    'DB_MODE',
     'LOG_LEVEL',
     'AUDIT_LOGGING_ENABLED',
     'FRONTEND_URL',
     'CORS_ORIGIN',
-    'MONGODB_URI',
     'JWT_SECRET',
     'JWT_EXPIRE',
     'EMAIL_SERVICE',
@@ -49,19 +49,19 @@ const assertFileExists = (relativePath) => {
     }
 };
 
-const parseEnvKeys = (relativePath) => {
+const parseEnvMap = (relativePath) => {
     const absolutePath = path.join(root, relativePath);
     const content = fs.readFileSync(absolutePath, 'utf8');
-    const keys = new Set();
+    const map = new Map();
 
     for (const line of content.split(/\r?\n/)) {
         const trimmed = line.trim();
         if (!trimmed || trimmed.startsWith('#') || !trimmed.includes('=')) continue;
-        const [k] = trimmed.split('=');
-        keys.add(k.trim());
+        const [k, ...rest] = trimmed.split('=');
+        map.set(k.trim(), rest.join('=').trim());
     }
 
-    return keys;
+    return map;
 };
 
 const verifySyntax = (files) => {
@@ -83,8 +83,11 @@ const verifySyntax = (files) => {
 };
 
 const verifyEnvTemplates = () => {
-    const devKeys = parseEnvKeys('.env.example');
-    const prodKeys = parseEnvKeys('.env.production.example');
+    const devMap = parseEnvMap('.env.example');
+    const prodMap = parseEnvMap('.env.production.example');
+
+    const devKeys = new Set(devMap.keys());
+    const prodKeys = new Set(prodMap.keys());
 
     const missingDev = requiredEnvKeys.filter((key) => !devKeys.has(key));
     const missingProd = requiredEnvKeys.filter((key) => !prodKeys.has(key));
@@ -96,6 +99,30 @@ const verifyEnvTemplates = () => {
     if (missingProd.length > 0) {
         throw new Error(`.env.production.example missing keys: ${missingProd.join(', ')}`);
     }
+
+    const validateDbContract = (name, envMap) => {
+        const mode = (envMap.get('DB_MODE') || 'mongo').toLowerCase();
+        if (!['mongo', 'supabase', 'hybrid'].includes(mode)) {
+            throw new Error(`${name} has invalid DB_MODE=${mode}`);
+        }
+
+        const hasMongo = envMap.has('MONGODB_URI') && envMap.get('MONGODB_URI') !== '';
+        const hasSupabaseUrl = envMap.has('SUPABASE_URL') && envMap.get('SUPABASE_URL') !== '';
+        const hasSupabaseKey =
+            (envMap.has('SUPABASE_SERVICE_KEY') && envMap.get('SUPABASE_SERVICE_KEY') !== '') ||
+            (envMap.has('SUPABASE_ANON_KEY') && envMap.get('SUPABASE_ANON_KEY') !== '');
+
+        if ((mode === 'mongo' || mode === 'hybrid') && !hasMongo) {
+            throw new Error(`${name} requires MONGODB_URI when DB_MODE=${mode}`);
+        }
+
+        if ((mode === 'supabase' || mode === 'hybrid') && (!hasSupabaseUrl || !hasSupabaseKey)) {
+            throw new Error(`${name} requires SUPABASE_URL and one Supabase key when DB_MODE=${mode}`);
+        }
+    };
+
+    validateDbContract('.env.example', devMap);
+    validateDbContract('.env.production.example', prodMap);
 };
 
 const main = () => {
