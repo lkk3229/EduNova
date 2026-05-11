@@ -1,6 +1,6 @@
 # EduNova Backend - Deployment & Production Guide
 
-## Version 3.6
+## Version 6.0
 
 This guide covers everything needed to deploy the EduNova backend to production environments.
 
@@ -21,21 +21,33 @@ This guide covers everything needed to deploy the EduNova backend to production 
 
 ---
 
-## Pre-Deployment Checklist
+## Pre-Deployment Checklist (Phase 5 Production Readiness)
 
-- [ ] All environment variables configured in `.env`
-- [ ] MongoDB Atlas cluster created and connection string verified
-- [ ] JWT_SECRET is a strong, unique random string (>32 characters)
-- [ ] CORS_ORIGIN matches your frontend domain
-- [ ] All dependencies installed: `npm install`
-- [ ] Database seeded with initial data: `npm run seed`
-- [ ] Backend tests passing locally: `npm test`
-- [ ] SSL/TLS certificate obtained for domain
-- [ ] Firewall rules configured to allow traffic on port 5000
-- [ ] Monitoring and logging tools configured
-- [ ] Error tracking (Sentry/Rollbar) integrated
-- [ ] Backup strategy documented
-- [ ] Incident response plan in place
+### Infrastructure & Runtime
+- [ ] Set `NODE_ENV=production` and deploy behind HTTPS only.
+- [ ] Provision production MongoDB (Atlas recommended) and verify connectivity from app host.
+- [ ] Ensure process manager is configured (PM2/systemd/container orchestrator).
+- [ ] Configure reverse proxy/load balancer health check to `GET /api/health`.
+
+### Secrets & Configuration
+- [ ] Create `.env` from `.env.production.example` (never from local dev `.env`).
+- [ ] Set strong `JWT_SECRET` (64+ chars random value).
+- [ ] Set valid `MONGODB_URI`, `FRONTEND_URL`, and `CORS_ORIGIN` for production domains.
+- [ ] Set real `EMAIL_SERVICE`, `EMAIL_USER`, and `EMAIL_PASS` credentials.
+- [ ] Set Razorpay live keys (`RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`) if live checkout is enabled.
+
+### Security & Compliance
+- [ ] Confirm Helmet, rate limiting, and input validation are enabled in production build.
+- [ ] Restrict MongoDB network access to trusted IP ranges only.
+- [ ] Ensure logs do not expose secrets or sensitive PII.
+- [ ] Document rotation policy for JWT and provider secrets.
+
+### Operations & Verification
+- [ ] Install production dependencies with `npm ci --omit=dev`.
+- [ ] Run runtime smoke checks for auth, payments, uploads, and monitoring endpoints.
+- [ ] Configure structured log shipping and alerting for `error` and `warn` events.
+- [ ] Verify backup and restore procedure for database and uploaded media.
+- [ ] Capture rollback plan before first production deployment.
 
 ---
 
@@ -43,11 +55,11 @@ This guide covers everything needed to deploy the EduNova backend to production 
 
 ### 1. Create `.env` File
 
-Copy `.env.example` and configure for production:
+Copy `.env.production.example` and configure for production:
 
 ```bash
 # Copy template
-cp .env.example .env
+cp .env.production.example .env
 
 # Edit with production values
 nano .env
@@ -56,40 +68,53 @@ nano .env
 ### 2. Required Environment Variables
 
 ```env
-# Server Configuration
+# Server
 PORT=5000
 NODE_ENV=production
+LOG_LEVEL=info
+AUDIT_LOGGING_ENABLED=true
+
+# App URLs
+FRONTEND_URL=https://app.edunova.example
+CORS_ORIGIN=https://app.edunova.example
 
 # Database
 MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/edunova?retryWrites=true&w=majority
 
-# Authentication
-JWT_SECRET=your-super-secret-key-min-32-chars-long-random-string
+# Auth
+JWT_SECRET=generate-64-plus-char-random-value
 JWT_EXPIRE=7d
 
-# CORS
-CORS_ORIGIN=https://your-frontend-domain.com
+# Email (required by validation)
+EMAIL_SERVICE=gmail
+EMAIL_USER=notifications@edunova.example
+EMAIL_PASS=app-password-or-provider-secret
 
-# Email Service (Optional)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
+# Payments
+RAZORPAY_KEY_ID=rzp_live_xxxxxxxxxxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxx
 
-# Error Tracking (Optional)
-SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+# Upload path (local or mounted volume)
+UPLOAD_PATH=./uploads
 
-# File Storage (Optional)
-AWS_S3_BUCKET=edunova-bucket
-AWS_ACCESS_KEY_ID=your-key
-AWS_SECRET_ACCESS_KEY=your-secret
+# Phase 3 ops settings
+ENABLE_RESPONSE_CACHE=true
+CACHE_TTL_SECONDS=120
+PERF_SLOW_REQUEST_MS=1000
+PERF_MAX_ROUTE_SAMPLES=200
+
+# Optional
+SENTRY_DSN=
 ```
 
 ### 3. Generate Strong JWT Secret
 
 ```bash
-# Generate random string
+# Generate random string (64 hex chars)
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+# Generate random string (128 hex chars)
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
 ---
@@ -163,33 +188,13 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Docker Deployment
 
-### 1. Create Dockerfile
+### 1. Use Included Container Files
 
-```dockerfile
-# Dockerfile
-FROM node:18-alpine
+The repository already includes production container assets:
 
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy application code
-COPY . .
-
-# Expose port
-EXPOSE 5000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
-
-# Start application
-CMD ["npm", "start"]
-```
+- `backend/Dockerfile`
+- `backend/.dockerignore`
+- `backend/docker-compose.production.yml`
 
 ### 2. Create .dockerignore
 
@@ -223,65 +228,35 @@ docker logs -f edunova-backend
 
 ### 4. Docker Compose Setup
 
-```yaml
-# docker-compose.yml
-version: '3.8'
-
-services:
-  mongo:
-    image: mongo:6.0
-    container_name: edunova-db
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-    restart: unless-stopped
-
-  api:
-    build: .
-    container_name: edunova-api
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mongo
-    environment:
-      NODE_ENV: production
-      PORT: 5000
-      MONGODB_URI: mongodb://admin:password@mongo:27017/edunova?authSource=admin
-      JWT_SECRET: ${JWT_SECRET}
-      CORS_ORIGIN: https://your-domain.com
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  nginx:
-    image: nginx:alpine
-    container_name: edunova-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - api
-    restart: unless-stopped
-
-volumes:
-  mongo_data:
-```
-
-**Run with Docker Compose:**
 ```bash
-docker-compose up -d
-docker-compose logs -f
+# Start production composition from included file
+docker compose -f docker-compose.production.yml up -d --build
+
+# Check services
+docker compose -f docker-compose.production.yml ps
+
+# Stream backend logs
+docker compose -f docker-compose.production.yml logs -f backend
 ```
+
+**Note:** `docker-compose.production.yml` mounts `./uploads` for media persistence and runs MongoDB + backend together for self-hosted deployments.
+
+---
+
+## CI/CD Baseline
+
+The repository includes a backend CI workflow at `.github/workflows/backend-ci.yml`.
+
+- Trigger: push/pull request affecting `backend/**`
+- Runtime: Node 20
+- Checks: install dependencies and run `npm run test:ci`
+- Smoke check script: `backend/scripts/ciSmoke.js`
+
+`ciSmoke.js` validates:
+
+- JavaScript syntax for backend source files
+- Required environment keys in both `.env.example` and `.env.production.example`
+- Required deployment artifacts (Dockerfile, .dockerignore, server entry)
 
 ---
 

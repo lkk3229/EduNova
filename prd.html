@@ -163,7 +163,7 @@
         <h1>EduNova — Product Requirement Document</h1>
         <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
         <div class="prd-meta">
-            <div class="prd-meta-item">Version: <strong>5.2</strong></div>
+            <div class="prd-meta-item">Version: <strong>7.0</strong></div>
             <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
             <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
@@ -451,6 +451,22 @@
             <div class="story-id">US-A09 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>platform operator</em>, I want the backend to <em>start reliably with correctly wired middleware and explicit env validation</em> so API checks for payments and uploads can run end-to-end without boot-time failures.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-A10 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>platform operator</em>, I want a <em>production deployment checklist and a dedicated production env template</em> so go-live configuration is repeatable, auditable, and safer.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A11 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>platform operator</em>, I want <em>automated CI smoke checks and containerized deployment assets</em> so backend releases are repeatable and fail fast on configuration drift.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A12 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>security/governance owner</em>, I want <em>audited logs for privileged mutations with sensitive-field redaction</em> so investigations and compliance reviews are possible without exposing secrets.</p>
+        </div>
+        <div class="story-card">
+            <div class="story-id">US-A13 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>DevOps/database architect</em>, I want <em>PostgreSQL backend via Supabase with repository pattern and Row-Level Security</em> so data compliance, realtime subscriptions, and multi-instance scaling are achievable.</p>
+        </div>
     </div>
 
     <!-- ==================== 6. FEATURE REQUIREMENTS ==================== -->
@@ -488,6 +504,10 @@
                 <tr><td>F-25</td><td>Platform Monitoring & Response Cache</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Admin metrics APIs, route-level performance telemetry, and TTL cache for GET-heavy endpoints</td></tr>
                 <tr><td>F-26</td><td>Dependency Security Hardening</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Upgraded vulnerable email dependency to patched major version and cleared backend audit findings</td></tr>
                 <tr><td>F-27</td><td>Backend Startup Reliability Guard</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Correct middleware wiring and fail-fast env validation to prevent boot-time API outage</td></tr>
+                <tr><td>F-28</td><td>Production Deployment Baseline</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Phase 5 checklist and production env template for deterministic go-live setup and verification</td></tr>
+                <tr><td>F-29</td><td>Containerization & CI Smoke Pipeline</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Docker runtime, production compose file, and GitHub Actions smoke checks for backend integrity</td></tr>
+                <tr><td>F-30</td><td>Privileged Mutation Audit Trail</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Audit middleware logs POST/PUT/PATCH/DELETE events with sensitive data redaction</td></tr>
+                <tr><td>F-31</td><td>PostgreSQL Database via Supabase</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Supabase client integration with repository pattern, 8 PostgreSQL tables, Row-Level Security policies, and automatic schema setup script</td></tr>
             </tbody>
         </table>
 
@@ -553,6 +573,38 @@
             <li>Express error middleware is mounted through named export binding to avoid invalid middleware registration at startup.</li>
             <li>Environment validation blocks server boot on invalid configuration, enabling deterministic failure diagnostics before API traffic.</li>
             <li>This reliability guard directly supports end-to-end verification for checkout, verify, and media upload APIs.</li>
+        </ul>
+
+        <h4>6.2.8 Production Deployment Baseline</h4>
+        <ul>
+            <li>Dedicated production env template file (<code>backend/.env.production.example</code>) defines required values and safe placeholders.</li>
+            <li>Deployment operations guide now includes a Phase 5 production checklist across infrastructure, secrets, security, and runtime verification.</li>
+            <li>Checklist requires go-live validation for payment keys, email credentials, health checks, and rollback readiness.</li>
+        </ul>
+
+        <h4>6.2.9 Containerization and CI Baseline</h4>
+        <ul>
+            <li>Backend now ships with <code>backend/Dockerfile</code>, <code>backend/.dockerignore</code>, and <code>backend/docker-compose.production.yml</code>.</li>
+            <li>GitHub Actions workflow (<code>.github/workflows/backend-ci.yml</code>) runs backend smoke checks for pushes and pull requests.</li>
+            <li><code>backend/scripts/ciSmoke.js</code> validates JavaScript syntax, required deployment artifacts, and env template key completeness.</li>
+        </ul>
+
+        <h4>6.2.10 Audit Logging and Governance</h4>
+        <ul>
+            <li>Audit middleware records mutation requests on privileged routes (<code>/api/admin</code>, <code>/api/payments</code>, <code>/api/uploads</code>, <code>/api/monitoring</code>).</li>
+            <li>Sensitive request fields are redacted before audit persistence to reduce secret exposure risk.</li>
+            <li>Feature is configurable through <code>AUDIT_LOGGING_ENABLED</code> to support staged rollout and operational tuning.</li>
+        </ul>
+
+        <h4>6.2.11 PostgreSQL Backend via Supabase (Phase 8)</h4>
+        <ul>
+            <li>Primary database is now PostgreSQL via Supabase (backend/config/supabase.js initializes the client).</li>
+            <li>Repository pattern (backend/lib/supabaseRepository.js) abstracts database queries for Users, Courses, Enrollments, Transactions, and Certificates.</li>
+            <li>8 PostgreSQL tables with proper indexes: users, courses, enrollments, transactions, certificates, books, meetings, audit_logs.</li>
+            <li>Row-Level Security (RLS) policies enable per-user data access control at the database layer.</li>
+            <li>Environment setup: SUPABASE_URL, SUPABASE_ANON_KEY (frontend), SUPABASE_SERVICE_KEY (backend).</li>
+            <li>MongoDB remains an optional fallback for backward compatibility during gradual migration.</li>
+            <li>Supabase Realtime subscriptions enable live updates without polling (future phase).</li>
         </ul>
     </div>
 
@@ -745,15 +797,21 @@
         </div>
 
         <div class="roadmap-phase">
-            <div class="phase-title">Phase 6 — Enterprise & Expansion <span class="badge badge-planned">Planned</span></div>
+            <div class="phase-title">Phase 6 — Deployment Automation <span class="badge badge-done">Completed</span></div>
             <ul>
-                <li>B2B school/college institutional subscriptions</li>
-                <li>AI-powered course recommendations</li>
-                <li>Peer-to-peer discussion forums</li>
-                <li>Assignment/quiz engine with auto-grading</li>
-                <li>Parent portal for K-12 progress monitoring</li>
-                <li>Instructor certification and quality program</li>
-                <li>API marketplace for third-party integrations</li>
+                <li>Backend containerization baseline (Dockerfile + production compose)</li>
+                <li>GitHub Actions backend CI workflow with smoke validation</li>
+                <li>Reusable CI smoke script for syntax and config-template integrity</li>
+                <li>Production-oriented deployment guide refreshed for container and CI flow</li>
+            </ul>
+        </div>
+
+        <div class="roadmap-phase">
+            <div class="phase-title">Phase 7 — Governance Hardening <span class="badge badge-done">Completed</span></div>
+            <ul>
+                <li>Privileged API mutation audit logging with sensitive field redaction</li>
+                <li>Operational toggle for audit logging to support phased rollouts</li>
+                <li>Documented governance additions in FRD/PRD, risks, dependencies, and glossary</li>
             </ul>
         </div>
     </div>
@@ -774,6 +832,9 @@
                 <tr><td>No video hosting capability</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Phase 5: AWS S3 + CloudFront or dedicated video platform.</td></tr>
                 <tr><td>Local filesystem upload storage may not scale on multi-instance deployments</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Move uploads to object storage (S3/Blob) in next infra iteration.</td></tr>
                 <tr><td>In-memory cache is per-process and may serve stale data briefly</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Short TTL + write-triggered prefix invalidation now; move to shared Redis cache for multi-instance scale.</td></tr>
+                <tr><td>Production secrets can be leaked if .env is manually shared</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-med">Medium</span></td><td>Use dedicated production template + secret manager-backed injection; never commit real .env files.</td></tr>
+                <tr><td>Audit logs can grow quickly under heavy mutation traffic</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Apply log rotation, central shipping, and retention policies in production ops.</td></tr>
+                <tr><td>CI smoke checks may miss behavioral regressions</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Keep smoke checks as gate-0 and add integration/E2E suites as next maturity step.</td></tr>
                 <tr><td>Browser speech API behavior varies by device/browser</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Fallback to typed mode and retain coaching quality without microphone access.</td></tr>
                 <tr><td>Direct frontend LLM key usage is not production-safe</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Move to backend proxy for token handling and provider routing before production release.</td></tr>
                 <tr><td>Library dataset is static client-side content</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Move catalog and access rights to backend CMS/data store in scale phase.</td></tr>
@@ -826,6 +887,9 @@
                 <tr><td>Razorpay SDK</td><td>Node package</td><td>Payment order creation and signature verification support</td></tr>
                 <tr><td>Multer</td><td>Node package</td><td>Multipart file ingestion, MIME validation, and file size controls</td></tr>
                 <tr><td>Winston File Logging</td><td>Node package</td><td>Structured JSON log retention with slow-request diagnostics</td></tr>
+                <tr><td>Production Secret Manager</td><td>Cloud service</td><td>Secure storage and rotation of production credentials (JWT, DB, email, gateway keys)</td></tr>
+                <tr><td>Docker Engine / Docker Compose</td><td>Runtime tooling</td><td>Containerized backend build and orchestration for deterministic deployments</td></tr>
+                <tr><td>GitHub Actions</td><td>CI platform</td><td>Automated backend smoke checks on pushes and pull requests</td></tr>
             </tbody>
         </table>
 
@@ -868,6 +932,10 @@
                 <tr><td>Razorpay Order</td><td>Gateway-side order object used for payment authorization and signature verification</td></tr>
                 <tr><td>Response Cache</td><td>In-memory TTL layer for public GET endpoints with explicit invalidation on writes</td></tr>
                 <tr><td>Operational Metrics</td><td>Backend route/request telemetry exposed through admin-only monitoring APIs</td></tr>
+                <tr><td>Production Deployment Baseline</td><td>Checklist and environment template that define required go-live configuration and verification gates</td></tr>
+                <tr><td>Secret Manager</td><td>Managed service used to store and rotate production secrets outside source control</td></tr>
+                <tr><td>Audit Trail</td><td>Mutation-level security event log for privileged APIs with secret-aware request redaction</td></tr>
+                <tr><td>CI Smoke Checks</td><td>Fast automated checks that validate backend syntax and deployment/configuration baseline files</td></tr>
                 <tr><td>Speaking Scorecard</td><td>Per-student report containing fluency, pronunciation, streak, suggestions, and recent history</td></tr>
                 <tr><td>Library Module</td><td>Board-wise and class-wise school book catalog with in-page AI assistant</td></tr>
                 <tr><td>FRD</td><td>Functional Requirement Document — technical specification of all features</td></tr>
@@ -892,9 +960,9 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
-        <p>EduNova Product Requirement Document v5.2</p>
+        <p>EduNova Product Requirement Document v7.0</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v5.2 includes: backend startup reliability guard (error middleware wiring fix), validated env-first boot flow, and prior security hardening baseline</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v7.0 includes: Phase 6 containerization, Phase 7 governance hardening via audit trails, and Phase 8 PostgreSQL migration via Supabase with repository pattern and Row-Level Security</p>
         <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
     </div>
 

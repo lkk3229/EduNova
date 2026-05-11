@@ -11,22 +11,35 @@ require('dotenv').config();
 const REQUIRED_VARS = {
     NODE_ENV: { default: 'development', type: 'string' },
     PORT: { default: 5000, type: 'number' },
-    MONGODB_URI: { required: true, type: 'string' },
+    // Database: Supabase (primary) or MongoDB (fallback)
+    SUPABASE_URL: { required: false, type: 'string' },
+    SUPABASE_ANON_KEY: { required: false, type: 'string' },
+    SUPABASE_SERVICE_KEY: { required: false, type: 'string' },
+    MONGODB_URI: { required: false, type: 'string' },
+    // Authentication
     JWT_SECRET: { required: true, type: 'string', minLength: 32 },
     JWT_EXPIRE: { default: '7d', type: 'string' },
+    // Server/App
     CORS_ORIGIN: { default: 'http://localhost:3000', type: 'string' },
     FRONTEND_URL: { required: true, type: 'string' },
+    // Email
     EMAIL_SERVICE: { required: true, type: 'string' },
     EMAIL_USER: { required: true, type: 'string' },
     EMAIL_PASS: { required: true, type: 'string' },
+    // Logging & Monitoring
     LOG_LEVEL: { default: 'debug', type: 'string' },
+    AUDIT_LOGGING_ENABLED: { default: true, type: 'boolean' },
+    // File Upload
     UPLOAD_PATH: { default: './uploads', type: 'string' },
+    // Performance & Cache
     ENABLE_RESPONSE_CACHE: { default: true, type: 'boolean' },
     CACHE_TTL_SECONDS: { default: 120, type: 'number' },
     PERF_SLOW_REQUEST_MS: { default: 1000, type: 'number' },
     PERF_MAX_ROUTE_SAMPLES: { default: 200, type: 'number' },
+    // Payments (optional)
     RAZORPAY_KEY_ID: { default: '', type: 'string' },
     RAZORPAY_KEY_SECRET: { default: '', type: 'string' },
+    // Observability (optional)
     SENTRY_DSN: { default: '', type: 'string' }
 };
 
@@ -112,8 +125,30 @@ const validateEnvironment = () => {
         if (process.env.JWT_SECRET === 'dev-secret') {
             errors.push('❌ SECURITY: JWT_SECRET is set to default dev value in production!');
         }
-        if (!process.env.MONGODB_URI?.includes('mongodb+srv')) {
-            warnings.push('⚠️  PERFORMANCE: Consider using MongoDB Atlas for production');
+        
+        // Check database configuration (Supabase or MongoDB required)
+        const hasSupabase = process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY);
+        const hasMongoDB = process.env.MONGODB_URI;
+        
+        if (!hasSupabase && !hasMongoDB) {
+            errors.push('❌ DATABASE: Either Supabase (SUPABASE_URL + SUPABASE_SERVICE_KEY) or MongoDB (MONGODB_URI) must be configured');
+        }
+        
+        // Validate Supabase URL format
+        if (process.env.SUPABASE_URL) {
+            try {
+                const url = new URL(process.env.SUPABASE_URL);
+                if (!url.hostname.includes('supabase.co')) {
+                    warnings.push('⚠️  SUPABASE_URL: Does not appear to be a valid Supabase URL (should contain supabase.co)');
+                }
+            } catch (e) {
+                errors.push(`❌ SUPABASE_URL: Invalid URL format - "${process.env.SUPABASE_URL}"`);
+            }
+        }
+        
+        // Recommend Supabase for production
+        if (hasMongoDB && !hasSupabase) {
+            warnings.push('⚠️  DATABASE: Consider using Supabase (PostgreSQL) for improved scalability and compliance');
         }
     }
 

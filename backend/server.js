@@ -15,6 +15,10 @@ const config = require('./config/environment');
 const logger = require('./config/logger');
 const httpLogger = require('./middleware/httpLogger');
 const { performanceMonitor } = require('./middleware/performanceMonitor');
+const { auditLogger } = require('./middleware/auditLogger');
+
+// Supabase PostgreSQL client (Phase 8)
+const { testConnection: testSupabaseConnection } = require('./config/supabase');
 
 const mongoose = require('mongoose');
 
@@ -72,13 +76,26 @@ mongoose.connect(config.MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
         logger.warn('  Provide a running MongoDB instance for production or full feature testing.');
     });
 
+// ==================== Supabase PostgreSQL Connection (Phase 8) ====================
+testSupabaseConnection().catch(err => {
+    logger.warn('⚠ Supabase PostgreSQL unavailable: ' + err.message);
+    if (process.env.NODE_ENV === 'production') {
+        logger.error('Production deployment requires Supabase connection. Exiting.');
+        process.exit(1);
+    }
+});
+
 // ==================== Health Check ====================
 app.get('/api/health', (req, res) => {
     res.json({ 
         success: true,
         status: 'ok',
         timestamp: new Date(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        database: {
+            mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+            supabase: process.env.SUPABASE_URL ? 'configured' : 'not configured'
+        }
     });
 });
 
@@ -107,10 +124,10 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/meetings', meetingRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/payments', paymentRoutes);
-app.use('/api/uploads', uploadRoutes);
-app.use('/api/monitoring', monitoringRoutes);
+app.use('/api/admin', auditLogger('admin'), adminRoutes);
+app.use('/api/payments', auditLogger('payments'), paymentRoutes);
+app.use('/api/uploads', auditLogger('uploads'), uploadRoutes);
+app.use('/api/monitoring', auditLogger('monitoring'), monitoringRoutes);
 
 // ==================== Error Handling Middleware ====================
 const { errorHandler } = require('./middleware/errorHandler');

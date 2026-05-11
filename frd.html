@@ -322,10 +322,10 @@
         <h1>EduNova — Functional Requirement Document</h1>
         <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
         <div class="frd-meta">
-            <div class="frd-meta-item">Version: <strong>5.2</strong></div>
+            <div class="frd-meta-item">Version: <strong>7.0</strong></div>
             <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
             <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
-            <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript</strong></div>
+            <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript + Node.js / Supabase</strong></div>
         </div>
         <div class="auto-update-banner">
             <i class="fas fa-sync-alt"></i> This document auto-updates from live platform data on every page load. Statistics reflect real-time localStorage state.
@@ -427,6 +427,17 @@
                 <tr><td>js/courses.js</td><td>JS</td><td>Course catalog data + filtering + backend checkout integration</td></tr>
                 <tr><td>backend/server.js</td><td>Node Server</td><td>Express bootstrap, middleware wiring, route mounting, and startup health/runtime initialization</td></tr>
                 <tr><td>backend/middleware/errorHandler.js</td><td>Node Middleware</td><td>Centralized API error mapping (validation, duplicate keys, cast errors) and JSON error responses</td></tr>
+                <tr><td>backend/.env.production.example</td><td>Config Template</td><td>Production-safe environment variable baseline for deployment secrets and runtime options</td></tr>
+                <tr><td>backend/DEPLOYMENT_GUIDE.md</td><td>Operations Guide</td><td>Phase 5 production checklist, secret handling requirements, and go-live verification workflow</td></tr>
+                <tr><td>backend/middleware/auditLogger.js</td><td>Node Middleware</td><td>Mutation-level audit trail with redaction for sensitive request fields</td></tr>
+                <tr><td>backend/scripts/ciSmoke.js</td><td>Node Script</td><td>CI smoke checks for backend syntax, deployment files, and env template completeness</td></tr>
+                <tr><td>backend/Dockerfile</td><td>Container Spec</td><td>Production container build with non-root runtime and healthcheck</td></tr>
+                <tr><td>backend/docker-compose.production.yml</td><td>Container Orchestration</td><td>Production composition for backend + MongoDB with persistent volumes</td></tr>
+                <tr><td>.github/workflows/backend-ci.yml</td><td>CI Pipeline</td><td>Automated backend smoke validation on push and pull requests</td></tr>
+                <tr><td>backend/config/supabase.js</td><td>Node Config</td><td>Supabase PostgreSQL client initialization with service role auth and connection testing</td></tr>
+                <tr><td>backend/repositories/UserRepository.js</td><td>Node Repository</td><td>Repository pattern for user database operations (find, create, update, delete, list) with Supabase queries</td></tr>
+                <tr><td>backend/scripts/supabaseSchema.sql</td><td>SQL Schema</td><td>Complete PostgreSQL schema with 10 tables, indexes, RLS policies, and auto-update triggers (Phase 8)</td></tr>
+                <tr><td>SUPABASE_INTEGRATION.md</td><td>Integration Guide</td><td>Step-by-step Supabase setup, schema creation, environment config, and migration checklist</td></tr>
                 <tr><td>backend/routes/payments.js</td><td>Node Route</td><td>Checkout, verification, and payment history APIs</td></tr>
                 <tr><td>backend/routes/uploads.js</td><td>Node Route</td><td>Teacher/admin image and video upload APIs</td></tr>
                 <tr><td>backend/models/Transaction.js</td><td>Node Model</td><td>Persistent payment transaction records and revenue split fields</td></tr>
@@ -979,6 +990,34 @@
             <li>Central error middleware is mounted using named export wiring from <code>backend/middleware/errorHandler.js</code> to avoid startup-time middleware type failures.</li>
             <li>Environment validation executes before service boot, so misconfiguration fails fast with explicit diagnostics.</li>
         </ul>
+
+        <h3>12.5 Production Deployment Checklist (Phase 5)</h3>
+        <p>A production checklist and environment baseline now exist to standardize go-live preparation.</p>
+        <ul>
+            <li><strong>backend/.env.production.example</strong> defines required production env keys with safe placeholders.</li>
+            <li><strong>backend/DEPLOYMENT_GUIDE.md</strong> includes infrastructure, secret management, security, and runtime verification checklist items.</li>
+            <li>Checklist explicitly validates payment gateway keys, email credentials, monitoring readiness, and rollback planning.</li>
+        </ul>
+
+        <h3>12.6 CI/CD and Container Operations (Phase 6)</h3>
+        <p>The backend now includes built-in CI and containerization assets for consistent deployments.</p>
+        <ul>
+            <li><strong>backend/scripts/ciSmoke.js</strong> runs syntax and env-template completeness checks via <code>npm run test:ci</code>.</li>
+            <li><strong>.github/workflows/backend-ci.yml</strong> executes backend smoke checks in GitHub Actions using Node 20.</li>
+            <li><strong>backend/Dockerfile</strong> and <strong>backend/docker-compose.production.yml</strong> provide reproducible runtime packaging and startup orchestration.</li>
+        </ul>
+
+        <h3>12.7 Database Migration to Supabase (Phase 8)</h3>
+        <p>The backend now supports PostgreSQL via Supabase as the primary database, with MongoDB as an optional fallback for backward compatibility.</p>
+        <ul>
+            <li><strong>backend/config/supabase.js</strong> initializes Supabase PostgreSQL client with SERVICE_KEY authentication and auto-testing on startup.</li>
+            <li><strong>backend/repositories/UserRepository.js</strong> implements repository pattern for all user database operations (find, create, update, delete, list, check exists).</li>
+            <li><strong>backend/scripts/supabaseSchema.sql</strong> creates 10 PostgreSQL tables: users, courses, enrollments, certificates, books, borrowing, meetings, meeting_attendees, transactions, audit_logs. Includes indexes, RLS policies, and auto-update triggers.</li>
+            <li><strong>SUPABASE_INTEGRATION.md</strong> provides step-by-step setup, schema creation, environment configuration, and migration checklist.</li>
+            <li>Environment variables: <code>SUPABASE_URL</code>, <code>SUPABASE_ANON_KEY</code>, <code>SUPABASE_SERVICE_KEY</code> (added to .env and .env.production.example).</li>
+            <li>Health check endpoint (<code>/api/health</code>) now includes database connection status for both MongoDB and Supabase.</li>
+            <li>Row-Level Security (RLS) policies auto-created for data isolation: users see themselves (admins see all), courses public-read with instructor-edit, enrollments student-scoped, audit logs admin-only.</li>
+        </ul>
     </div>
 
     <!-- ==================== 13. SECURITY ==================== -->
@@ -1005,6 +1044,7 @@
             <li>Chatbot BLOCKED_KEYWORDS prevents exposure of: passwords, account numbers, SSN, credit cards, bank details, salary, admin credentials, API keys, private keys</li>
             <li>No sensitive data displayed in chatbot responses</li>
             <li>Session cleared on logout</li>
+            <li>Audit logs redact sensitive request fields (password, token, secret, signature, key, authorization, cookie) before persistence</li>
         </ul>
 
         <h3>13.4 Known Limitations</h3>
@@ -1042,7 +1082,9 @@
 
     <!-- ==================== 15. DATA MODEL ==================== -->
     <div class="frd-section" id="sec-data">
-        <h2><i class="fas fa-database"></i> 15. Data Model (localStorage)</h2>
+        <h2><i class="fas fa-database"></i> 15. Data Model</h2>
+        
+        <h3>15.1 Frontend Storage (localStorage)</h3>
         <table>
             <thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead>
             <tbody>
@@ -1056,16 +1098,40 @@
                 <tr><td>edunova_demos</td><td>Array</td><td>Demo class requests</td></tr>
                 <tr><td>edunova_currency</td><td>String</td><td>User's selected currency code</td></tr>
                 <tr><td>edunova_schedules</td><td>Array</td><td>Class schedules</td></tr>
-                <tr><td>transactions (MongoDB)</td><td>Collection</td><td>Checkout lifecycle, gateway IDs, status, and revenue split per payment</td></tr>
-                <tr><td>uploads (filesystem)</td><td>Directory</td><td>Uploaded images/videos served through <code>/uploads/*</code> static URLs</td></tr>
-                <tr><td>response cache (in-memory)</td><td>Process Map</td><td>TTL-based cache for GET-heavy APIs (books/courses) with prefix invalidation on writes</td></tr>
-                <tr><td>performance metrics (in-memory)</td><td>Process Map</td><td>Route-level latency/error snapshots used by admin monitoring endpoints</td></tr>
-                <tr><td>Library dataset</td><td>In-memory</td><td>Board/class/subject book catalog generated by js/library-data.js</td></tr>
                 <tr><td>edunova_english_profiles</td><td>Object</td><td>Per-student speaking attempts, scores, suggestions context, and history</td></tr>
                 <tr><td>edunova_english_llm_config</td><td>Object</td><td>Per-student LLM provider settings for speaking trainer</td></tr>
+                <tr><td>edunova_english_login_ticket (sessionStorage)</td><td>String</td><td>Validated trainer entry ticket after login</td></tr>
             </tbody>
         </table>
-        <p><strong>Session-only key:</strong> <code>edunova_english_login_ticket</code> in <code>sessionStorage</code> controls validated trainer entry after login.</p>
+
+        <h3>15.2 Backend Storage (Supabase PostgreSQL - Phase 8)</h3>
+        <table>
+            <thead><tr><th>Table</th><th>Columns</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>users</td><td>id, email, password_hash, first_name, last_name, role, phone, profile_photo_url, bio, country, timezone, status, created_at, updated_at, last_login</td><td>Student/teacher/admin accounts with JWT auth and profile metadata</td></tr>
+                <tr><td>courses</td><td>id, title, description, instructor_id, category, language, level, duration_hours, price, currency, cover_image_url, rating, status, enrollment_count, created_at, updated_at</td><td>Course catalog with instructor ownership and approval workflow</td></tr>
+                <tr><td>enrollments</td><td>id, student_id, course_id, progress_percentage, last_accessed, status, completion_date, created_at, updated_at</td><td>Student course registrations with progress tracking</td></tr>
+                <tr><td>certificates</td><td>id, student_id, course_id, certificate_url, issued_date, verification_code, created_at</td><td>Generated certificates upon course completion</td></tr>
+                <tr><td>books</td><td>id, title, author, isbn, description, category, cover_image_url, total_copies, available_copies, language, published_year, rating, status, created_at, updated_at</td><td>Library catalog items with availability tracking</td></tr>
+                <tr><td>borrowing</td><td>id, student_id, book_id, borrow_date, due_date, return_date, status, created_at, updated_at</td><td>Book lending and return records</td></tr>
+                <tr><td>meetings</td><td>id, course_id, instructor_id, title, description, scheduled_at, duration_minutes, meeting_link, max_participants, status, recording_url, created_at, updated_at</td><td>Live classes/sessions with scheduling</td></tr>
+                <tr><td>meeting_attendees</td><td>id, meeting_id, participant_id, joined_at, left_at, duration_seconds, status, created_at</td><td>Meeting participation and attendance duration tracking</td></tr>
+                <tr><td>transactions</td><td>id, student_id, course_id, amount, currency, payment_method, payment_provider_id, status, description, created_at, completed_at</td><td>Razorpay payment records and lifecycle</td></tr>
+                <tr><td>audit_logs</td><td>id, actor_id, actor_role, actor_email, action, scope, method, path, query_string, request_body, response_status, response_body, duration_ms, ip_address, user_agent, error_message, created_at</td><td>Privileged action audit trail for compliance (POST/PUT/PATCH/DELETE)</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Indexes:</strong> All tables include indexes on foreign keys, status, created_at, and search-heavy columns. <strong>RLS:</strong> Row-Level Security policies enable users to see themselves (admins see all), courses are public-read with instructor-edit, enrollments are student-scoped, audit logs are admin-only.</p>
+
+        <h3>15.3 Backend Runtime (In-Memory & Filesystem)</h3>
+        <table>
+            <thead><tr><th>Storage</th><th>Type</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Response Cache</td><td>Process Map</td><td>TTL-based cache for GET-heavy APIs (books/courses) with prefix invalidation on writes</td></tr>
+                <tr><td>Performance Metrics</td><td>Process Map</td><td>Route-level latency/error snapshots used by admin monitoring endpoints</td></tr>
+                <tr><td>Upload Directory</td><td>Filesystem</td><td>Uploaded images/videos served through <code>/uploads/*</code> static URLs (Phase 2)</td></tr>
+                <tr><td>Log Files</td><td>Filesystem</td><td>Winston structured logs: all.log, error.log, http.log, exceptions.log, rejections.log with rotation</td></tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- ==================== 16. LIVE STATS ==================== -->
@@ -1079,9 +1145,9 @@
 
     <!-- FOOTER -->
     <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
-        <p>EduNova Functional Requirement Document v5.2</p>
+        <p>EduNova Functional Requirement Document v7.0</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v5.2 includes: backend runtime stability fix for error middleware wiring, validated local environment boot path, and prior Phase 4 dependency hardening</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v7.0 includes: Phase 6 CI/CD, Phase 7 audit logging, and Phase 8 Supabase PostgreSQL migration with repository pattern and Row-Level Security</p>
     </div>
 
 </div>

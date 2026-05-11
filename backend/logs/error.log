@@ -1,1 +1,2 @@
 {"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m✗ MongoDB connection failed: connect ECONNREFUSED 127.0.0.1:27017, connect ECONNREFUSED ::1:27017\u001b[39m","timestamp":"2026-05-10 23:18:16:1816"}
+{"level":"\u001b[31merror\u001b[39m","message":"\u001b[31m✗ Supabase connection test failed:\u001b[39m","timestamp":"2026-05-11 14:27:39:2739"}
