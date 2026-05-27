@@ -322,7 +322,7 @@
         <h1>EduNova — Functional Requirement Document</h1>
         <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
         <div class="frd-meta">
-            <div class="frd-meta-item">Version: <strong>8.0</strong></div>
+            <div class="frd-meta-item">Version: <strong>9.0</strong></div>
             <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
             <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript + Node.js / Supabase</strong></div>
@@ -466,6 +466,11 @@
                 <tr><td>css/library.css</td><td>CSS</td><td>Library board/class shelf UI, reader panel, and AI assistant styles</td></tr>
                 <tr><td>css/english-speaking.css</td><td>CSS</td><td>English speaking trainer UI, scorecard, and responsive styles</td></tr>
                 <tr><td>css/animations.css</td><td>CSS</td><td>Animation utilities</td></tr>
+                <tr><td>manifest.json</td><td>PWA Manifest</td><td>Web App Manifest: icons, name, display mode, shortcuts, and theme for Android/iOS installable PWA</td></tr>
+                <tr><td>sw.js</td><td>Service Worker</td><td>PWA Service Worker: cache-first static shell, network-first API, offline fallback, push notification handler</td></tr>
+                <tr><td>js/pwa.js</td><td>JS</td><td>PWA registration, Android beforeinstallprompt handler, iOS install guide modal, install banner</td></tr>
+                <tr><td>icons/icon.svg</td><td>Asset</td><td>Master SVG app icon for PWA — all PNG sizes generated from this file</td></tr>
+                <tr><td>icons/generate-icons.html</td><td>Dev Tool</td><td>Browser-based icon generator: converts icon.svg to all required PNG sizes for manifest.json</td></tr>
             </tbody>
         </table>
     </div>
@@ -1074,7 +1079,7 @@
         <table>
             <thead><tr><th>Page</th><th>URL</th><th>Auth Required</th><th>Scripts</th><th>Has Chatbot</th></tr></thead>
             <tbody>
-                <tr><td>Landing Page</td><td>index.html</td><td>No</td><td>app.js, chatbot.js</td><td>Yes</td></tr>
+                <tr><td>Landing Page</td><td>index.html</td><td>No</td><td>app.js, chatbot.js, pwa.js</td><td>Yes</td></tr>
                 <tr><td>Course Catalog</td><td>courses.html</td><td>No</td><td>currency.js, courses.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Login</td><td>login.html</td><td>No</td><td>auth.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Student Registration</td><td>register-student.html</td><td>No</td><td>auth.js, app.js, chatbot.js</td><td>Yes</td></tr>
@@ -1112,6 +1117,7 @@
                 <tr><td>edunova_english_profiles</td><td>Object</td><td>Per-student speaking attempts, scores, suggestions context, and history</td></tr>
                 <tr><td>edunova_english_llm_config</td><td>Object</td><td>Per-student LLM provider settings for speaking trainer</td></tr>
                 <tr><td>edunova_english_login_ticket (sessionStorage)</td><td>String</td><td>Validated trainer entry ticket after login</td></tr>
+                <tr><td>edunova_pwa_installed</td><td>Object</td><td>PWA install confirmation record { platform, date } written when user accepts Android install prompt</td></tr>
             </tbody>
         </table>
 
@@ -1145,9 +1151,50 @@
         </table>
     </div>
 
-    <!-- ==================== 16. LIVE STATS ==================== -->
+    <!-- ==================== 16. PWA ==================== -->
+    <div class="frd-section" id="sec-pwa">
+        <h2><i class="fas fa-mobile-alt"></i> 16. Progressive Web App (PWA)</h2>
+        <h3>16.1 Overview</h3>
+        <p>EduNova is a fully installable Progressive Web App on both Android and iOS. No app store submission required. Users install directly from their browser.</p>
+        <h3>16.2 PWA Components</h3>
+        <table>
+            <thead><tr><th>Component</th><th>File</th><th>Behavior</th></tr></thead>
+            <tbody>
+                <tr><td>Web App Manifest</td><td>manifest.json</td><td>Declares app name, icons (72–512px), display:standalone, theme color, 3 shortcuts (Courses / Live / Dashboard)</td></tr>
+                <tr><td>Service Worker</td><td>sw.js</td><td>Cache-first for static shell, network-first for /api/* routes, offline HTML fallback, push notification handler</td></tr>
+                <tr><td>PWA Script</td><td>js/pwa.js</td><td>Registers SW, captures Android beforeinstallprompt, exposes window.installPWA() and window.showIOSInstall(), shows/hides floating banner</td></tr>
+                <tr><td>App Icons</td><td>icons/icon-*.png</td><td>8 sizes: 72, 96, 128, 144, 152, 192, 384, 512px. Generated from icons/icon.svg</td></tr>
+                <tr><td>Icon Generator</td><td>icons/generate-icons.html</td><td>Developer utility — open in browser to auto-generate and download all PNG icon sizes from SVG source</td></tr>
+            </tbody>
+        </table>
+        <h3>16.3 Installation Flow</h3>
+        <table>
+            <thead><tr><th>Platform</th><th>Trigger</th><th>Flow</th></tr></thead>
+            <tbody>
+                <tr><td>Android (Chrome)</td><td>beforeinstallprompt event</td><td>Floating banner appears → user clicks Install → native Chrome prompt → accepted → app icon added to home screen</td></tr>
+                <tr><td>iOS (Safari)</td><td>Manual (Apple restriction)</td><td>User clicks iPhone App button → modal shows step-by-step: Share → Add to Home Screen → Add → app icon added</td></tr>
+                <tr><td>Desktop (Chrome/Edge)</td><td>beforeinstallprompt event</td><td>Same as Android — browser install prompt in address bar or via Install button</td></tr>
+            </tbody>
+        </table>
+        <h3>16.4 Offline Capability</h3>
+        <ul>
+            <li>Full app shell cached on first visit (all HTML, CSS, JS pages).</li>
+            <li>Dynamic assets cached as visited and served from cache when offline.</li>
+            <li>API calls fail gracefully with JSON error message when offline.</li>
+            <li>HTML navigation falls back to index.html when network unavailable.</li>
+        </ul>
+        <h3>16.5 Homepage Integration</h3>
+        <ul>
+            <li><strong>"Get the App" section</strong> added before Contact on index.html — contains Android install button, iPhone button, phone mockup, floating feature badges.</li>
+            <li><strong>Floating install banner</strong> shown automatically when Android install is available (pwa-banner-visible class added by pwa.js).</li>
+            <li><strong>Footer</strong> has Android App and iPhone App buttons in a dedicated Get the App column.</li>
+            <li>All install buttons trigger <code>window.installPWA()</code> (Android) or <code>window.showIOSInstall()</code> (iOS modal).</li>
+        </ul>
+    </div>
+
+    <!-- ==================== 17. LIVE STATS ==================== -->
     <div class="frd-section" id="sec-live-stats">
-        <h2><i class="fas fa-chart-line"></i> 16. Live Platform Statistics</h2>
+        <h2><i class="fas fa-chart-line"></i> 17. Live Platform Statistics</h2>
         <p>These numbers are auto-updated from your browser's localStorage on every page load.</p>
         <div id="liveStats">
             <!-- Populated by JS below -->
@@ -1156,9 +1203,9 @@
 
     <!-- FOOTER -->
     <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
-        <p>EduNova Functional Requirement Document v8.0</p>
+        <p>EduNova Functional Requirement Document v9.0</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v8.0 includes: DB_MODE contract enforcement, readiness endpoint with live DB connectivity, CI critical-path integration checks, and scripted production rehearsal (backup/restore/rollback)</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.0 includes: PWA (Progressive Web App) with manifest, service worker, Android/iOS install prompts, offline support, and Get the App section on the homepage</p>
     </div>
 
 </div>

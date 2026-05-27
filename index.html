@@ -10,8 +10,95 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+    <!-- PWA: manifest + theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EduNova">
+    <meta name="application-name" content="EduNova">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+    <!-- Apple touch icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+    <!-- Open Graph for sharing -->
+    <meta property="og:title" content="EduNova — Learn Without Limits">
+    <meta property="og:description" content="India's most inclusive learning platform. From Playway to PhD — 120+ courses.">
+    <meta property="og:image" content="icons/icon-512x512.png">
+    <meta property="og:type" content="website">
 </head>
 <body>
+    <!-- PWA Floating Install Banner -->
+    <div id="pwaInstallBanner" class="pwa-install-banner" role="banner" aria-label="Install EduNova App">
+        <div class="pwa-banner-inner">
+            <div class="pwa-banner-icon">
+                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+                    <defs>
+                        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#667eea"/>
+                            <stop offset="100%" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+                    <polygon points="256,120 420,196 256,272 92,196" fill="white" opacity="0.95"/>
+                    <text x="256" y="380" text-anchor="middle" font-size="60" font-family="Arial" fill="white">★</text>
+                </svg>
+            </div>
+            <div class="pwa-banner-text">
+                <strong>Get the EduNova App</strong>
+                <span>Install for faster, offline access</span>
+            </div>
+            <div class="pwa-banner-actions">
+                <button class="pwa-banner-btn pwa-install-android" onclick="installPWA()" aria-label="Install app">Install</button>
+                <button class="pwa-banner-dismiss" onclick="dismissPWABanner()" aria-label="Dismiss">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Install Modal (for iOS + fallback) -->
+    <div id="pwaInstallModal" class="pwa-modal" role="dialog" aria-modal="true" aria-label="App Installation Guide">
+        <div class="pwa-modal-content">
+            <div class="pwa-modal-header">
+                <div class="pwa-modal-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Install EduNova App</h3>
+                <button class="pwa-modal-close" onclick="closePWAModal()" aria-label="Close">&times;</button>
+            </div>
+
+            <!-- Android steps -->
+            <div id="pwaAndroidSteps" class="pwa-steps">
+                <p class="pwa-steps-intro">Add EduNova to your Android home screen:</p>
+                <ol class="pwa-step-list">
+                    <li><i class="fas fa-ellipsis-v"></i> Tap the <strong>Menu (⋮)</strong> in Chrome</li>
+                    <li><i class="fas fa-plus-square"></i> Tap <strong>"Add to Home Screen"</strong></li>
+                    <li><i class="fas fa-check-circle"></i> Tap <strong>"Add"</strong> to confirm</li>
+                    <li><i class="fas fa-rocket"></i> Open EduNova from your home screen!</li>
+                </ol>
+                <button class="btn btn-primary btn-lg pwa-install-android" onclick="installPWA()" style="width:100%;margin-top:16px;">
+                    <i class="fas fa-download"></i> Install Now (One Click)
+                </button>
+            </div>
+
+            <!-- iOS steps -->
+            <div id="pwaIOSSteps" class="pwa-steps" style="display:none">
+                <p class="pwa-steps-intro">Add EduNova to your iPhone/iPad home screen:</p>
+                <ol class="pwa-step-list">
+                    <li><i class="fas fa-share-square"></i> Tap the <strong>Share button</strong> <span class="ios-share-icon">⎙</span> at the bottom of Safari</li>
+                    <li><i class="fas fa-plus-square"></i> Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+                    <li><i class="fas fa-edit"></i> Name it <strong>EduNova</strong> and tap <strong>"Add"</strong></li>
+                    <li><i class="fas fa-rocket"></i> Open EduNova like any other app!</li>
+                </ol>
+                <div class="pwa-ios-note">
+                    <i class="fab fa-safari"></i> Must use <strong>Safari</strong> on iOS for this to work.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Preloader -->
     <div id="preloader">
         <div class="loader-logo">
@@ -712,6 +799,154 @@
         </div>
     </section>
 
+    <!-- Get the App Section -->
+    <section class="get-app-section" id="get-app">
+        <div class="container">
+            <div class="get-app-inner">
+                <div class="get-app-content">
+                    <div class="section-badge get-app-badge">
+                        <i class="fas fa-mobile-alt"></i> Now Available as an App
+                    </div>
+                    <h2 class="get-app-title">
+                        Learn on the Go with<br>
+                        <span class="gradient-text">EduNova App</span>
+                    </h2>
+                    <p class="get-app-desc">
+                        Install EduNova as a native app on your Android or iPhone — no app store needed.
+                        Get offline access to your courses, live class alerts, and lightning-fast performance.
+                    </p>
+                    <div class="app-feature-list">
+                        <div class="app-feature-item">
+                            <i class="fas fa-wifi-slash"></i>
+                            <span>Works Offline</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <i class="fas fa-bell"></i>
+                            <span>Live Class Alerts</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>Fast &amp; Lightweight</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Secure &amp; Private</span>
+                        </div>
+                    </div>
+                    <div class="app-download-btns">
+                        <!-- Android / PWA install -->
+                        <button class="app-store-btn android-btn pwa-install-android" onclick="installPWA()" aria-label="Install on Android">
+                            <div class="store-btn-icon">
+                                <i class="fab fa-android"></i>
+                            </div>
+                            <div class="store-btn-text">
+                                <span class="store-btn-sub">Get it on</span>
+                                <span class="store-btn-main">Android</span>
+                            </div>
+                        </button>
+
+                        <!-- iOS install -->
+                        <button class="app-store-btn ios-btn" onclick="showIOSInstall()" aria-label="Install on iPhone or iPad">
+                            <div class="store-btn-icon">
+                                <i class="fab fa-apple"></i>
+                            </div>
+                            <div class="store-btn-text">
+                                <span class="store-btn-sub">Available on</span>
+                                <span class="store-btn-main">iPhone &amp; iPad</span>
+                            </div>
+                        </button>
+                    </div>
+                    <p class="pwa-footnote">
+                        <i class="fas fa-info-circle"></i>
+                        This is a <strong>Progressive Web App (PWA)</strong> — installs directly from your browser
+                        in seconds. No app store, no 200 MB download.
+                    </p>
+                </div>
+
+                <div class="get-app-mockup">
+                    <div class="phone-mockup">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <div class="phone-screen-header">
+                                    <div class="phone-status-bar">
+                                        <span>9:41</span>
+                                        <div class="phone-status-icons">
+                                            <i class="fas fa-signal"></i>
+                                            <i class="fas fa-wifi"></i>
+                                            <i class="fas fa-battery-full"></i>
+                                        </div>
+                                    </div>
+                                    <div class="phone-app-bar">
+                                        <div class="phone-logo">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            <span>EduNova</span>
+                                        </div>
+                                        <div class="phone-avatar">S</div>
+                                    </div>
+                                </div>
+                                <div class="phone-screen-body">
+                                    <div class="phone-welcome">
+                                        <span>Welcome back,</span>
+                                        <strong>Rahul 👋</strong>
+                                    </div>
+                                    <div class="phone-progress-card">
+                                        <div class="phone-progress-label">Today's Goal</div>
+                                        <div class="phone-progress-bar-wrap">
+                                            <div class="phone-progress-bar" style="width:72%"></div>
+                                        </div>
+                                        <span class="phone-progress-pct">72%</span>
+                                    </div>
+                                    <div class="phone-course-card">
+                                        <div class="phone-live-dot"></div>
+                                        <div class="phone-course-info">
+                                            <span class="phone-course-tag">LIVE</span>
+                                            <p>CBSE Class 10 Science</p>
+                                            <small>Starting in 5 min</small>
+                                        </div>
+                                        <button class="phone-join-btn">Join</button>
+                                    </div>
+                                    <div class="phone-course-card phone-course-card--2">
+                                        <div class="phone-course-thumb">📐</div>
+                                        <div class="phone-course-info">
+                                            <p>JEE Mathematics</p>
+                                            <small>Chapter 4 · 68% done</small>
+                                        </div>
+                                        <i class="fas fa-play-circle phone-play-icon"></i>
+                                    </div>
+                                    <div class="phone-course-card phone-course-card--2">
+                                        <div class="phone-course-thumb">🧬</div>
+                                        <div class="phone-course-info">
+                                            <p>NEET Biology Prep</p>
+                                            <small>Chapter 7 · 45% done</small>
+                                        </div>
+                                        <i class="fas fa-play-circle phone-play-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="phone-nav-bar">
+                                    <div class="phone-nav-item active"><i class="fas fa-home"></i><span>Home</span></div>
+                                    <div class="phone-nav-item"><i class="fas fa-book"></i><span>Courses</span></div>
+                                    <div class="phone-nav-item"><i class="fas fa-video"></i><span>Live</span></div>
+                                    <div class="phone-nav-item"><i class="fas fa-user"></i><span>Profile</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-glow-effect"></div>
+                    </div>
+                    <!-- Floating badges around the phone -->
+                    <div class="app-float-badge badge-top-right">
+                        <i class="fas fa-star"></i> 4.9 Rating
+                    </div>
+                    <div class="app-float-badge badge-bottom-left">
+                        <i class="fas fa-download"></i> 50K+ Installs
+                    </div>
+                    <div class="app-float-badge badge-top-left">
+                        <i class="fas fa-shield-alt"></i> Secure
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
@@ -822,6 +1057,17 @@
                         <li><a href="#">Cookie Policy</a></li>
                     </ul>
                 </div>
+                <div class="footer-links footer-app">
+                    <h4><i class="fas fa-mobile-alt"></i> Get the App</h4>
+                    <p class="footer-app-desc">Install EduNova on your phone — free, fast, no app store needed.</p>
+                    <button class="footer-app-btn pwa-install-android" onclick="installPWA()" aria-label="Install on Android">
+                        <i class="fab fa-android"></i> Android App
+                    </button>
+                    <button class="footer-app-btn footer-app-btn--ios" onclick="showIOSInstall()" aria-label="Install on iPhone">
+                        <i class="fab fa-apple"></i> iPhone App
+                    </button>
+                    <a href="#get-app" class="footer-app-link">Learn more →</a>
+                </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 EduNova. All rights reserved. Made with <i class="fas fa-heart" style="color: #f5576c;"></i> for learners worldwide.</p>
@@ -832,5 +1078,6 @@
     <script src="js/currency.js"></script>
     <script src="js/app.js"></script>
     <script src="js/chatbot.js"></script>
+    <script src="js/pwa.js"></script>
 </body>
 </html>

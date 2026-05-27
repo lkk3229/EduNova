@@ -163,7 +163,7 @@
         <h1>EduNova — Product Requirement Document</h1>
         <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
         <div class="prd-meta">
-            <div class="prd-meta-item">Version: <strong>8.0</strong></div>
+            <div class="prd-meta-item">Version: <strong>9.0</strong></div>
             <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
             <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
@@ -471,6 +471,10 @@
             <div class="story-id">US-A14 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>release owner</em>, I want a <em>DB mode contract, live readiness checks, CI critical-path integration tests, and scripted deployment rehearsal</em> so production go-live is deterministic and auditable.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-S13 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>student on a mobile phone</em>, I want to <em>install EduNova as an app on my Android or iPhone</em> — without going to an app store — so I can learn faster with offline access and a native app experience.</p>
+        </div>
     </div>
 
     <!-- ==================== 6. FEATURE REQUIREMENTS ==================== -->
@@ -514,10 +518,24 @@
                 <tr><td>F-31</td><td>PostgreSQL Database via Supabase</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Supabase client integration with repository pattern, 8 PostgreSQL tables, Row-Level Security policies, and automatic schema setup script</td></tr>
                 <tr><td>F-32</td><td>Production DB Contract and Readiness Gates</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>DB_MODE contract enforcement, real DB readiness endpoint, and mongo-primary production policy while routes remain Mongoose-backed</td></tr>
                 <tr><td>F-33</td><td>CI Critical Path and Rehearsal Automation</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>CI Mongo service + integration checks for auth/courses/payments/uploads plus scripted production rehearsal for backup/restore/rollback</td></tr>
+                <tr><td>F-34</td><td>Progressive Web App (PWA)</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Installable Android &amp; iOS app via browser — manifest.json, service worker with offline cache, pwa.js install orchestration, floating install banner, "Get the App" homepage section, footer app buttons</td></tr>
             </tbody>
         </table>
 
         <h3>6.2 Feature Details by Module</h3>
+
+        <h4>6.2.0 Progressive Web App (PWA)</h4>
+        <ul>
+            <li><strong>Installable on Android:</strong> Chrome/Edge detects install readiness via <code>beforeinstallprompt</code>. Floating banner appears; one-click triggers native Chrome install prompt. App icon added to Android home screen.</li>
+            <li><strong>Installable on iOS/iPadOS:</strong> No programmatic prompt (Apple restriction). User clicks "iPhone App" button → modal shows 3-step Share → Add to Home Screen → Add flow. Must use Safari.</li>
+            <li><strong>Offline Support:</strong> Service worker caches all 13 HTML pages + all CSS/JS on first load. Revisited pages load instantly. API calls fail gracefully with offline JSON message.</li>
+            <li><strong>App Shortcuts:</strong> Three quick-action shortcuts in manifest: Browse Courses, Live Classes, My Dashboard — appear in Android long-press menu.</li>
+            <li><strong>Homepage "Get the App" section:</strong> Full-width section with phone mockup, Android/iOS install buttons, feature badges, and PWA explainer footnote.</li>
+            <li><strong>Floating install banner:</strong> Slides up from bottom when Android install is available; dismissible per-session.</li>
+            <li><strong>Footer app buttons:</strong> Android App and iPhone App buttons in the footer Get the App column on every page load.</li>
+            <li><strong>Push notifications:</strong> Service worker includes push event and notificationclick handlers — ready for future notification campaigns.</li>
+            <li><strong>Display mode:</strong> <code>standalone</code> — hides browser chrome, renders like a native app with custom theme color #667eea.</li>
+        </ul>
 
         <h4>6.2.1 Course Catalog Engine</h4>
         <ul>
@@ -998,9 +1016,9 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
-        <p>EduNova Product Requirement Document v8.0</p>
+        <p>EduNova Product Requirement Document v9.0</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v8.0 includes: DB_MODE production contract, readiness gating, CI critical-path integration checks, and scripted production rehearsal workflow</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.0 includes: PWA (Progressive Web App) — installable Android &amp; iOS app with service worker, offline support, manifest, install prompts, phone mockup UI, and footer app links</p>
         <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
     </div>
 

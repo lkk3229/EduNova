@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EduNova Icon Generator</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #0a0b14; color: white; padding: 20px; }
+  h2 { color: #667eea; }
+  button { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 10px 0; }
+  .info { background: #12131f; padding: 16px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #667eea; }
+  canvas { display: none; }
+</style>
+</head>
+<body>
+<h2>EduNova PWA Icon Generator</h2>
+<div class="info">
+  <p>Open this file in a browser to generate all required PNG icons for the PWA.</p>
+  <p>Icons will be downloaded automatically. Place them in the <code>icons/</code> folder.</p>
+</div>
+<button onclick="generateAll()">Generate All Icons</button>
+<div id="status"></div>
+<img id="sourceImg" src="icon.svg" style="display:none" crossorigin="anonymous">
+<canvas id="canvas"></canvas>
+
+<script>
+const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+
+async function generateAll() {
+  const status = document.getElementById('status');
+  status.innerHTML = '<p>Generating icons...</p>';
+  const img = document.getElementById('sourceImg');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  if (!img.complete) {
+    await new Promise(resolve => img.onload = resolve);
+  }
+
+  for (const size of sizes) {
+    canvas.width = size;
+    canvas.height = size;
+    ctx.clearRect(0, 0, size, size);
+    ctx.drawImage(img, 0, 0, size, size);
+
+    await new Promise(resolve => {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `icon-${size}x${size}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        status.innerHTML += `<p style="color:#4facfe">✓ icon-${size}x${size}.png generated</p>`;
+        setTimeout(resolve, 300);
+      }, 'image/png');
+    });
+  }
+
+  // Generate screenshots (placeholder solid color)
+  generatePlaceholderScreenshot('screenshot-mobile', 390, 844);
+  generatePlaceholderScreenshot('screenshot-desktop', 1280, 720);
+
+  status.innerHTML += '<p style="color:#00f2fe;font-weight:bold">✓ All icons generated! Move downloaded files to the icons/ folder.</p>';
+}
+
+function generatePlaceholderScreenshot(name, w, h) {
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, w, h);
+  grad.addColorStop(0, '#667eea');
+  grad.addColorStop(1, '#764ba2');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = 'white';
+  ctx.font = `bold ${Math.round(h * 0.06)}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.fillText('EduNova — Learn Without Limits', w / 2, h / 2);
+  canvas.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${name}.png`;
+    a.click();
+  }, 'image/png');
+}
+</script>
+</body>
+</html>

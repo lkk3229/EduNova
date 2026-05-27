@@ -2702,6 +2702,808 @@ h1, h2, h3, h4, h5, h6 {
     margin: 4px 0;
 }
 
+/* ============================================
+   PWA â€” Get the App Section
+   ============================================ */
+
+/* ---- Floating install banner ---- */
+.pwa-install-banner {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92vw, 480px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(102, 126, 234, 0.2);
+    z-index: 9999;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 14px 18px;
+}
+
+.pwa-install-banner.pwa-banner-visible {
+    bottom: 24px;
+}
+
+.pwa-banner-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pwa-banner-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.pwa-banner-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pwa-banner-text strong {
+    font-size: 14px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pwa-banner-text span {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.pwa-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.pwa-banner-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.pwa-banner-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.pwa-banner-dismiss {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.pwa-banner-dismiss:hover {
+    color: var(--text-primary);
+}
+
+/* ---- PWA Install Modal ---- */
+.pwa-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.pwa-modal.pwa-modal-open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.pwa-modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+}
+
+.pwa-modal.pwa-modal-open .pwa-modal-content {
+    transform: translateY(0);
+}
+
+.pwa-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.pwa-modal-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.pwa-modal-header h3 {
+    flex: 1;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.pwa-modal-close {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.pwa-modal-close:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.pwa-steps-intro {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.pwa-step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pwa-step-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    counter-increment: steps;
+}
+
+.pwa-step-list li i {
+    color: var(--primary);
+    font-size: 15px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    width: 18px;
+}
+
+.ios-share-icon {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.pwa-ios-note {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(79, 172, 254, 0.08);
+    border: 1px solid rgba(79, 172, 254, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--accent-2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ---- Get the App Section ---- */
+.get-app-section {
+    padding: 100px 0;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-elevated) 50%, var(--bg-dark) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.get-app-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.get-app-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.get-app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: var(--primary-light);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.get-app-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.get-app-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.app-feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 36px;
+}
+
+.app-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.app-feature-item:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+.app-feature-item i {
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.app-download-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.app-store-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 24px;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    border: 1px solid var(--border-hover);
+    transition: var(--transition);
+    text-decoration: none;
+    min-width: 180px;
+}
+
+.android-btn {
+    background: linear-gradient(135deg, #1a1c2e, #2a2d45);
+    color: white;
+}
+
+.android-btn:hover {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.35);
+    color: white;
+}
+
+.ios-btn {
+    background: linear-gradient(135deg, #1a1c2e, #2a2d45);
+    color: white;
+}
+
+.ios-btn:hover {
+    background: linear-gradient(135deg, #2c2c2e, #3a3a3c);
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.store-btn-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.android-btn .store-btn-icon { color: #78c257; }
+.ios-btn .store-btn-icon { color: #e0e0e0; }
+
+.store-btn-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.store-btn-sub {
+    font-size: 11px;
+    opacity: 0.65;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.store-btn-main {
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pwa-footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 420px;
+}
+
+.pwa-footnote i {
+    color: var(--accent-2);
+    margin-right: 4px;
+}
+
+/* ---- Phone Mockup ---- */
+.get-app-mockup {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-mockup {
+    position: relative;
+    z-index: 2;
+}
+
+.phone-frame {
+    width: 260px;
+    background: linear-gradient(145deg, #2a2d45, #1a1c2e);
+    border-radius: 40px;
+    padding: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    z-index: 10;
+}
+
+.phone-screen {
+    background: var(--bg-dark);
+    border-radius: 30px;
+    overflow: hidden;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-screen-header {
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.phone-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px 6px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.phone-status-icons {
+    display: flex;
+    gap: 6px;
+    font-size: 10px;
+}
+
+.phone-app-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 16px 12px;
+}
+
+.phone-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.phone-logo i {
+    color: var(--primary);
+    font-size: 15px;
+}
+
+.phone-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.phone-screen-body {
+    flex: 1;
+    padding: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.phone-welcome {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+}
+
+.phone-welcome span { font-size: 11px; color: var(--text-muted); }
+.phone-welcome strong { font-size: 14px; font-weight: 700; }
+
+.phone-progress-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.phone-progress-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+.phone-progress-bar-wrap {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.phone-progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+    transition: width 1.5s ease;
+}
+
+.phone-progress-pct { font-size: 11px; font-weight: 700; color: var(--primary-light); white-space: nowrap; }
+
+.phone-course-card {
+    background: rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.phone-course-card--2 {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.phone-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff4444;
+    animation: pulse 1.5s infinite;
+    flex-shrink: 0;
+}
+
+.phone-course-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.phone-course-tag {
+    display: inline-block;
+    background: rgba(245, 87, 108, 0.2);
+    color: #f5576c;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+}
+
+.phone-course-info p { font-size: 11px; font-weight: 600; margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.phone-course-info small { font-size: 10px; color: var(--text-muted); }
+
+.phone-course-thumb {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 30px;
+    text-align: center;
+}
+
+.phone-join-btn {
+    background: var(--gradient-secondary);
+    border: none;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.phone-play-icon {
+    color: var(--primary);
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.phone-nav-bar {
+    flex-shrink: 0;
+    display: flex;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 0 12px;
+}
+
+.phone-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.phone-nav-item i { font-size: 14px; }
+
+.phone-nav-item.active {
+    color: var(--primary);
+}
+
+.phone-glow-effect {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 80px;
+    background: radial-gradient(ellipse, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+    filter: blur(20px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ---- Floating badges around phone ---- */
+.app-float-badge {
+    position: absolute;
+    background: var(--bg-card);
+    border: 1px solid var(--border-hover);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 3;
+    animation: badgeFloat 3s ease-in-out infinite;
+}
+
+.app-float-badge i { color: var(--primary); }
+
+.badge-top-right {
+    top: 30px;
+    right: -20px;
+    animation-delay: 0s;
+}
+
+.badge-bottom-left {
+    bottom: 60px;
+    left: -20px;
+    animation-delay: 1s;
+}
+
+.badge-top-left {
+    top: 100px;
+    left: -30px;
+    animation-delay: 2s;
+}
+
+@keyframes badgeFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ---- Footer app column ---- */
+.footer-app-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.footer-app-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-hover);
+    color: var(--text-primary);
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: var(--transition);
+    text-align: left;
+}
+
+.footer-app-btn:hover {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    transform: translateY(-2px);
+}
+
+.footer-app-btn--ios:hover {
+    background: linear-gradient(135deg, #2c2c2e, #3a3a3c);
+    border-color: rgba(255,255,255,0.15);
+}
+
+.footer-app-btn i {
+    font-size: 16px;
+}
+
+.footer-app-btn i.fa-android { color: #78c257; }
+.footer-app-btn i.fa-apple { color: #e0e0e0; }
+
+.footer-app-link {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--primary-light);
+    text-decoration: none;
+    margin-top: 4px;
+    transition: color 0.2s;
+}
+
+.footer-app-link:hover {
+    color: var(--text-primary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+    .get-app-inner {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    .get-app-mockup {
+        order: -1;
+    }
+    .app-float-badge {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .app-download-btns {
+        flex-direction: column;
+    }
+    .app-store-btn {
+        width: 100%;
+    }
+    .phone-frame {
+        width: 220px;
+    }
+    .phone-screen {
+        height: 400px;
+    }
+}
+}
+
 @media (max-width: 768px) {
     .nav-user-name {
         display: none;
@@ -3096,7 +3898,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
-/* Notification toast — better mobile placement */
+/* Notification toast ï¿½ better mobile placement */
 @media (max-width: 640px) {
     .notification, .toast {
         left: 12px !important;
