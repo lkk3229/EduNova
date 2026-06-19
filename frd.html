@@ -322,7 +322,7 @@
         <h1>EduNova — Functional Requirement Document</h1>
         <p class="subtitle">Comprehensive platform specification — Auto-updated from live codebase</p>
         <div class="frd-meta">
-            <div class="frd-meta-item">Version: <strong>9.0</strong></div>
+            <div class="frd-meta-item">Version: <strong>9.6</strong></div>
             <div class="frd-meta-item">Last Updated: <strong id="frdLastUpdated">—</strong></div>
             <div class="frd-meta-item">Platform: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="frd-meta-item">Tech Stack: <strong>HTML5 / CSS3 / Vanilla JavaScript + Node.js / Supabase</strong></div>
@@ -442,6 +442,8 @@
                 <tr><td>backend/scripts/integrationCriticalPaths.js</td><td>Node Script</td><td>Critical API contract checks for health/readiness, auth, courses, payments, and uploads</td></tr>
                 <tr><td>backend/scripts/rehearseProduction.js</td><td>Node Script</td><td>Production-like deployment rehearsal runner with compose startup, backup/restore, and rollback simulation</td></tr>
                 <tr><td>backend/routes/payments.js</td><td>Node Route</td><td>Checkout, verification, and payment history APIs</td></tr>
+                <tr><td>backend/routes/books.js</td><td>Node Route</td><td>Library APIs including NCERT class/subject/language catalog endpoints</td></tr>
+                <tr><td>backend/lib/ncertCatalog.js</td><td>Node Library</td><td>Class 1-12 NCERT catalog source map used by backend NCERT APIs</td></tr>
                 <tr><td>backend/routes/uploads.js</td><td>Node Route</td><td>Teacher/admin image and video upload APIs</td></tr>
                 <tr><td>backend/models/Transaction.js</td><td>Node Model</td><td>Persistent payment transaction records and revenue split fields</td></tr>
                 <tr><td>backend/middleware/upload.js</td><td>Node Middleware</td><td>Multer-based file validation, sizing, and storage policy</td></tr>
@@ -850,7 +852,7 @@
                 <tr><td>Search & Filter</td><td>Search by title/subject/stream plus board/class filters</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Book Reader Preview</td><td>Right-side preview panel with chapter and concept summaries</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>NCERT PDF Integration</td><td>Direct links to official NCERT PDFs (ncert.nic.in) with fallback to custom reader</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
-                <tr><td>Open Book in New Tab</td><td>"Open Book" button opens NCERT PDF or custom reader in new browser tab</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
+                <tr><td>Open Book in New Tab</td><td>"Open Book" opens PDF for valid links; if NCERT direct PDF link is invalid it opens official NCERT catalog with warning toast; non-PDF books open library preview tab</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Library AI Assistant</td><td>Library-scoped answering with controlled fallback to in-script educational guidance</td><td><span class="frd-badge frd-badge-done">Active</span></td></tr>
                 <tr><td>Scope Control</td><td>Library focuses on content access; subscription workflow is deferred</td><td><span class="frd-badge frd-badge-live">Deferred</span></td></tr>
             </tbody>
@@ -858,7 +860,9 @@
 
         <h3>10A.3 NCERT Catalog Details</h3>
         <ul>
-            <li>All NCERT books (Classes 1-12) include direct PDF links to official ncert.nic.in publications</li>
+            <li>All NCERT books (Classes 1-12) are served through backend APIs with NCERT reference source <code>https://ncert.nic.in/textbook.php</code></li>
+            <li>NCERT API endpoint family: <code>/api/books/ncert/catalog</code>, <code>/api/books/ncert/classes</code>, <code>/api/books/ncert/subjects</code>, <code>/api/books/ncert/languages</code></li>
+            <li>Catalog items include class, subject, language, stream, and direct PDF URLs (where available)</li>
             <li>Supported languages: English, Hindi, Sanskrit (Classes 6-10), Urdu (where applicable)</li>
             <li>Full subject coverage: Core subjects (English, Mathematics, Science, Social Science, Environmental Studies) + Streams (Science, Commerce, Arts) for Classes 11-12</li>
             <li>PDF URLs follow standard NCERT structure: <code>https://ncert.nic.in/pdf/publication/Class{N}{Subject}.pdf</code></li>
@@ -869,7 +873,8 @@
         <ul>
             <li><code>window.EduNovaLibrary</code> exposes board metadata, full book catalog, and helper methods</li>
             <li>Key APIs: <code>getBooks()</code>, <code>searchBooks()</code>, <code>getBookById()</code>, <code>findBook()</code>, <code>getBoardOverview()</code></li>
-            <li>Current catalog is client-side and generated from static dataset definitions in <code>js/library-data.js</code></li>
+            <li>NCERT board catalog is API-driven via <code>js/api-client.js</code>; ICSE/State Board remain generated from <code>js/library-data.js</code></li>
+            <li>Runtime merge policy keeps a unified shelf model so filtering/search and AI assistant continue to work across all boards</li>
         </ul>
     </div>
 
@@ -1088,7 +1093,7 @@
                 <tr><td>Teacher Dashboard</td><td>teacher-dashboard.html</td><td>Teacher</td><td>currency.js, teacher-dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Admin Dashboard</td><td>admin.html</td><td>Admin</td><td>currency.js, dashboard.js, app.js, chatbot.js</td><td>Yes</td></tr>
                 <tr><td>Meeting Room</td><td>meeting.html</td><td>Teacher</td><td>meeting.js, app.js</td><td>No</td></tr>
-                <tr><td>Library Module</td><td>library.html</td><td>No</td><td>library-data.js, library.js, app.js</td><td>No</td></tr>
+                <tr><td>Library Module</td><td>library.html</td><td>No</td><td>library-data.js, app.js, api-client.js, library.js</td><td>No</td></tr>
                 <tr><td>English Speaking Trainer</td><td>english-speaking.html</td><td>Student</td><td>english-speaking.js, app.js</td><td>No</td></tr>
                 <tr><td>FRD Document</td><td>frd.html</td><td>No</td><td>(self-contained)</td><td>No</td></tr>
                 <tr><td>PRD Document</td><td>prd.html</td><td>No</td><td>(self-contained)</td><td>No</td></tr>
@@ -1161,7 +1166,7 @@
             <thead><tr><th>Component</th><th>File</th><th>Behavior</th></tr></thead>
             <tbody>
                 <tr><td>Web App Manifest</td><td>manifest.json</td><td>Declares app name, icons (72–512px), display:standalone, theme color, 3 shortcuts (Courses / Live / Dashboard)</td></tr>
-                <tr><td>Service Worker</td><td>sw.js</td><td>Cache-first for static shell, network-first for /api/* routes, offline HTML fallback, push notification handler</td></tr>
+                <tr><td>Service Worker</td><td>sw.js</td><td>Cache-first for static shell (including api-client.js) with versioned cache refresh (v1.1.1), network-first for /api/* routes, offline HTML fallback, push notification handler</td></tr>
                 <tr><td>PWA Script</td><td>js/pwa.js</td><td>Registers SW, captures Android beforeinstallprompt, exposes window.installPWA() and window.showIOSInstall(), shows/hides floating banner</td></tr>
                 <tr><td>App Icons</td><td>icons/icon-*.png</td><td>8 sizes: 72, 96, 128, 144, 152, 192, 384, 512px. Generated from icons/icon.svg</td></tr>
                 <tr><td>Icon Generator</td><td>icons/generate-icons.html</td><td>Developer utility — open in browser to auto-generate and download all PNG icon sizes from SVG source</td></tr>
@@ -1203,9 +1208,9 @@
 
     <!-- FOOTER -->
     <div style="text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.8rem;">
-        <p>EduNova Functional Requirement Document v9.0</p>
+        <p>EduNova Functional Requirement Document v9.6</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.0 includes: PWA (Progressive Web App) with manifest, service worker, Android/iOS install prompts, offline support, and Get the App section on the homepage</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.6 includes: NCERT invalid-PDF protection — automatic fallback to official NCERT catalog and warning toast instead of opening error pages</p>
     </div>
 
 </div>

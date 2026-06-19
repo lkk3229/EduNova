@@ -163,7 +163,7 @@
         <h1>EduNova — Product Requirement Document</h1>
         <p class="subtitle">Product vision, strategy, user stories & success metrics — Auto-updated from live platform</p>
         <div class="prd-meta">
-            <div class="prd-meta-item">Version: <strong>9.0</strong></div>
+            <div class="prd-meta-item">Version: <strong>9.6</strong></div>
             <div class="prd-meta-item">Last Updated: <strong id="prdLastUpdated">—</strong></div>
             <div class="prd-meta-item">Product: <strong>EduNova — Learn Without Limits</strong></div>
             <div class="prd-meta-item">Owner: <strong>Super Admin</strong></div>
@@ -475,6 +475,10 @@
             <div class="story-id">US-S13 <span class="badge badge-done">Implemented</span></div>
             <p class="story-text">As a <em>student on a mobile phone</em>, I want to <em>install EduNova as an app on my Android or iPhone</em> — without going to an app store — so I can learn faster with offline access and a native app experience.</p>
         </div>
+        <div class="story-card">
+            <div class="story-id">US-S14 <span class="badge badge-done">Implemented</span></div>
+            <p class="story-text">As a <em>school learner</em>, I want the <em>Library NCERT catalog to come from backend APIs for Classes 1-12 with subject and language filters</em> so the book list remains structured, searchable, and aligned to NCERT references.</p>
+        </div>
     </div>
 
     <!-- ==================== 6. FEATURE REQUIREMENTS ==================== -->
@@ -505,7 +509,7 @@
                 <tr><td>F-18</td><td>Demo Class Booking</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Students can request trial/demo sessions</td></tr>
                 <tr><td>F-19</td><td>Platform Data Reset</td><td><span class="badge badge-low">P2</span></td><td><span class="badge badge-done">Done</span></td><td>Admin can clear specific data categories (users, enrollments, etc.)</td></tr>
                 <tr><td>F-20</td><td>AI English Speaking Trainer</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Voice conversation coach with question answering, correction, phoneme scoring, scorecard, and LLM integration</td></tr>
-                <tr><td>F-21</td><td>School Library Module</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Board-first and class-wise book catalog (Classes 1-12) with shelf filters and library AI assistant</td></tr>
+                <tr><td>F-21</td><td>School Library Module</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Board-first and class-wise catalog with NCERT backend APIs (class/subject/language), shelf filters, and library AI assistant</td></tr>
                 <tr><td>F-22</td><td>Password Recovery Workflow</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Forgot password and reset flow on login with safeguards for demo accounts</td></tr>
                 <tr><td>F-23</td><td>Payment Gateway Backend APIs</td><td><span class="badge badge-high">P0</span></td><td><span class="badge badge-done">Done</span></td><td>Checkout, signature verification, user history, and admin transaction views</td></tr>
                 <tr><td>F-24</td><td>Media Upload APIs</td><td><span class="badge badge-med">P1</span></td><td><span class="badge badge-done">Done</span></td><td>Multer-backed teacher/admin uploads for image and video with static URL hosting</td></tr>
@@ -578,8 +582,11 @@
         <h4>6.2.5 Library Module Engine</h4>
         <ul>
             <li>Dedicated Library page with board-wise (NCERT, ICSE, State Boards) and class-wise (1-12) segmentation</li>
+            <li>NCERT data is fetched from backend endpoints: <code>/api/books/ncert/catalog</code>, <code>/api/books/ncert/classes</code>, <code>/api/books/ncert/subjects</code>, <code>/api/books/ncert/languages</code></li>
+            <li>NCERT API uses <code>https://ncert.nic.in/textbook.php</code> as source reference metadata and serves subject/language-rich records</li>
             <li>Search and filter layer over catalog by title, subject, stream, class, and board</li>
             <li>Book preview panel showing chapter-level and concept-level summaries</li>
+            <li>Open Book routing is PDF-first for valid links; NCERT links matching known invalid patterns are automatically redirected to the official NCERT catalog with warning toast to avoid error pages</li>
             <li>Library AI assistant with catalog-first responses and built-in educational fallback when no exact catalog match is found</li>
             <li>Navigation integration in public navbar and logged-in user dropdown for faster access</li>
             <li>Subscription model intentionally deferred for later business decision</li>
@@ -890,6 +897,7 @@
                 <tr><td>Browser speech API behavior varies by device/browser</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Fallback to typed mode and retain coaching quality without microphone access.</td></tr>
                 <tr><td>Direct frontend LLM key usage is not production-safe</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-high">Certain</span></td><td>Move to backend proxy for token handling and provider routing before production release.</td></tr>
                 <tr><td>Library dataset is static client-side content</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-high">Certain</span></td><td>Move catalog and access rights to backend CMS/data store in scale phase.</td></tr>
+                <tr><td>NCERT publication structure may change over time</td><td><span class="badge badge-med">Medium</span></td><td><span class="badge badge-med">Medium</span></td><td>Keep NCERT catalog map in backend and periodically validate links/source alignment against ncert.nic.in textbook listing.</td></tr>
                 <tr><td>Library AI fallback may answer beyond strict catalog text</td><td><span class="badge badge-low">Low</span></td><td><span class="badge badge-med">Medium</span></td><td>Add strict-mode toggle to force catalog-only responses when required.</td></tr>
             </tbody>
         </table>
@@ -943,6 +951,7 @@
                 <tr><td>Docker Engine / Docker Compose</td><td>Runtime tooling</td><td>Containerized backend build and orchestration for deterministic deployments</td></tr>
                 <tr><td>GitHub Actions</td><td>CI platform</td><td>Automated backend smoke checks on pushes and pull requests</td></tr>
                 <tr><td>MongoDB Service Container (CI)</td><td>CI runtime dependency</td><td>Critical path integration checks require live Mongo availability under DB_MODE=mongo contract</td></tr>
+                <tr><td>NCERT Textbook Reference URL</td><td>External Web Source</td><td>NCERT catalog APIs reference textbook metadata source at ncert.nic.in/textbook.php</td></tr>
             </tbody>
         </table>
 
@@ -994,6 +1003,7 @@
                 <tr><td>Production Rehearsal</td><td>Scripted pre-release dry run for compose startup, backup/restore, and rollback simulation</td></tr>
                 <tr><td>Speaking Scorecard</td><td>Per-student report containing fluency, pronunciation, streak, suggestions, and recent history</td></tr>
                 <tr><td>Library Module</td><td>Board-wise and class-wise school book catalog with in-page AI assistant</td></tr>
+                <tr><td>NCERT Catalog API</td><td>Backend NCERT endpoints providing class/subject/language-filterable textbook records for the library module</td></tr>
                 <tr><td>FRD</td><td>Functional Requirement Document — technical specification of all features</td></tr>
                 <tr><td>PRD</td><td>Product Requirement Document — this document; product vision, stories, and strategy</td></tr>
                 <tr><td>localStorage</td><td>Browser API for persistent client-side data storage (key-value pairs)</td></tr>
@@ -1016,9 +1026,9 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
-        <p>EduNova Product Requirement Document v9.0</p>
+        <p>EduNova Product Requirement Document v9.6</p>
         <p>Auto-generated from live platform codebase. &copy; 2026 EduNova — Learn Without Limits</p>
-        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.0 includes: PWA (Progressive Web App) — installable Android &amp; iOS app with service worker, offline support, manifest, install prompts, phone mockup UI, and footer app links</p>
+        <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 10px;">v9.6 includes: NCERT invalid-PDF guardrail with automatic fallback to official NCERT catalog to prevent error pages</p>
         <p style="margin-top:8px;"><a href="frd.html" style="color:var(--accent); text-decoration:none;">View Functional Requirement Document (FRD) →</a></p>
     </div>
 

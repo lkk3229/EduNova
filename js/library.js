@@ -14,37 +14,129 @@
     const ui = {};
 
     const GREETINGS = ['hi', 'hello', 'hey', 'good morning', 'good evening'];
+    const NCERT_SOURCE_URL = 'https://ncert.nic.in/textbook.php';
+
+    function slugify(value) {
+        return String(value || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    function buildApiBookId(book) {
+        return `ncert-api-${book.classLevel}-${slugify(book.subject)}-${slugify(book.language || 'english')}`;
+    }
+
+    function buildApiReader(book) {
+        return {
+            access: 'free',
+            availabilityNote: book.pdfUrl
+                ? 'Official NCERT PDF is available from ncert.nic.in and opens in a new tab.'
+                : 'Official NCERT listing is available. PDF link is not currently provided for this title.',
+            pdfUrl: book.pdfUrl || null,
+            chapters: []
+        };
+    }
+
+    function mapNcertApiBook(book) {
+        const classLevel = Number(book.classLevel);
+        const language = book.language || 'English';
+        const stream = book.stream || 'General';
+        const title = String(book.title || '').trim() || `NCERT Class ${classLevel} ${book.subject}`;
+
+        return {
+            id: buildApiBookId(book),
+            boardId: 'ncert',
+            board: 'NCERT',
+            classLevel,
+            subject: book.subject,
+            stream,
+            sourceUrl: book.sourceUrl || NCERT_SOURCE_URL,
+            title,
+            description: book.description || `NCERT ${book.subject} textbook for Class ${classLevel}.`,
+            tags: Array.isArray(book.tags) && book.tags.length
+                ? book.tags
+                : ['NCERT', `Class ${classLevel}`, book.subject, language, stream],
+            reader: buildApiReader(book)
+        };
+    }
+
+    function isKnownBrokenNcertPdfUrl(url) {
+        return /https?:\/\/ncert\.nic\.in\/pdf\/publication\/Class/i.test(String(url || ''));
+    }
+
+    function applySelectionFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const board = params.get('board');
+        const classLevel = params.get('class');
+        const bookId = params.get('book');
+
+        if (board && library.getBoard(board)) {
+            state.boardId = board;
+        }
+
+        if (classLevel && classLevel !== 'all') {
+            const numericClass = Number(classLevel);
+            if (Number.isInteger(numericClass) && numericClass >= 1 && numericClass <= 12) {
+                state.classLevel = String(numericClass);
+            }
+        }
+
+        if (bookId) {
+            state.selectedBookId = bookId;
+        }
+    }
+
+    function openBook(book) {
+        if (!book) return;
+
+        const pdfUrl = book.reader && book.reader.pdfUrl ? String(book.reader.pdfUrl).trim() : '';
+        if (pdfUrl && !isKnownBrokenNcertPdfUrl(pdfUrl)) {
+            window.open(pdfUrl, '_blank');
+            return;
+        }
+
+        if (pdfUrl && book.boardId === 'ncert') {
+            if (typeof showNotification === 'function') {
+                showNotification('Direct PDF link is currently unavailable. Opening official NCERT catalog.', 'warning');
+            }
+            window.open(book.sourceUrl || NCERT_SOURCE_URL, '_blank');
+            return;
+        }
+
+        if (typeof showNotification === 'function') {
+            showNotification('Opening library preview in new tab', 'info');
+        }
+
+        const fallbackUrl = `library.html?board=${encodeURIComponent(book.boardId)}&class=${encodeURIComponent(book.classLevel)}&book=${encodeURIComponent(book.id)}`;
+        window.open(fallbackUrl, '_blank');
+    }
 
     // ==================== API Integration ====================
     
     async function loadBooksFromAPI() {
         try {
-            // Try to load books from backend API
             if (typeof apiClient === 'undefined') {
                 console.warn('⚠️ API client not available, using local data');
                 return false;
             }
 
-            const response = await apiClient.books.getAll();
-            if (response && response.data) {
-                const books = response.data;
-                console.log(`✓ Loaded ${books.length} books from API`);
-                
-                // Update the library data with API results
-                // We'll merge them with existing structure
-                library.apiBooks = books;
+            const response = await apiClient.books.getNcertCatalog();
+            if (response && Array.isArray(response.books)) {
+                library.apiBooks = response.books.map(mapNcertApiBook);
+                console.log(`✓ Loaded ${library.apiBooks.length} NCERT books from API`);
                 return true;
             }
         } catch (error) {
-            console.warn('⚠️ Could not load books from API:', error.message);
+            console.warn('⚠️ Could not load NCERT books from API:', error.message);
             console.log('   Using local hardcoded book data instead');
         }
         return false;
     }
 
-    const GREETINGS = ['hi', 'hello', 'hey', 'good morning', 'good evening'];
-
     function init() {
+        applySelectionFromUrl();
+
         ui.overview = document.getElementById('libraryOverview');
         ui.boardTabs = document.getElementById('libraryBoardTabs');
         ui.classTabs = document.getElementById('libraryClassTabs');
@@ -105,16 +197,7 @@
             if (openButton) {
                 const bookId = openButton.dataset.bookId;
                 const book = library.getBookById(bookId);
-                if (book) {
-                    // If book has PDF URL from NCERT, open it directly
-                    if (book.reader && book.reader.pdfUrl) {
-                        window.open(book.reader.pdfUrl, '_blank');
-                    } else {
-                        // Otherwise open custom reader with book ID parameter
-                        const bookUrl = `book-reader.html?id=${encodeURIComponent(bookId)}`;
-                        window.open(bookUrl, '_blank');
-                    }
-                }
+                openBook(book);
                 return;
             }
 

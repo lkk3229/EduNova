@@ -6,6 +6,11 @@ const router = express.Router();
 const Book = require('../models/Book');
 const { protect, authorize } = require('../middleware/auth');
 const { cache, invalidateCache } = require('../middleware/cache');
+const { NCERT_BOOKS, NCERT_SOURCE_URL } = require('../lib/ncertCatalog');
+
+function includesQuery(value, query) {
+    return String(value || '').toLowerCase().includes(String(query || '').toLowerCase());
+}
 
 // @route   GET /api/books
 // @desc    Get all books with filters
@@ -49,6 +54,100 @@ router.get('/', cache(process.env.CACHE_TTL_SECONDS || 120), async (req, res) =>
             message: error.message
         });
     }
+});
+
+// @route   GET /api/books/ncert/catalog
+// @desc    Get NCERT catalog (Classes 1-12) with class/subject/language filters
+// @access  Public
+router.get('/ncert/catalog', cache(process.env.CACHE_TTL_SECONDS || 120), async (req, res) => {
+    try {
+        const { classLevel, subject, language, stream, search } = req.query;
+
+        const books = NCERT_BOOKS.filter((book) => {
+            const classMatch = !classLevel || Number(book.classLevel) === Number(classLevel);
+            const subjectMatch = !subject || includesQuery(book.subject, subject);
+            const languageMatch = !language || includesQuery(book.language, language);
+            const streamMatch = !stream || includesQuery(book.stream, stream);
+            const searchMatch = !search || [book.title, book.subject, book.description, book.language, book.stream]
+                .some((field) => includesQuery(field, search));
+
+            return classMatch && subjectMatch && languageMatch && streamMatch && searchMatch;
+        });
+
+        res.status(200).json({
+            success: true,
+            sourceUrl: NCERT_SOURCE_URL,
+            total: books.length,
+            books,
+            filters: {
+                classLevel: classLevel || null,
+                subject: subject || null,
+                language: language || null,
+                stream: stream || null,
+                search: search || null
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+// @route   GET /api/books/ncert/classes
+// @desc    Get available NCERT classes (1-12)
+// @access  Public
+router.get('/ncert/classes', cache(process.env.CACHE_TTL_SECONDS || 120), async (req, res) => {
+    const classes = Array.from(new Set(NCERT_BOOKS.map((book) => book.classLevel))).sort((a, b) => a - b);
+    res.status(200).json({
+        success: true,
+        sourceUrl: NCERT_SOURCE_URL,
+        total: classes.length,
+        classes
+    });
+});
+
+// @route   GET /api/books/ncert/subjects
+// @desc    Get available NCERT subjects (optionally filtered by class)
+// @access  Public
+router.get('/ncert/subjects', cache(process.env.CACHE_TTL_SECONDS || 120), async (req, res) => {
+    const { classLevel } = req.query;
+
+    const subjects = Array.from(new Set(
+        NCERT_BOOKS
+            .filter((book) => !classLevel || Number(book.classLevel) === Number(classLevel))
+            .map((book) => book.subject)
+    )).sort();
+
+    res.status(200).json({
+        success: true,
+        sourceUrl: NCERT_SOURCE_URL,
+        classLevel: classLevel ? Number(classLevel) : null,
+        total: subjects.length,
+        subjects
+    });
+});
+
+// @route   GET /api/books/ncert/languages
+// @desc    Get available NCERT languages (optionally filtered by class)
+// @access  Public
+router.get('/ncert/languages', cache(process.env.CACHE_TTL_SECONDS || 120), async (req, res) => {
+    const { classLevel } = req.query;
+
+    const languages = Array.from(new Set(
+        NCERT_BOOKS
+            .filter((book) => !classLevel || Number(book.classLevel) === Number(classLevel))
+            .map((book) => book.language)
+    )).sort();
+
+    res.status(200).json({
+        success: true,
+        sourceUrl: NCERT_SOURCE_URL,
+        classLevel: classLevel ? Number(classLevel) : null,
+        total: languages.length,
+        languages
+    });
 });
 
 // @route   GET /api/books/:id

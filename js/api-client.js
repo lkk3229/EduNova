@@ -122,6 +122,32 @@ class EduNovaAPI {
             return await this.request('/books');
         },
 
+        getNcertCatalog: async (filters = {}) => {
+            const params = new URLSearchParams();
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && String(value).trim() !== '') {
+                    params.append(key, value);
+                }
+            });
+
+            const query = params.toString() ? `?${params.toString()}` : '';
+            return await this.request(`/books/ncert/catalog${query}`);
+        },
+
+        getNcertClasses: async () => {
+            return await this.request('/books/ncert/classes');
+        },
+
+        getNcertSubjects: async (classLevel = null) => {
+            const query = classLevel ? `?classLevel=${encodeURIComponent(classLevel)}` : '';
+            return await this.request(`/books/ncert/subjects${query}`);
+        },
+
+        getNcertLanguages: async (classLevel = null) => {
+            const query = classLevel ? `?classLevel=${encodeURIComponent(classLevel)}` : '';
+            return await this.request(`/books/ncert/languages${query}`);
+        },
+
         getById: async (bookId) => {
             return await this.request(`/books/${bookId}`);
         },

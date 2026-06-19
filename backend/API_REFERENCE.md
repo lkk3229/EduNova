@@ -138,6 +138,61 @@ GET /api/books?board=ncert&classLevel=6&subject=Mathematics&page=1&limit=10
 }
 ```
 
+### GET /api/books/ncert/catalog
+Get NCERT catalog for Classes 1-12 with filters for subject, language, stream, and class.
+
+**Query Parameters:**
+- `classLevel` (optional): Filter by class (1-12)
+- `subject` (optional): Case-insensitive subject filter
+- `language` (optional): Case-insensitive language filter
+- `stream` (optional): Stream filter (General/Science/Commerce/Arts)
+- `search` (optional): Full-text search on title/subject/description/language/stream
+
+**Example:**
+```
+GET /api/books/ncert/catalog?classLevel=10&language=Hindi
+```
+
+**Response (200 OK):**
+```json
+{
+    "success": true,
+    "sourceUrl": "https://ncert.nic.in/textbook.php",
+    "total": 1,
+    "books": [
+        {
+            "id": "ncert-10-hindi-3",
+            "board": "NCERT",
+            "boardId": "ncert",
+            "classLevel": 10,
+            "subject": "Hindi",
+            "language": "Hindi",
+            "stream": "General",
+            "title": "NCERT Class 10 Kshitij / Sparsh",
+            "description": "NCERT Hindi textbook for Class 10 (Hindi).",
+            "sourceUrl": "https://ncert.nic.in/textbook.php",
+            "pdfUrl": "https://ncert.nic.in/pdf/publication/Class10Hindi.pdf",
+            "tags": ["NCERT", "Class 10", "Hindi", "Hindi", "General"]
+        }
+    ]
+}
+```
+
+### GET /api/books/ncert/classes
+List all available NCERT classes from catalog.
+
+### GET /api/books/ncert/subjects
+List subjects from NCERT catalog.
+
+**Query Parameters:**
+- `classLevel` (optional): Filter subjects by class.
+
+### GET /api/books/ncert/languages
+List languages from NCERT catalog.
+
+**Query Parameters:**
+- `classLevel` (optional): Filter languages by class.
+
 ### GET /api/books/:id
 Get single book details.
 

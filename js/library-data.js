@@ -708,12 +708,25 @@
 
     const books = buildCatalog();
 
+    function getActiveCatalog() {
+        const apiBooks = Array.isArray(window.EduNovaLibrary && window.EduNovaLibrary.apiBooks)
+            ? window.EduNovaLibrary.apiBooks
+            : [];
+
+        if (!apiBooks.length) {
+            return books;
+        }
+
+        const nonNcertBooks = books.filter((book) => book.boardId !== 'ncert');
+        return [...apiBooks, ...nonNcertBooks];
+    }
+
     function listClasses() {
         return Array.from({ length: 12 }, (_, index) => index + 1);
     }
 
     function getBooks(boardId, classLevel) {
-        return books.filter((book) => {
+        return getActiveCatalog().filter((book) => {
             const boardMatch = !boardId || boardId === 'all' || book.boardId === boardId;
             const classMatch = !classLevel || classLevel === 'all' || book.classLevel === Number(classLevel);
             return boardMatch && classMatch;
@@ -752,12 +765,12 @@
     }
 
     function getBookById(bookId) {
-        return books.find((book) => book.id === bookId) || null;
+        return getActiveCatalog().find((book) => book.id === bookId) || null;
     }
 
     function findBook(boardId, classLevel, subjectQuery) {
         const normalizedSubject = normalizeSubjectQuery(subjectQuery);
-        return books.find((book) => {
+        return getActiveCatalog().find((book) => {
             const boardMatch = !boardId || boardId === 'all' || book.boardId === boardId;
             const classMatch = !classLevel || classLevel === 'all' || book.classLevel === Number(classLevel);
             const subjectMatch = !normalizedSubject || book.subject === normalizedSubject;
@@ -768,6 +781,7 @@
     window.EduNovaLibrary = {
         boards: BOARD_CONFIG,
         books,
+        apiBooks: [],
         classes: listClasses(),
         getBoard,
         getBoardOverview,

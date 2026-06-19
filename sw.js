@@ -3,9 +3,9 @@
    Enables offline access + app install
    ============================================ */
 
-const CACHE_NAME = 'edunova-v1.0.0';
-const STATIC_CACHE = 'edunova-static-v1.0.0';
-const DYNAMIC_CACHE = 'edunova-dynamic-v1.0.0';
+const CACHE_NAME = 'edunova-v1.1.4';
+const STATIC_CACHE = 'edunova-static-v1.1.4';
+const DYNAMIC_CACHE = 'edunova-dynamic-v1.1.4';
 
 // Core shell files — always cached
 const STATIC_ASSETS = [
@@ -37,6 +37,7 @@ const STATIC_ASSETS = [
     '/js/meeting.js',
     '/js/library.js',
     '/js/library-data.js',
+    '/js/api-client.js',
     '/js/student-dashboard.js',
     '/js/teacher-dashboard.js',
     '/js/certificate.js',
